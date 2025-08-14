@@ -61,6 +61,7 @@ const Products = () => {
         params.append('limit', '12');
 
         const response = await axios.get(`http://localhost:5000/api/products?${params}`);
+        
         setProducts(response.data.products);
         setPagination(response.data.pagination);
       } catch (error) {

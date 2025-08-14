@@ -44,6 +44,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        
         setProduct(response.data.product);
         setSimilarProducts(response.data.similarProducts);
       } catch (error) {
@@ -60,8 +61,9 @@ const ProductDetail = () => {
 
   const renderStars = (rating: number) => {
     const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+    const numRating = Number(rating) || 0;
+    const fullStars = Math.floor(numRating);
+    const hasHalfStar = numRating % 1 !== 0;
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(
@@ -177,13 +179,13 @@ const ProductDetail = () => {
                 {renderStars(product.rating)}
               </div>
               <span className="text-gray-600">
-                {product.rating.toFixed(1)} ({product.total_ratings} ratings)
+                {(Number(product.rating) || 0).toFixed(1)} ({Number(product.total_ratings) || 0} ratings)
               </span>
             </div>
 
             {/* Price */}
             <div className="text-3xl font-bold text-purple-600 mb-6">
-              ${product.price.toFixed(2)}
+              ${(Number(product.price) || 0).toFixed(2)}
             </div>
 
             {/* Availability */}
@@ -191,15 +193,15 @@ const ProductDetail = () => {
               <div className="flex items-center justify-between mb-4">
                 <span className="text-lg font-semibold text-gray-800">Availability:</span>
                 <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  product.stock_quantity > 0 
+                  (Number(product.stock_quantity) || 0) > 0 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-red-100 text-red-800'
                 }`}>
-                  {product.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                  {(Number(product.stock_quantity) || 0) > 0 ? 'In Stock' : 'Out of Stock'}
                 </span>
               </div>
               
-              {product.stock_quantity > 0 && (
+              {(Number(product.stock_quantity) || 0) > 0 && (
                 <button
                   onClick={handleCall}
                   className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
@@ -211,7 +213,7 @@ const ProductDetail = () => {
             </div>
 
             {/* Add to Cart */}
-            {product.stock_quantity > 0 && (
+            {(Number(product.stock_quantity) || 0) > 0 && (
               <div className="mb-6">
                 <div className="flex items-center space-x-4 mb-4">
                   <label className="text-gray-700 font-semibold">Quantity:</label>
@@ -220,7 +222,7 @@ const ProductDetail = () => {
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                     className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   >
-                    {Array.from({ length: Math.min(10, product.stock_quantity) }, (_, i) => i + 1).map((num) => (
+                    {Array.from({ length: Math.min(10, Number(product.stock_quantity) || 0) }, (_, i) => i + 1).map((num) => (
                       <option key={num} value={num}>{num}</option>
                     ))}
                   </select>

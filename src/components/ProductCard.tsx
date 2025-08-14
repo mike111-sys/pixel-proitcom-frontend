@@ -17,8 +17,9 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const renderStars = (rating: number) => {
     const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+    const numRating = Number(rating) || 0;
+    const fullStars = Math.floor(numRating);
+    const hasHalfStar = numRating % 1 !== 0;
 
     // Full stars
     for (let i = 0; i < fullStars; i++) {
@@ -83,8 +84,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           
           <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-purple-600">
-  ${Number(product.price).toFixed(2)}
-</span>
+            ${(Number(product.price) || 0).toFixed(2)}
+          </span>
 
           </div>
         </div>

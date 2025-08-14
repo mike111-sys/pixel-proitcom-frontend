@@ -28,14 +28,7 @@ const ProductManagement = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/products?limit=100');
-      const cleanProducts = response.data.products.map((p: Product) => ({
-        ...p,
-        price: Number(p.price),
-        rating: Number(p.rating),
-        total_ratings: Number(p.total_ratings),
-        stock_quantity: Number(p.stock_quantity)
-      }));
-      setProducts(cleanProducts);
+      setProducts(response.data.products);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
