@@ -7,7 +7,6 @@ import { FaSearch, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/f
 interface Product {
   id: number;
   name: string;
-  price: number;
   image_url: string;
   rating: number;
   total_ratings: number;

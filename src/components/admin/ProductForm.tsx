@@ -12,7 +12,6 @@ interface Product {
   id: number;
   name: string;
   description: string;
-  price: number;
   category_id: number;
   stock_quantity: number;
   is_featured: boolean;
@@ -35,7 +34,6 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
   const [product, setProduct] = useState<Partial<Product>>({
     name: '',
     description: '',
-    price: 0,
     category_id: 0,
     stock_quantity: 0,
     is_featured: false,
@@ -70,7 +68,6 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       setProduct({
         name: productData.name,
         description: productData.description,
-        price: productData.price,
         category_id: productData.category_id,
         stock_quantity: productData.stock_quantity,
         is_featured: productData.is_featured,
@@ -128,7 +125,6 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       const formData = new FormData();
       formData.append('name', product.name || '');
       formData.append('description', product.description || '');
-      formData.append('price', product.price?.toString() || '0');
       formData.append('category_id', product.category_id?.toString() || '0');
       formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
       formData.append('is_featured', product.is_featured?.toString() || 'false');
@@ -221,33 +217,17 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price *
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  required
-                  value={product.price}
-                  onChange={(e) => setProduct(prev => ({ ...prev, price: parseFloat(e.target.value) }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Stock Quantity *
-                </label>
-                <input
-                  type="number"
-                  required
-                  value={product.stock_quantity}
-                  onChange={(e) => setProduct(prev => ({ ...prev, stock_quantity: parseInt(e.target.value) }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Stock Quantity *
+              </label>
+              <input
+                type="number"
+                required
+                value={product.stock_quantity}
+                onChange={(e) => setProduct(prev => ({ ...prev, stock_quantity: parseInt(e.target.value) }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
             </div>
 
             <div className="flex space-x-4">

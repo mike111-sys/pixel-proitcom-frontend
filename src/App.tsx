@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
+import Cart from './pages/Cart';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import { AuthProvider } from './context/AuthContext';
@@ -21,11 +22,12 @@ const App = () => {
               <Navbar />
               <main>
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/*" element={<AdminDashboard />} />
+                                  <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/*" element={<AdminDashboard />} />
                 </Routes>
               </main>
             </div>

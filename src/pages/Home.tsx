@@ -8,7 +8,6 @@ import { FaArrowRight, FaPhone } from 'react-icons/fa';
 interface Product {
   id: number;
   name: string;
-  price: number;
   image_url: string;
   rating: number;
   total_ratings: number;

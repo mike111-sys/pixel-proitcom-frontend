@@ -3,7 +3,6 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 interface CartItem {
   id: number;
   name: string;
-  price: number;
   image_url: string;
   quantity: number;
 }
@@ -62,7 +61,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         return [...prevItems, {
           id: product.id,
           name: product.name,
-          price: product.price,
           image_url: product.image_url,
           quantity
         }];
@@ -96,7 +94,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return 0; // No pricing in this version
   };
 
   const value = {

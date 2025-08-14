@@ -7,7 +7,6 @@ import ProductForm from './ProductForm';
 interface Product {
   id: number;
   name: string;
-  price: number;
   image_url: string;
   rating: number;
   total_ratings: number;
@@ -116,7 +115,7 @@ const ProductList = ({ products, onDelete, onRefresh }: {
                   Category
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
+                  Category
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Rating
@@ -153,7 +152,7 @@ const ProductList = ({ products, onDelete, onRefresh }: {
                     {product.category_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${product.price.toFixed(2)}
+                    {product.category_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">

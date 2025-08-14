@@ -9,7 +9,6 @@ interface Product {
   id: number;
   name: string;
   description: string;
-  price: number;
   image_url: string;
   rating: number;
   total_ratings: number;
@@ -110,7 +109,11 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      addToCart({
+        id: product.id,
+        name: product.name,
+        image_url: product.image_url
+      }, quantity);
     }
   };
 
@@ -183,9 +186,9 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            {/* Price */}
-            <div className="text-3xl font-bold text-purple-600 mb-6">
-              ${(Number(product.price) || 0).toFixed(2)}
+            {/* Category */}
+            <div className="text-lg text-gray-600 mb-6">
+              Category: <span className="font-semibold text-purple-600">{product.category_name}</span>
             </div>
 
             {/* Availability */}

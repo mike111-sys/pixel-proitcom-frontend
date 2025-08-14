@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaShoppingCart, FaUser, FaPhone } from 'react-icons/fa';
+import { FaSearch, FaShoppingCart, FaUser, FaPhone, FaChevronDown } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const { getTotalItems } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/categories');
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +60,38 @@ const Navbar = () => {
             <Link to="/products" className="text-gray-600 hover:text-purple-600 transition-colors">
               Products
             </Link>
+            
+            {/* Categories Dropdown */}
+            <div className="relative group">
+              <button
+                className="flex items-center space-x-1 text-gray-600 hover:text-purple-600 transition-colors"
+                onMouseEnter={() => setIsCategoriesOpen(true)}
+                onMouseLeave={() => setIsCategoriesOpen(false)}
+              >
+                <span>Categories</span>
+                <FaChevronDown className="text-xs" />
+              </button>
+              
+              {/* Categories Dropdown Menu */}
+              <div
+                className={`absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 z-50 transition-all duration-200 ${
+                  isCategoriesOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}
+                onMouseEnter={() => setIsCategoriesOpen(true)}
+                onMouseLeave={() => setIsCategoriesOpen(false)}
+              >
+                {categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={`/products?category=${encodeURIComponent(category.name)}`}
+                    className="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            
             <button
               onClick={handleCall}
               className="flex items-center space-x-2 text-gray-600 hover:text-purple-600 transition-colors"

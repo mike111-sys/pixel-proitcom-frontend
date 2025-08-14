@@ -6,7 +6,6 @@ interface ProductCardProps {
   product: {
     id: number;
     name: string;
-    price: number;
     image_url: string;
     rating: number;
     total_ratings: number;
@@ -82,11 +81,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           </div>
           
-          <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-purple-600">
-            ${(Number(product.price) || 0).toFixed(2)}
-          </span>
-
+                    <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-500">
+              {product.category_name}
+            </span>
           </div>
         </div>
       </Link>
