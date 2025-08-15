@@ -5,6 +5,7 @@ import Motorolla from '../assets/motorolla.webp';
 import Motorolla_blur from '../assets/motorolla-blur.webp';
 import Thuraya from '../assets/thuraya.webp';
 import Thuraya_blur from '../assets/thuraya-blur.webp';
+import { FaTags } from 'react-icons/fa';
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -173,6 +174,16 @@ const HeroSection = () => {
       {/* Simple decorative corners */}
       <div className="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 border-l-4 border-t-4 border-gray-300 opacity-40"></div>
       <div className="absolute bottom-0 right-0 w-16 h-16 sm:w-24 sm:h-24 border-r-4 border-b-4 border-gray-300 opacity-40"></div>
+ 
+     {/* Desktop-only bottom card */}
+<div className="hidden md:flex absolute bottom-4 left-1/2 transform -translate-x-1/2 w-11/12 lg:w-4/5 bg-white rounded-2xl shadow-xl border border-gray-200 p-6 items-center gap-4 text-gray-800">
+  <FaTags className="text-yellow-500 w-6 h-6 flex-shrink-0" />
+  <p className="text-lg">
+    Discounts are awarded for bulky purchases. Enjoy amazing savings when you buy multiple units of our high-quality products. Shop more, save more!
+  </p>
+</div>
+
+ 
     </section>
   
   );
