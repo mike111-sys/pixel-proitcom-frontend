@@ -104,7 +104,7 @@ const Navbar = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="absolute top-full left-0 mt-1 bg-white shadow-2xl rounded-xl py-4 min-w-80 z-50 border border-gray-100"
+        className="absolute top-full left-0 mt-1 bg-white shadow-2xl rounded-xl py-4 min-w-80 z-30 border border-gray-100"
       >
         <div className="px-5 py-3 border-b border-gray-200">
           <h3 className="text-base font-semibold text-gray-800 flex items-center space-x-3">
@@ -175,7 +175,7 @@ const Navbar = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="absolute top-full left-0 mt-2 bg-white shadow-2xl rounded-xl py-4 min-w-96 z-50 border border-gray-100"
+      className="absolute top-full left-0 mt-2 bg-white shadow-2xl rounded-xl py-4 min-w-96 z-30 border border-gray-100"
     >
       <div className="px-5 py-3 border-b border-gray-200">
         <h3 className="text-base font-semibold text-gray-800 flex items-center space-x-3">
@@ -269,7 +269,7 @@ const Navbar = () => {
         {/* Top Row */}
 
         <div className="flex justify-between items-center py-1 lg:py-2">
-        <div className="hidden lg:flex justify-between items-center py-1 lg:py-2 fixed top-0 left-0 right-0 bg-white z-50 shadow-lg px-4 sm:px-6 lg:px-8">
+        <div className="hidden lg:flex justify-between items-center py-1 lg:py-2 fixed  top-0 left-0 right-0 bg-white z-50 shadow-lg px-4 sm:px-6 lg:px-8">
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-4 flex-shrink-0">
@@ -445,7 +445,7 @@ const Navbar = () => {
   {mainCategories.map((category) => (
     <motion.div 
       key={category.id} 
-      className="relative"
+      className=" relative"
       whileHover={{ y: -2 }}
     >
       <button
