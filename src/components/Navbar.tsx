@@ -31,6 +31,7 @@ interface Product {
 }
 
 const Navbar = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
@@ -42,11 +43,22 @@ const Navbar = () => {
   const { getTotalItems } = useCart();
   const navigate = useNavigate();
 
+  const Loader = () => (
+    <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+      <div className="flex flex-col items-center">
+        <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-gray-700 font-medium">Loading products...</p>
+      </div>
+    </div>
+  );
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true); // Set loading to true when starting fetch
         const API_URL = import.meta.env.VITE_API_URL;
-
+  
         const [categoriesRes, subcategoriesRes, productsRes] = await Promise.all([
           axios.get(`${API_URL}/api/categories`),
           axios.get(`${API_URL}/api/subcategories`),
@@ -57,9 +69,11 @@ const Navbar = () => {
         setProducts(productsRes.data.products || []);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false); // Set loading to false when done (success or error)
       }
     };
-
+  
     fetchData();
   }, []);
 
@@ -265,6 +279,9 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-lg relative z-50">
 
+ {/* Show loader when data is loading */}
+ {isLoading && <Loader />}
+
       {/* Main Navbar */}
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -283,6 +300,7 @@ const Navbar = () => {
             >
               <img
                 src={Logo_blur}
+                loading='lazy'
                 alt="Pixel Pro"
                 className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
                   logoLoaded ? 'opacity-0' : 'opacity-100'
@@ -290,6 +308,7 @@ const Navbar = () => {
               />
               <img
                 src={Logo}
+                loading='lazy'
                 alt="Pixel Pro"
                 className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
                   logoLoaded ? 'opacity-100' : 'opacity-0'
@@ -330,7 +349,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleCall}
-              className="flex items-center space-x-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg"
+              className="flex cursor-pointer items-center space-x-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg"
             >
               <FaPhone className="text-xl animate-pulse" />
               <span>Call Now</span>
@@ -366,6 +385,7 @@ const Navbar = () => {
     >
       <img
         src={Logo_blur}
+        loading='lazy'
         alt="Pixel Pro"
         className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
           logoLoaded ? 'opacity-0' : 'opacity-100'
@@ -373,6 +393,7 @@ const Navbar = () => {
       />
       <img
         src={Logo}
+        loading='lazy'
         alt="Pixel Pro"
         className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
           logoLoaded ? 'opacity-100' : 'opacity-0'
@@ -436,7 +457,7 @@ const Navbar = () => {
   <motion.div whileHover={{ y: -2 }}>
     <Link
       to="/"
-      className="flex items-center gap-2 px-4 py-3 text-gray-700 font-medium transition-colors hover:bg-purple-50 text-base"
+      className="flex items-center hover:text-purple-600 gap-2 px-4 py-3 text-gray-700 font-medium transition-colors hover:bg-purple-50 text-base"
     >
       <ReactIcons.FaHome className="w-5 h-5 text-green-500" />
       Home
@@ -451,7 +472,7 @@ const Navbar = () => {
       whileHover={{ y: -2 }}
     >
       <button
-        className="flex items-center cursor-pointer text-nowrap gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
+        className="flex items-center cursor-pointer hover:text-purple-600 text-nowrap gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
         onClick={() => setOpenCategory(openCategory === category.id ? null : category.id)}
       >
         {getIconComponent(category.icon_name)}
@@ -476,7 +497,7 @@ const Navbar = () => {
       whileHover={{ y: -2 }}
     >
       <button
-        className="flex cursor-pointer text-nowrap items-center gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
+        className="flex cursor-pointer hover:text-purple-600 text-nowrap items-center gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
         onClick={() => setOpenCategory(openCategory === -1 ? null : -1)}
       >
         <ReactIcons.FaEllipsisH className="w-5 h-5 text-yellow-500" />
@@ -569,7 +590,7 @@ const Navbar = () => {
                     className="bg-white rounded-lg shadow-sm overflow-hidden"
                   >
                     <button
-                      className="flex items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
+                      className="flex  items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
                       onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
                     >
                       <div className="flex items-center space-x-3">
@@ -590,7 +611,7 @@ const Navbar = () => {
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.2 }}
-                          className="pl-8 bg-gray-50 overflow-hidden"
+                          className="pl-8  bg-gray-50 overflow-hidden"
                         >
                          {getSubcategoriesByCategory(category.id).map((subcategory) => {
   const subcategoryProducts = getProductsBySubcategory(subcategory.id);
@@ -598,13 +619,12 @@ const Navbar = () => {
   return (
     <div key={subcategory.id} className="pl-4">
       {/* Subcategory Link */}
-      <Link
-        to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subcategory.name)}`}
-        className="flex items-center space-x-3 py-3 px-4 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors rounded-lg"
+      <p
+        className="flex font-bold items-center space-x-3 py-3 px-4 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors rounded-lg"
       >
         {getIconComponent(subcategory.icon_name)}
         <span>{subcategory.name}</span>
-      </Link>
+      </p>
 
       {/* Products under this subcategory */}
       {subcategoryProducts.length > 0 && (
@@ -615,7 +635,7 @@ const Navbar = () => {
               to={`/product/${product.id}`}
               className="block py-2 text-xs text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded"
             >
-              {product.name}
+             - {product.name}
             </Link>
           ))}
         </div>
