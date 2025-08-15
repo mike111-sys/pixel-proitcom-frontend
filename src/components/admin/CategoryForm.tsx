@@ -304,15 +304,16 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
     setLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('name', category.name || '');
-      formData.append('description', category.description || '');
-      formData.append('icon_name', category.icon_name || 'FaBox');
+      const categoryData = {
+        name: category.name || '',
+        description: category.description || '',
+        icon_name: category.icon_name || 'FaBox'
+      };
 
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/categories/${id}`, formData);
+        await axios.put(`http://localhost:5000/api/categories/${id}`, categoryData);
       } else {
-        await axios.post('http://localhost:5000/api/categories', formData);
+        await axios.post('http://localhost:5000/api/categories', categoryData);
       }
 
       onSuccess();

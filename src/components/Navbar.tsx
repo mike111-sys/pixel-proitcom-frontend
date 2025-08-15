@@ -12,16 +12,26 @@ interface Category {
   icon_name: string;
 }
 
+interface Subcategory {
+  id: number;
+  name: string;
+  category_id: number;
+  icon_name: string;
+}
+
 interface Product {
   id: number;
   name: string;
   category_id: number;
+  subcategory_id?: number;
+  subcategory_name?: string;
 }
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [, setIsSearchOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
@@ -32,11 +42,13 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesRes, productsRes] = await Promise.all([
+        const [categoriesRes, subcategoriesRes, productsRes] = await Promise.all([
           axios.get('http://localhost:5000/api/categories'),
+          axios.get('http://localhost:5000/api/subcategories'),
           axios.get('http://localhost:5000/api/products?limit=100')
         ]);
         setCategories(categoriesRes.data);
+        setSubcategories(subcategoriesRes.data);
         setProducts(productsRes.data.products || []);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -62,6 +74,14 @@ const Navbar = () => {
   const getIconComponent = (iconName: string) => {
     const IconComponent = (ReactIcons as any)[iconName];
     return IconComponent ? <IconComponent className="w-4 h-4" /> : <ReactIcons.FaBox className="w-4 h-4" />;
+  };
+
+  const getSubcategoriesByCategory = (categoryId: number) => {
+    return subcategories.filter(sub => sub.category_id === categoryId);
+  };
+
+  const getProductsBySubcategory = (subcategoryId: number) => {
+    return products.filter(product => product.subcategory_id === subcategoryId).slice(0, 4); // Limit to 4 products per subcategory
   };
 
   const getProductsByCategory = (categoryId: number) => {
@@ -109,6 +129,7 @@ const Navbar = () => {
                 onMouseLeave={() => setIsCategoriesOpen(false)}
               >
                 {categories.map((category) => {
+                  const categorySubcategories = getSubcategoriesByCategory(category.id);
                   const categoryProducts = getProductsByCategory(category.id);
                   return (
                     <div
@@ -125,34 +146,70 @@ const Navbar = () => {
                           {getIconComponent(category.icon_name)}
                           <span>{category.name}</span>
                         </Link>
-                        {categoryProducts.length > 0 && (
+                        {(categorySubcategories.length > 0 || categoryProducts.length > 0) && (
                           <FaChevronRight className="text-xs text-gray-400" />
                         )}
                       </div>
                       
-                      {/* Products Submenu */}
-                      {categoryProducts.length > 0 && hoveredCategory === category.id && (
-                        <div className="absolute left-full top-0 ml-1 bg-white shadow-lg rounded-lg py-2 min-w-64 z-50">
+                      {/* Subcategories and Products Submenu */}
+                      {(categorySubcategories.length > 0 || categoryProducts.length > 0) && hoveredCategory === category.id && (
+                        <div className="absolute left-full top-0 ml-1 bg-white shadow-lg rounded-lg py-2 min-w-80 z-50">
                           <div className="px-3 py-2 border-b border-gray-200">
-                            <h3 className="text-sm font-semibold text-gray-800">{category.name} Products</h3>
+                            <h3 className="text-sm font-semibold text-gray-800">{category.name}</h3>
                           </div>
-                          <div className="max-h-64 overflow-y-auto">
-                            {categoryProducts.map((product) => (
-                              <Link
-                                key={product.id}
-                                to={`/product/${product.id}`}
-                                className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
-                              >
-                                {product.name}
-                              </Link>
-                            ))}
-                            {categoryProducts.length === 8 && (
-                              <Link
-                                to={`/products?category=${encodeURIComponent(category.name)}`}
-                                className="block px-3 py-2 text-sm text-purple-600 hover:bg-purple-50 font-medium transition-colors"
-                              >
-                                View all {category.name} products →
-                              </Link>
+                          <div className="max-h-96 overflow-y-auto">
+                            {/* Subcategories */}
+                            {categorySubcategories.map((subcategory) => {
+                              const subcategoryProducts = getProductsBySubcategory(subcategory.id);
+                              return (
+                                <div key={subcategory.id} className="border-b border-gray-100 last:border-b-0">
+                                  <div className="px-3 py-2 bg-gray-50">
+                                    <Link
+                                      to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subcategory.name)}`}
+                                      className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-purple-600"
+                                    >
+                                      {getIconComponent(subcategory.icon_name)}
+                                      <span>{subcategory.name}</span>
+                                    </Link>
+                                  </div>
+                                  {subcategoryProducts.length > 0 && (
+                                    <div className="pl-4">
+                                      {subcategoryProducts.map((product) => (
+                                        <Link
+                                          key={product.id}
+                                          to={`/product/${product.id}`}
+                                          className="block px-3 py-1 text-xs text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors"
+                                        >
+                                          {product.name}
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                            
+                            {/* Direct category products (if no subcategories) */}
+                            {categorySubcategories.length === 0 && categoryProducts.length > 0 && (
+                              <div>
+                                {categoryProducts.map((product) => (
+                                  <Link
+                                    key={product.id}
+                                    to={`/product/${product.id}`}
+                                    className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
+                                  >
+                                    {product.name}
+                                  </Link>
+                                ))}
+                                {categoryProducts.length === 8 && (
+                                  <Link
+                                    to={`/products?category=${encodeURIComponent(category.name)}`}
+                                    className="block px-3 py-2 text-sm text-purple-600 hover:bg-purple-50 font-medium transition-colors"
+                                  >
+                                    View all {category.name} products →
+                                  </Link>
+                                )}
+                              </div>
                             )}
                           </div>
                         </div>

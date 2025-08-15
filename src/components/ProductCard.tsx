@@ -10,6 +10,7 @@ interface ProductCardProps {
     rating: number;
     total_ratings: number;
     category_name: string;
+    subcategory_name?: string;
   };
 }
 
@@ -53,17 +54,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       <Link to={`/product/${product.id}`}>
         <div className="relative">
-          <img
-            src={product.image_url || '/placeholder-product.jpg'}
-            alt={product.name}
-            className="w-full h-48 object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = '/placeholder-product.jpg';
-            }}
-          />
+          <div className="w-full h-48 bg-gray-100 overflow-hidden">
+            <img
+              src={product.image_url || '/placeholder-product.jpg'}
+              alt={product.name}
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = '/placeholder-product.jpg';
+              }}
+            />
+          </div>
           <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
-            {product.category_name}
+            {product.subcategory_name || product.category_name}
           </div>
         </div>
         
@@ -83,7 +86,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           
                     <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
-              {product.category_name}
+              {product.subcategory_name ? `${product.category_name} > ${product.subcategory_name}` : product.category_name}
             </span>
           </div>
         </div>

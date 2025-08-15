@@ -8,11 +8,18 @@ interface Category {
   name: string;
 }
 
+interface Subcategory {
+  id: number;
+  name: string;
+  category_id: number;
+}
+
 interface Product {
   id: number;
   name: string;
   description: string;
   category_id: number;
+  subcategory_id?: number;
   stock_quantity: number;
   is_featured: boolean;
   is_new: boolean;
@@ -30,11 +37,13 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Partial<Product>>({
     name: '',
     description: '',
     category_id: 0,
+    subcategory_id: 0,
     stock_quantity: 0,
     is_featured: false,
     is_new: false,
@@ -52,12 +61,29 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (product.category_id) {
+      fetchSubcategories(product.category_id);
+    } else {
+      setSubcategories([]);
+    }
+  }, [product.category_id]);
+
   const fetchCategories = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSubcategories = async (categoryId: number) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/subcategories/category/${categoryId}`);
+      setSubcategories(response.data);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
     }
   };
 
@@ -69,6 +95,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
         name: productData.name,
         description: productData.description,
         category_id: productData.category_id,
+        subcategory_id: productData.subcategory_id || 0,
         stock_quantity: productData.stock_quantity,
         is_featured: productData.is_featured,
         is_new: productData.is_new,
@@ -126,6 +153,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       formData.append('name', product.name || '');
       formData.append('description', product.description || '');
       formData.append('category_id', product.category_id?.toString() || '0');
+      formData.append('subcategory_id', product.subcategory_id?.toString() || '0');
       formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
       formData.append('is_featured', product.is_featured?.toString() || 'false');
       formData.append('is_new', product.is_new?.toString() || 'false');
@@ -205,7 +233,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
               <select
                 required
                 value={product.category_id}
-                onChange={(e) => setProduct(prev => ({ ...prev, category_id: parseInt(e.target.value) }))}
+                onChange={(e) => setProduct(prev => ({ ...prev, category_id: parseInt(e.target.value), subcategory_id: 0 }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Select a category</option>
@@ -216,6 +244,26 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
                 ))}
               </select>
             </div>
+
+            {subcategories.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subcategory
+                </label>
+                <select
+                  value={product.subcategory_id}
+                  onChange={(e) => setProduct(prev => ({ ...prev, subcategory_id: parseInt(e.target.value) }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <option value={0}>Select a subcategory (optional)</option>
+                  {subcategories.map((subcategory) => (
+                    <option key={subcategory.id} value={subcategory.id}>
+                      {subcategory.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
