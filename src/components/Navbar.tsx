@@ -356,8 +356,8 @@ const Navbar = () => {
             </motion.button>
 
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link to="/cart" className="relative text-gray-600 hover:text-purple-600 transition-colors">
-                <FaShoppingCart className="text-2xl" />
+              <Link to="/cart" className="relative text-gray-600 hover:text-yellow-600 transition-colors">
+                <FaShoppingCart className="text-2xl text-yellow-400" />
                 {getTotalItems() > 0 && (
                   <motion.span 
                     initial={{ scale: 0 }}
@@ -406,8 +406,8 @@ const Navbar = () => {
   {/* Cart + Menu */}
   <div className="flex items-center space-x-4">
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-      <Link to="/cart" className="relative text-gray-600 hover:text-purple-600">
-        <FaShoppingCart className="text-2xl" />
+      <Link to="/cart" className="relative text-gray-600 hover:text-yellow-600">
+        <FaShoppingCart className="text-2xl text-yellow-400" />
         {getTotalItems() > 0 && (
           <motion.span 
             initial={{ scale: 0 }}
@@ -551,7 +551,7 @@ const Navbar = () => {
                   >
                     <ReactIcons.FaBoxOpen className="w-5 h-5" />
 
-                    <span>Products</span>
+                    <span>All Products</span>
                   </Link>
                 </motion.div>
                 
@@ -562,9 +562,9 @@ const Navbar = () => {
                 >
                   <Link
                     to="/contact"
-                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-gray-50 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg shadow-sm text-base font-medium transition-colors"
+                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-gray-50 text-green-500 hover:bg-purple-50 hover:text-purple-600 rounded-lg shadow-sm text-base font-medium transition-colors"
                   >
-                    <LuContact className="w-5 h-5 text-green-400" />
+                    <LuContact className="w-5 h-5 text-green-500" />
                     <span>Contact Us</span>
                   </Link>
                 </motion.div>
