@@ -45,10 +45,12 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const API_URL = import.meta.env.VITE_API_URL;
+
         const [categoriesRes, subcategoriesRes, productsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/categories'),
-          axios.get('http://localhost:5000/api/subcategories'),
-          axios.get('http://localhost:5000/api/products?limit=100')
+          axios.get(`${API_URL}/api/categories`),
+          axios.get(`${API_URL}/api/subcategories`),
+          axios.get(`${API_URL}/api/products?limit=100`)
         ]);
         setCategories(categoriesRes.data);
         setSubcategories(subcategoriesRes.data);
