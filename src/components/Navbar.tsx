@@ -590,16 +590,38 @@ const Navbar = () => {
                           transition={{ duration: 0.2 }}
                           className="pl-8 bg-gray-50 overflow-hidden"
                         >
-                          {getSubcategoriesByCategory(category.id).map((subcategory) => (
-                            <Link
-                              key={subcategory.id}
-                              to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subcategory.name)}`}
-                              className="flex items-center space-x-3 py-3 px-4 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors rounded-lg"
-                            >
-                              {getIconComponent(subcategory.icon_name)}
-                              <span>{subcategory.name}</span>
-                            </Link>
-                          ))}
+                         {getSubcategoriesByCategory(category.id).map((subcategory) => {
+  const subcategoryProducts = getProductsBySubcategory(subcategory.id);
+
+  return (
+    <div key={subcategory.id} className="pl-4">
+      {/* Subcategory Link */}
+      <Link
+        to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subcategory.name)}`}
+        className="flex items-center space-x-3 py-3 px-4 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors rounded-lg"
+      >
+        {getIconComponent(subcategory.icon_name)}
+        <span>{subcategory.name}</span>
+      </Link>
+
+      {/* Products under this subcategory */}
+      {subcategoryProducts.length > 0 && (
+        <div className="pl-6">
+          {subcategoryProducts.map((product) => (
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}
+              className="block py-2 text-xs text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded"
+            >
+              {product.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+})}
+
                         </motion.div>
                       )}
                     </AnimatePresence>
