@@ -396,14 +396,6 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
                       type="text"
                       placeholder="Search icons..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2"
-                      onChange={(e) => {
-                        const searchTerm = e.target.value.toLowerCase();
-                        const filteredIcons = availableIcons.filter(icon => 
-                          icon.label.toLowerCase().includes(searchTerm) || 
-                          icon.name.toLowerCase().includes(searchTerm)
-                        );
-                        // You can implement search functionality here
-                      }}
                     />
                     <div className="grid grid-cols-4 gap-2">
                       {availableIcons.map((icon) => {
