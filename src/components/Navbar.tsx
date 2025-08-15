@@ -332,13 +332,13 @@ const Navbar = () => {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-base"
+                  className="w-full pl-4 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-base"
                 />
                 <button
                   type="submit"
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
                 >
-                  <FaSearch className="text-xl" />
+                  <FaSearch className="text-xl cursor-pointer" />
                 </button>
               </motion.div>
             </form>
@@ -439,11 +439,11 @@ const Navbar = () => {
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-base shadow-sm"
+              className="w-full pl-4 pr-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-base shadow-sm"
             />
             <button
               type="submit"
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
             >
               <FaSearch className="text-xl" />
             </button>
