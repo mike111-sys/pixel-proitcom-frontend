@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext';
 import { FaTrash, FaPhone, FaEnvelope, FaUser, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Cart = () => {
-  const { items, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const { items, removeFromCart, updateQuantity, clearCart } = useCart();
   const [orderForm, setOrderForm] = useState({
     name: '',
     email: '',

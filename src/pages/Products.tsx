@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
-import { FaSearch, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface Product {
   id: number;

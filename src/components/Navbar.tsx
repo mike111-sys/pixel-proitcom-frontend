@@ -5,10 +5,15 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [, setIsSearchOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const { getTotalItems } = useCart();
   const { user, logout } = useAuth();

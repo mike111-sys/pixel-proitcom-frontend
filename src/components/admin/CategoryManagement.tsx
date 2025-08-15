@@ -58,7 +58,7 @@ const CategoryManagement = () => {
   );
 };
 
-const CategoryList = ({ categories, onDelete, onRefresh }: { 
+const CategoryList = ({ categories, onDelete, }: { 
   categories: Category[]; 
   onDelete: (id: number) => void;
   onRefresh: () => void;

@@ -64,7 +64,7 @@ const ProductManagement = () => {
   );
 };
 
-const ProductList = ({ products, onDelete, onRefresh }: { 
+const ProductList = ({ products, onDelete, }: { 
   products: Product[]; 
   onDelete: (id: number) => void;
   onRefresh: () => void;
