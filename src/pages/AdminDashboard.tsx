@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaBox, FaTags, FaSignOutAlt } from 'react-icons/fa';
+import { FaBox, FaTags, FaSignOutAlt, FaLock } from 'react-icons/fa';
 import ProductManagement from '../components/admin/ProductManagement';
 import CategoryManagement from '../components/admin/CategoryManagement';
+import ChangePassword from '../components/admin/ChangePassword';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -39,6 +40,13 @@ const AdminDashboard = () => {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">Welcome, {user.fullName}</span>
+              <Link
+                to="/admin/change-password"
+                className="flex items-center text-gray-600 hover:text-purple-600 transition-colors"
+              >
+                <FaLock className="mr-2" />
+                Change Password
+              </Link>
               <button
                 onClick={handleLogout}
                 className="flex items-center text-gray-600 hover:text-red-600 transition-colors"
@@ -99,6 +107,7 @@ const AdminDashboard = () => {
             <Route path="/" element={<DashboardOverview />} />
             <Route path="/products/*" element={<ProductManagement />} />
             <Route path="/categories/*" element={<CategoryManagement />} />
+            <Route path="/change-password" element={<ChangePassword />} />
           </Routes>
         </main>
       </div>

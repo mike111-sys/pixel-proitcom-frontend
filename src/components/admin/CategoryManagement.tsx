@@ -3,12 +3,13 @@ import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import CategoryForm from './CategoryForm';
+import * as ReactIcons from 'react-icons/fa';
 
 interface Category {
   id: number;
   name: string;
   description: string;
-  image_url: string;
+  icon_name: string;
 }
 
 const CategoryManagement = () => {
@@ -97,15 +98,14 @@ const CategoryList = ({ categories, onDelete, }: {
                 <tr key={category.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      {category.image_url && (
-                        <div className="h-10 w-10 flex-shrink-0 mr-4">
-                          <img
-                            className="h-10 w-10 rounded-lg object-cover"
-                            src={category.image_url}
-                            alt={category.name}
-                          />
-                        </div>
-                      )}
+                      {(() => {
+                        const IconComponent = (ReactIcons as any)[category.icon_name];
+                        return IconComponent ? (
+                          <IconComponent className="w-6 h-6 text-purple-600 mr-3" />
+                        ) : (
+                          <ReactIcons.FaBox className="w-6 h-6 text-purple-600 mr-3" />
+                        );
+                      })()}
                       <div className="text-sm font-medium text-gray-900">{category.name}</div>
                     </div>
                   </td>

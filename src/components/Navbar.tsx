@@ -1,35 +1,49 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaShoppingCart, FaUser, FaPhone, FaChevronDown } from 'react-icons/fa';
+import { FaSearch, FaShoppingCart, FaUser, FaPhone, FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import * as ReactIcons from 'react-icons/fa';
 
 interface Category {
   id: number;
   name: string;
+  icon_name: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  category_id: number;
 }
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [, setIsSearchOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
   const { getTotalItems } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/categories');
-        setCategories(response.data);
+        const [categoriesRes, productsRes] = await Promise.all([
+          axios.get('http://localhost:5000/api/categories'),
+          axios.get('http://localhost:5000/api/products?limit=100')
+        ]);
+        setCategories(categoriesRes.data);
+        setProducts(productsRes.data.products || []);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchCategories();
+    fetchData();
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -43,6 +57,15 @@ const Navbar = () => {
 
   const handleCall = () => {
     window.location.href = 'tel:0741238738';
+  };
+
+  const getIconComponent = (iconName: string) => {
+    const IconComponent = (ReactIcons as any)[iconName];
+    return IconComponent ? <IconComponent className="w-4 h-4" /> : <ReactIcons.FaBox className="w-4 h-4" />;
+  };
+
+  const getProductsByCategory = (categoryId: number) => {
+    return products.filter(product => product.category_id === categoryId).slice(0, 8); // Limit to 8 products
   };
 
   return (
@@ -79,21 +102,64 @@ const Navbar = () => {
               
               {/* Categories Dropdown Menu */}
               <div
-                className={`absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 z-50 transition-all duration-200 ${
+                className={`absolute top-full left-0 mt-2 bg-white shadow-lg rounded-lg py-2 z-50 transition-all duration-200 ${
                   isCategoriesOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                 }`}
                 onMouseEnter={() => setIsCategoriesOpen(true)}
                 onMouseLeave={() => setIsCategoriesOpen(false)}
               >
-                {categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    to={`/products?category=${encodeURIComponent(category.name)}`}
-                    className="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
-                  >
-                    {category.name}
-                  </Link>
-                ))}
+                {categories.map((category) => {
+                  const categoryProducts = getProductsByCategory(category.id);
+                  return (
+                    <div
+                      key={category.id}
+                      className="relative group/category"
+                      onMouseEnter={() => setHoveredCategory(category.id)}
+                      onMouseLeave={() => setHoveredCategory(null)}
+                    >
+                      <div className="flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
+                        <Link
+                          to={`/products?category=${encodeURIComponent(category.name)}`}
+                          className="flex items-center space-x-2 flex-1"
+                        >
+                          {getIconComponent(category.icon_name)}
+                          <span>{category.name}</span>
+                        </Link>
+                        {categoryProducts.length > 0 && (
+                          <FaChevronRight className="text-xs text-gray-400" />
+                        )}
+                      </div>
+                      
+                      {/* Products Submenu */}
+                      {categoryProducts.length > 0 && hoveredCategory === category.id && (
+                        <div className="absolute left-full top-0 ml-1 bg-white shadow-lg rounded-lg py-2 min-w-64 z-50">
+                          <div className="px-3 py-2 border-b border-gray-200">
+                            <h3 className="text-sm font-semibold text-gray-800">{category.name} Products</h3>
+                          </div>
+                          <div className="max-h-64 overflow-y-auto">
+                            {categoryProducts.map((product) => (
+                              <Link
+                                key={product.id}
+                                to={`/product/${product.id}`}
+                                className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
+                              >
+                                {product.name}
+                              </Link>
+                            ))}
+                            {categoryProducts.length === 8 && (
+                              <Link
+                                to={`/products?category=${encodeURIComponent(category.name)}`}
+                                className="block px-3 py-2 text-sm text-purple-600 hover:bg-purple-50 font-medium transition-colors"
+                              >
+                                View all {category.name} products →
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
             
