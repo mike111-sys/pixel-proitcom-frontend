@@ -7,8 +7,6 @@ import axios from 'axios';
 import * as ReactIcons from 'react-icons/fa';
 import Logo from "../assets/logo.webp";
 import Logo_blur from "../assets/logo-blur.webp";
-import { GrContact } from 'react-icons/gr';
-import { FcContacts } from 'react-icons/fc';
 import { LuContact } from 'react-icons/lu';
 
 interface Category {
@@ -106,7 +104,7 @@ const Navbar = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="absolute top-full left-0 mt-2 bg-white shadow-2xl rounded-xl py-4 min-w-80 z-50 border border-gray-100"
+        className="absolute top-full left-0 mt-1 bg-white shadow-2xl rounded-xl py-4 min-w-80 z-50 border border-gray-100"
       >
         <div className="px-5 py-3 border-b border-gray-200">
           <h3 className="text-base font-semibold text-gray-800 flex items-center space-x-3">
@@ -266,9 +264,13 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg relative z-50">
 
       {/* Main Navbar */}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Row */}
+
         <div className="flex justify-between items-center py-1 lg:py-2">
+        <div className="hidden lg:flex justify-between items-center py-1 lg:py-2 fixed top-0 left-0 right-0 bg-white z-50 shadow-lg px-4 sm:px-6 lg:px-8">
+
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-4 flex-shrink-0">
             <motion.div 
@@ -346,29 +348,58 @@ const Navbar = () => {
                 )}
               </Link>
             </motion.div>
-
-            
+            </div>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center space-x-4">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link to="/cart" className="relative text-gray-600 hover:text-purple-600">
-                <FaShoppingCart className="text-2xl" />
-                {getTotalItems() > 0 && (
-                  <motion.span 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
-                  >
-                    {getTotalItems()}
-                  </motion.span>
-                )}
-              </Link>
-            </motion.div>
-            <MobileMenuButton />
-          </div>
-        </div>
+       {/* Mobile Top Row */}
+<div className="lg:hidden flex items-center justify-between w-full py-2">
+  {/* Logo */}
+  <Link to="/" className="flex-shrink-0">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-36 h-12"
+    >
+      <img
+        src={Logo_blur}
+        alt="Pixel Pro"
+        className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+          logoLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+      <img
+        src={Logo}
+        alt="Pixel Pro"
+        className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+          logoLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        onLoad={() => setLogoLoaded(true)}
+      />
+    </motion.div>
+  </Link>
+
+  {/* Cart + Menu */}
+  <div className="flex items-center space-x-4">
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <Link to="/cart" className="relative text-gray-600 hover:text-purple-600">
+        <FaShoppingCart className="text-2xl" />
+        {getTotalItems() > 0 && (
+          <motion.span 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+          >
+            {getTotalItems()}
+          </motion.span>
+        )}
+      </Link>
+    </motion.div>
+    <MobileMenuButton />
+  </div>
+</div>
+</div>
 
         {/* Mobile Search - Hidden on desktop */}
         <div className="lg:hidden mb-2">
@@ -396,7 +427,8 @@ const Navbar = () => {
         </div>
 
        {/* Bottom Row - Desktop Navigation */}
-<div className="hidden lg:flex items-center justify-center border-t border-gray-400 divide-x divide-gray-400">
+       <div className="pt-0 lg:pt-20">
+<div className="hidden lg:flex items-center justify-center border-t border-gray-300 divide-x divide-gray-400">
   
   {/* Home Link */}
   <motion.div whileHover={{ y: -2 }}>
@@ -491,11 +523,12 @@ const Navbar = () => {
                   transition={{ delay: 0.1 }}
                 >
                   <Link
-                    to="/"
+                    to="/products"
                     className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-50 text-purple-600 rounded-lg shadow-sm text-base font-medium"
                   >
-                    <ReactIcons.FaHome className="w-5 h-5" />
-                    <span>Home</span>
+                    <ReactIcons.FaBoxOpen className="w-5 h-5" />
+
+                    <span>Products</span>
                   </Link>
                 </motion.div>
                 
@@ -505,29 +538,16 @@ const Navbar = () => {
                   transition={{ delay: 0.15 }}
                 >
                   <Link
-                    to="/products"
+                    to="/contact"
                     className="flex items-center justify-center space-x-2 py-3 px-4 bg-gray-50 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg shadow-sm text-base font-medium transition-colors"
                   >
-                    <ReactIcons.FaBoxOpen className="w-5 h-5" />
-                    <span>Products</span>
+                    <LuContact className="w-5 h-5 text-green-400" />
+                    <span>Contact Us</span>
                   </Link>
                 </motion.div>
               </div>
 
-              {/* Call Now Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <button
-                  onClick={handleCall}
-                  className="w-full flex items-center justify-center space-x-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl font-semibold shadow-lg"
-                >
-                  <FaPhone className="text-xl animate-pulse" />
-                  <span>Call Now</span>
-                </button>
-              </motion.div>
+             
 
               
 
