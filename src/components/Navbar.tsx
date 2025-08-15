@@ -277,7 +277,8 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-white shadow-lg relative z-50">
+    <>
+<nav className="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 lg:relative">
 
  {/* Show loader when data is loading */}
  {isLoading && <Loader />}
@@ -374,7 +375,7 @@ const Navbar = () => {
           </div>
 
        {/* Mobile Top Row */}
-<div className="lg:hidden flex items-center justify-between w-full py-2">
+<div className="lg:hidden  flex items-center justify-between w-full py-2">
   {/* Logo */}
   <Link to="/" className="flex-shrink-0">
     <motion.div 
@@ -528,91 +529,89 @@ const Navbar = () => {
 </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
+<AnimatePresence>
+  {isMobileMenuOpen && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: '80vh' }} // Set a fixed height (e.g., 80% of viewport)
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="lg:hidden bg-white shadow-lg fixed top-32 left-0 right-0 overflow-y-auto z-40"
+      style={{ maxHeight: 'calc(100vh - 8rem)' }} // Ensure it doesn't go below screen
+    >
+      <div className="px-4 py-6 space-y-6">
+        {/* Mobile Navigation Links */}
+        <div className="grid grid-cols-2 gap-4">
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-white shadow-lg overflow-hidden"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            <div className="px-4 py-6 space-y-6">
-              {/* Mobile Navigation Links */}
-              <div className="grid grid-cols-2 gap-4">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <Link
-                    to="/products"
-                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-50 text-purple-600 rounded-lg shadow-sm text-base font-medium"
-                  >
-                    <ReactIcons.FaBoxOpen className="w-5 h-5" />
+            <Link
+              to="/products"
+              className="flex items-center justify-center space-x-2 py-3 px-4 bg-purple-50 text-purple-600 rounded-lg shadow-sm text-base font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <ReactIcons.FaBoxOpen className="w-5 h-5" />
+              <span>All Products</span>
+            </Link>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <Link
+              to="/contact"
+              className="flex items-center justify-center space-x-2 py-3 px-4 bg-gray-50 text-green-500 hover:bg-purple-50 hover:text-purple-600 rounded-lg shadow-sm text-base font-medium transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <LuContact className="w-5 h-5 text-green-500" />
+              <span>Contact Us</span>
+            </Link>
+          </motion.div>
+        </div>
 
-                    <span>All Products</span>
-                  </Link>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 }}
-                >
-                  <Link
-                    to="/contact"
-                    className="flex items-center justify-center space-x-2 py-3 px-4 bg-gray-50 text-green-500 hover:bg-purple-50 hover:text-purple-600 rounded-lg shadow-sm text-base font-medium transition-colors"
-                  >
-                    <LuContact className="w-5 h-5 text-green-500" />
-                    <span>Contact Us</span>
-                  </Link>
-                </motion.div>
-              </div>
-
-             
-
-              
-
-              {/* Categories and Subcategories */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="space-y-4 pt-4 border-t border-gray-200"
+        {/* Categories and Subcategories */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="space-y-4 pt-4 border-t border-gray-200"
+        >
+          {categories.map((category, index) => (
+            <motion.div
+              key={category.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 + index * 0.05 }}
+              className="bg-white rounded-lg shadow-sm overflow-hidden"
+            >
+              <button
+                className="flex items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
+                onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
               >
-                {categories.map((category, index) => (
+                <div className="flex items-center space-x-3">
+                  {getIconComponent(category.icon_name)}
+                  <span>{category.name}</span>
+                </div>
+                <motion.div
+                  animate={{ rotate: openMobileCategory === category.id ? 90 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FaChevronRight className="text-sm" />
+                </motion.div>
+              </button>
+              <AnimatePresence>
+                {openMobileCategory === category.id && (
                   <motion.div
-                    key={category.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35 + index * 0.05 }}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="pl-8 bg-gray-50 overflow-hidden"
                   >
-                    <button
-                      className="flex  items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
-                      onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
-                    >
-                      <div className="flex items-center space-x-3">
-                        {getIconComponent(category.icon_name)}
-                        <span>{category.name}</span>
-                      </div>
-                      <motion.div
-                        animate={{ rotate: openMobileCategory === category.id ? 90 : 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <FaChevronRight className="text-sm" />
-                      </motion.div>
-                    </button>
-                    <AnimatePresence>
-                      {openMobileCategory === category.id && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="pl-8  bg-gray-50 overflow-hidden"
-                        >
                          {getSubcategoriesByCategory(category.id).map((subcategory) => {
   const subcategoryProducts = getProductsBySubcategory(subcategory.id);
 
@@ -655,6 +654,8 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </nav>
+    <div className="lg:hidden pt-32" />
+    </>
   );
 };
 
