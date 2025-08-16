@@ -13,33 +13,34 @@ const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState('');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  
 
   // Slide data with your images
   const slides = [
     {
       id: 0,
-      title: "Motorola Radios",
+      title: "Satellite Communication",
       staticImage: Motorolla,
       blurImage: Motorolla_blur,
-      description: "License free Motorola radios. Call us today to get a discount.",
+      description: "Stay connected anywhere with reliable, license-free Motorola satellite radios, built for clarity, durability, and long-range coverage.",
       buttonText: "Explore Radios",
       gradient: "from-blue-900 via-blue-800 to-indigo-900"
     },
     {
       id: 1,
-      title: "Mobile Radios",
+      title: "Radio Communication",
       staticImage: Mobile_Radio,
       blurImage: Mobile_Radio_blur,
-      description: "Top brands mobile radios. Get discount on bulk purchases.",
+      description: "Powerful mobile radios from leading brands, ideal for clear, secure communication. Special discounts available on bulk orders.",
       buttonText: "View Collection",
       gradient: "from-purple-900 via-purple-800 to-pink-900"
     },
     {
       id: 2,
-      title: "Thuraya Satellites",
+      title: "Garmin Products",
       staticImage: Thuraya,
       blurImage: Thuraya_blur,
-      description: "Global satellite communication solutions for remote areas.",
+      description: "Explore advanced Garmin solutions for navigation and satellite communication, perfect for professionals and adventurers in remote areas.",
       buttonText: "Discover More",
       gradient: "from-teal-900 via-teal-800 to-cyan-900"
     },
@@ -50,7 +51,7 @@ const HeroSection = () => {
   // Enhanced typewriter effect
   useEffect(() => {
     const currentWord = words[currentWordIndex];
-    const typeSpeed = isDeleting ? 50 : 120;
+    const typeSpeed = isDeleting ? 50 : 80;
     const pauseTime = isDeleting ? 500 : 2000;
 
     const timer = setTimeout(() => {
@@ -77,7 +78,7 @@ const HeroSection = () => {
       if (!isHovered) {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
       }
-    }, 5000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [isHovered, slides.length]);
 
@@ -102,7 +103,7 @@ const HeroSection = () => {
   
           {/* Enhanced title with typewriter effect */}
           <div className="mb-4 md:mb-6">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2 min-h-[60px] md:min-h-[80px] flex items-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-black mb-2 min-h-[60px] md:min-h-[80px] flex items-center">
               <span className="text-yellow-500 break-words">{typewriterText}</span>
               <span className="text-yellow-500 animate-pulse ml-1">|</span>
             </h1>
@@ -130,7 +131,7 @@ const HeroSection = () => {
               className="px-6 py-3 cursor-pointer sm:px-8 sm:py-4 bg-green-500 text-white rounded-full font-semibold text-base sm:text-lg hover:bg-green-600 transition-all duration-300 hover:scale-105 w-full sm:w-auto text-center"
               onClick={() => window.location.href = '/products'}
             >
-              Check all Products
+              Explore all Products
             </button>
           </div>
         </div>
@@ -160,7 +161,7 @@ const HeroSection = () => {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
                   currentSlide === index 
                     ? 'w-6 sm:w-8 bg-black' 
                     : 'w-2 bg-gray-400 hover:bg-gray-600'
