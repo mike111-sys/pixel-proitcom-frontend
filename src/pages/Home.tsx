@@ -4,6 +4,7 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { FaArrowRight, FaPhone } from 'react-icons/fa';
 import HeroSection from '../components/HeroSection';
+import Footer from '../components/Footer';
 
 interface Product {
   id: number;
@@ -129,6 +130,7 @@ const Home = () => {
           </button>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
