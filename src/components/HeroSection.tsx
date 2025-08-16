@@ -13,9 +13,24 @@ const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState('');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const useImageLoader = (src: string) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+  
+    useEffect(() => {
+      const image = new Image();
+      image.src = src;
+      image.onload = () => setIsLoaded(true);
+      return () => {
+        image.onload = null;
+      };
+    }, [src]);
+  
+    return isLoaded;
+  };
   
 
-  // Slide data with your images
+ 
+  // Update your slide data to include loading state
   const slides = [
     {
       id: 0,
@@ -83,6 +98,23 @@ const HeroSection = () => {
   }, [isHovered, slides.length]);
 
 
+  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
+  // Use the custom hook for each image
+   const isMotorollaLoaded = useImageLoader(Motorolla);
+   const isMobileRadioLoaded = useImageLoader(Mobile_Radio);
+   const isThurayaLoaded = useImageLoader(Thuraya);
+
+   // Update loadedImages when images load
+  useEffect(() => {
+    setLoadedImages({
+      0: isMotorollaLoaded,
+      1: isMobileRadioLoaded,
+      2: isThurayaLoaded
+    });
+  }, [isMotorollaLoaded, isMobileRadioLoaded, isThurayaLoaded]);
+
+
+
   return (
     <section className="relative w-full -mt-10 sm:-mt-0 lg:-mt-40 lg: min-h-[600px] lg:h-[800px] overflow-hidden bg-white">
       {/* Clean white background */}
@@ -112,11 +144,32 @@ const HeroSection = () => {
           {/* Mobile-only images */}
           <div className="w-full flex justify-center mb-6 md:hidden">
             <div className="w-4/5 max-w-xs">
-              <img
-                src={slides[currentSlide].staticImage}
-                alt={slides[currentSlide].title}
-                className="w-full h-auto object-contain transition-all duration-1000"
-              />
+               {/* Blur image (always shown) */}
+    <img
+      src={slides[currentSlide].blurImage}
+      loading='lazy'
+      alt={slides[currentSlide].title}
+      className={`w-full h-auto object-contain transition-all duration-1000 ${
+        loadedImages[currentSlide] ? 'opacity-0 absolute' : 'opacity-100'
+      }`}
+      style={{
+        filter: 'blur(10px)',
+        transform: 'scale(1.1)',
+        transition: 'opacity 500ms ease-out'
+      }}
+    />
+    {/* High quality image */}
+    <img
+      src={slides[currentSlide].staticImage}
+      loading='lazy'
+      alt={slides[currentSlide].title}
+      className={`w-full h-auto object-contain transition-all duration-1000 ${
+        loadedImages[currentSlide] ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={{
+        transition: 'opacity 500ms ease-in'
+      }}
+    />
             </div>
           </div>
   
@@ -146,11 +199,32 @@ const HeroSection = () => {
             {/* Rotating image */}
             <div className="w-full hidden md:block max-w-md lg:max-w-lg relative">
               <div className="relative h-64 sm:h-80 md:h-96">
-                <img
-                  src={slides[currentSlide].staticImage}
-                  alt={slides[currentSlide].title}
-                  className="w-full h-full object-contain relative z-10 transition-all duration-1000"
-                />
+                {/* Blur image (always shown) */}
+    <img
+      src={slides[currentSlide].blurImage}
+      loading='lazy'
+      alt={slides[currentSlide].title}
+      className={`w-full h-full object-contain absolute transition-all duration-1000 ${
+        loadedImages[currentSlide] ? 'opacity-0' : 'opacity-100'
+      }`}
+      style={{
+        filter: 'blur(10px)',
+        transform: 'scale(1.1)',
+        transition: 'opacity 500ms ease-out'
+      }}
+    />
+    {/* High quality image */}
+    <img
+      src={slides[currentSlide].staticImage}
+      loading='lazy'
+      alt={slides[currentSlide].title}
+      className={`w-full h-full object-contain relative z-10 transition-all duration-1000 ${
+        loadedImages[currentSlide] ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={{
+        transition: 'opacity 500ms ease-in'
+      }}
+    />
               </div>
             </div>
           </div>
