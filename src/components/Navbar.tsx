@@ -288,7 +288,7 @@ const Navbar = () => {
         {/* Top Row */}
 
         <div className="flex justify-between items-center py-1 lg:py-2">
-        <div className="hidden lg:flex justify-between items-center py-1 lg:py-2 fixed  top-0 left-0 right-0 bg-white z-50 shadow-lg px-4 sm:px-6 lg:px-8">
+        <div className="hidden lg:flex justify-between items-center py-1 lg:py-2 fixed  top-0 left-0 right-0 bg-white z-50 shadow-sm px-4 sm:px-6 lg:px-8">
 
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-4 flex-shrink-0">
