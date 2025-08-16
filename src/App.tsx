@@ -1,6 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path="/admin/*" element={<AdminDashboard />} />
                 </Routes>
               </main>
+              <Footer />
             </div>
           </Router>
         </CartProvider>

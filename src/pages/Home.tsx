@@ -4,7 +4,6 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { FaArrowRight, FaPhone } from 'react-icons/fa';
 import HeroSection from '../components/HeroSection';
-import Footer from '../components/Footer';
 
 interface Product {
   id: number;
@@ -115,22 +114,21 @@ const Home = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-purple-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-yellow-200 to-yellow-300 text-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Need Help?</h2>
-          <p className="text-xl mb-8 text-purple-100">
+          <p className="text-xl mb-8 text-gray-600">
             Call us directly for personalized assistance and product inquiries
           </p>
           <button
             onClick={handleCall}
-            className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
+            className="bg-white cursor-pointer text-gray-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
           >
             <FaPhone className="mr-2" />
             Call 0741238738
           </button>
         </div>
       </section>
-      <Footer />
     </div>
   );
 };
