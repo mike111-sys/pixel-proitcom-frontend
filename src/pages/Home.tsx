@@ -59,7 +59,7 @@ const Home = () => {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Featured Products</h2>
+            <h2 className="text-3xl font-bold text-purple-500 mb-4">Featured Products</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Discover our handpicked selection of premium products that our customers love
             </p>
@@ -93,7 +93,7 @@ const Home = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">New Arrivals</h2>
+            <h2 className="text-3xl font-bold text-purple-500 mb-4">New Arrivals</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Check out our latest products that just arrived
             </p>
