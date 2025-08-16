@@ -174,7 +174,7 @@ const HeroSection = () => {
           </div>
   
           {/* Description */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 max-w-lg leading-relaxed">
+          <p className="text-base font-semibold sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 max-w-lg leading-relaxed">
             {slides[currentSlide].description}
           </p>
   
