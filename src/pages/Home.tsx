@@ -121,7 +121,7 @@ const Home = () => {
           </p>
           <button
             onClick={handleCall}
-            className="bg-white cursor-pointer text-gray-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center"
+            className="bg-white cursor-pointer text-gray-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-flex items-center"
           >
             <FaPhone className="mr-2" />
             Call 0741238738
