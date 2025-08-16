@@ -53,8 +53,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-    
-<HeroSection />
+      <HeroSection />
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,4 +132,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;

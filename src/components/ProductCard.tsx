@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -15,6 +16,27 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const img = imgRef.current;
+    
+    if (img && img.complete) {
+      setImageLoaded(true);
+    }
+  }, []);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = '/placeholder-product.jpg';
+    setImageLoaded(true); // Still show the placeholder
+  };
+
   const renderStars = (rating: number) => {
     const stars = [];
     const numRating = Number(rating) || 0;
@@ -54,15 +76,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       <Link to={`/product/${product.id}`}>
         <div className="relative">
-          <div className="w-full h-48 bg-gray-100 overflow-hidden">
+          <div className="w-full h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <FaStar className="text-purple-500 text-2xl animate-spin" />
+              </div>
+            )}
             <img
+              ref={imgRef}
               src={product.image_url || '/placeholder-product.jpg'}
               alt={product.name}
-              className="w-full h-full object-contain"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/placeholder-product.jpg';
-              }}
+              className={`w-full h-full object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              loading="lazy"
+              onLoad={handleImageLoad}
+              onError={handleImageError}
             />
           </div>
           <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
@@ -84,7 +111,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           </div>
           
-                    <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
               {product.subcategory_name ? `${product.category_name} > ${product.subcategory_name}` : product.category_name}
             </span>
@@ -95,4 +122,4 @@ const ProductCard = ({ product }: ProductCardProps) => {
   );
 };
 
-export default ProductCard; 
+export default ProductCard;
