@@ -1,12 +1,27 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome, FaBox } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome, FaBox, FaArrowUp } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Logo from "../assets/logo.webp";
 import Logo_blur from "../assets/logo-blur.webp";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const [showScroll, setShowScroll] = useState(false);
+
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 300) {
+      setShowScroll(true);
+    } else {
+      setShowScroll(false);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   return (
     <footer className="bg-white  text-black border-t border-gray-200">
@@ -170,6 +185,17 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      {showScroll && (
+  <button
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="fixed bottom-6 cursor-pointer right-6 bg-yellow-500 text-white p-3 rounded-full shadow-lg 
+               hover:bg-yellow-600 transition-colors"
+    aria-label="Scroll to top"
+  >
+    <FaArrowUp />
+  </button>
+)}
+
     </footer>
   );
 };
