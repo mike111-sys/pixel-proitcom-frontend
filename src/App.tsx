@@ -11,6 +11,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import Contact from './pages/Contact';
 
 const App = () => {
   return (
@@ -28,6 +29,8 @@ const App = () => {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/*" element={<AdminDashboard />} />
+                <Route path="/contact" element={<Contact />} />
+
                 </Routes>
               </main>
               <Footer />
