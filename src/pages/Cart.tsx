@@ -140,7 +140,7 @@ const Cart = () => {
                     
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="text-red-600 hover:text-red-800 transition-colors"
+                      className="text-red-600 cursor-pointer hover:text-red-800 transition-colors"
                     >
                       <FaTrash />
                     </button>
@@ -255,7 +255,7 @@ const Cart = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full bg-purple-600 cursor-pointer text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {isSubmitting ? 'Submitting Order...' : 'Submit Order'}
                 </button>

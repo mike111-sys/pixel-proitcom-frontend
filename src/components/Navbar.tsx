@@ -335,7 +335,7 @@ const Navbar = () => {
                 />
                 <button
                   type="submit"
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
+                  className="absolute cursor-pointer right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
                 >
                   <FaSearch className="text-xl cursor-pointer" />
                 </button>
@@ -442,7 +442,7 @@ const Navbar = () => {
             />
             <button
               type="submit"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
+              className="absolute cursor-pointer right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-600"
             >
               <FaSearch className="text-xl" />
             </button>
@@ -472,7 +472,7 @@ const Navbar = () => {
       whileHover={{ y: -2 }}
     >
       <button
-        className="flex items-center cursor-pointer hover:text-purple-600 text-nowrap gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
+        className="flex  items-center cursor-pointer hover:text-purple-600 text-nowrap gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
         onClick={() => setOpenCategory(openCategory === category.id ? null : category.id)}
       >
         {getIconComponent(category.icon_name)}
@@ -588,7 +588,7 @@ const Navbar = () => {
               className="bg-white rounded-lg shadow-sm overflow-hidden"
             >
               <button
-                className="flex items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
+                className="flex cursor-pointer items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
                 onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
               >
                 <div className="flex items-center space-x-3">

@@ -155,8 +155,9 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       formData.append('category_id', product.category_id?.toString() || '0');
       formData.append('subcategory_id', product.subcategory_id?.toString() || '0');
       formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
-      formData.append('is_featured', product.is_featured?.toString() || 'false');
-      formData.append('is_new', product.is_new?.toString() || 'false');
+     formData.append('is_featured', product.is_featured ? '1' : '0');
+formData.append('is_new', product.is_new ? '1' : '0');
+
 
       if (imageFile) {
         formData.append('image', imageFile);
@@ -323,7 +324,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full h-48 object-cover rounded-lg border border-gray-300"
+                  className="w-full h-48 object-contain rounded-lg border border-gray-300"
                 />
               </div>
             )}
@@ -337,7 +338,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
             <button
               type="button"
               onClick={addFeature}
-              className="flex items-center text-purple-600 hover:text-purple-700"
+              className="flex cursor-pointer items-center text-purple-600 hover:text-purple-700"
             >
               <FaPlus className="mr-2" />
               Add Feature
@@ -364,7 +365,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
                 <button
                   type="button"
                   onClick={() => removeFeature(index)}
-                  className="px-3 py-2 text-red-600 hover:text-red-700"
+                  className="px-3 cursor-pointer py-2 text-red-600 hover:text-red-700"
                 >
                   <FaTrash />
                 </button>
@@ -378,7 +379,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="bg-purple-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Saving...' : isEditing ? 'Update Product' : 'Create Product'}
           </button>

@@ -163,7 +163,7 @@ const Products = () => {
             {/* Search Button */}
             <button
               type="submit"
-              className="bg-purple-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="bg-purple-600  cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
             >
               Search
             </button>
@@ -235,7 +235,7 @@ const Products = () => {
             </p>
             <button
               onClick={clearFilters}
-              className="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="mt-4 cursor-pointer bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
             >
               Clear Filters
             </button>

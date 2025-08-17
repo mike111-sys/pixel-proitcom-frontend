@@ -134,7 +134,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
       <div className="flex items-center mb-6">
         <button
           onClick={() => navigate('/admin')}
-          className="flex items-center text-purple-600 hover:text-purple-700 mr-4"
+          className="flex cursor-pointer items-center text-purple-600 hover:text-purple-700 mr-4"
         >
           <FaArrowLeft className="mr-2" />
           Back to Dashboard
@@ -176,7 +176,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
               <button
                 type="button"
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -205,7 +205,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
               <button
                 type="button"
                 onClick={() => setShowNewPassword(!showNewPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showNewPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -237,7 +237,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -251,7 +251,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+              className="w-full cursor-pointer bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
               {loading ? (
                 <>

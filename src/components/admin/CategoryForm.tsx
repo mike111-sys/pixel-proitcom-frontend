@@ -380,7 +380,7 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
               <button
                 type="button"
                 onClick={() => setShowIconSelector(!showIconSelector)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-between"
+                className="w-full cursor-pointer px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-3">
                   {getIconComponent(category.icon_name || 'FaBox')}
@@ -408,7 +408,7 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
                               setCategory(prev => ({ ...prev, icon_name: icon.name }));
                               setShowIconSelector(false);
                             }}
-                            className={`p-2 rounded-lg border hover:bg-gray-50 transition-colors ${
+                            className={`p-2 cursor-pointer rounded-lg border hover:bg-gray-50 transition-colors ${
                               category.icon_name === icon.name ? 'border-purple-500 bg-purple-50' : 'border-gray-200'
                             }`}
                             title={icon.label}
@@ -428,7 +428,7 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="bg-purple-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Saving...' : isEditing ? 'Update Category' : 'Create Category'}
             </button>

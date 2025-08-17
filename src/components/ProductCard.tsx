@@ -76,7 +76,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       <Link to={`/product/${product.id}`}>
         <div className="relative">
-          <div className="w-full h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
+          <div className="w-full h-48 bg-white overflow-hidden flex items-center justify-center">
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <FaStar className="text-purple-500 text-2xl animate-spin" />

@@ -208,7 +208,7 @@ const ProductDetail = () => {
               {(Number(product.stock_quantity) || 0) > 0 && (
                 <button
                   onClick={handleCall}
-                  className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+                  className="w-full cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
                 >
                   <FaPhone className="mr-2" />
                   Call to Confirm: 0741238738
@@ -233,7 +233,7 @@ const ProductDetail = () => {
                 </div>
                 <button
                   onClick={handleAddToCart}
-                  className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+                  className="w-full cursor-pointer bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
                 >
                   Add to Cart
                 </button>
@@ -265,7 +265,7 @@ const ProductDetail = () => {
               {userRating > 0 && (
                 <button
                   onClick={handleRatingSubmit}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
+                  className="bg-yellow-500 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
                 >
                   Submit Rating
                 </button>

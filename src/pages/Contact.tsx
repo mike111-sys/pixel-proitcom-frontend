@@ -165,7 +165,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors flex items-center justify-center space-x-2"
+                  className="w-full cursor-pointer sm:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors flex items-center justify-center space-x-2"
                 >
                   <FaPaperPlane />
                   <span>Send Message</span>

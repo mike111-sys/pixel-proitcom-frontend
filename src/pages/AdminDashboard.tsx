@@ -49,7 +49,7 @@ const AdminDashboard = () => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex items-center text-gray-600 hover:text-red-600 transition-colors"
+                className="flex items-center cursor-pointer text-gray-600 hover:text-red-600 transition-colors"
               >
                 <FaSignOutAlt className="mr-2" />
                 Logout

@@ -125,7 +125,7 @@ const CategoryList = ({ categories, onDelete, }: {
                       </Link>
                       <button
                         onClick={() => onDelete(category.id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-red-600 cursor-pointer hover:text-red-900"
                         title="Delete"
                       >
                         <FaTrash />
