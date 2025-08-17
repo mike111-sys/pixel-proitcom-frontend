@@ -34,12 +34,14 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1'));
+  const [, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1'));
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/categories');
+        const response = await axios.get(`${API_URL}/api/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -54,7 +56,7 @@ const Products = () => {
       setLoading(true);
       try {
         const params = new URLSearchParams(searchParams); // ✅ read from URL
-        const response = await axios.get(`http://localhost:5000/api/products?${params}`);
+        const response = await axios.get(`${API_URL}/api/products?${params}`);
         setProducts(response.data.products);
         setPagination(response.data.pagination);
       } catch (error) {
@@ -194,7 +196,7 @@ const Products = () => {
                 <button
                   onClick={() => handlePageChange(pagination.currentPage - 1)}
                   disabled={!pagination.hasPrev}
-                  className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  className="px-3 cursor-pointer py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
                   <FaChevronLeft />
                 </button>
@@ -204,7 +206,7 @@ const Products = () => {
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-3 py-2 border rounded-lg ${
+                    className={`px-3 py-2 cursor-pointer border rounded-lg ${
                       page === pagination.currentPage
                         ? 'bg-purple-600 text-white border-purple-600'
                         : 'border-gray-300 hover:bg-gray-50'
@@ -217,7 +219,7 @@ const Products = () => {
                 <button
                   onClick={() => handlePageChange(pagination.currentPage + 1)}
                   disabled={!pagination.hasNext}
-                  className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  className="px-3 py-2 cursor-pointer border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
                   <FaChevronRight />
                 </button>
