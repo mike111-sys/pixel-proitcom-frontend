@@ -53,14 +53,8 @@ const Products = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const params = new URLSearchParams();
-        if (searchQuery) params.append('search', searchQuery);
-        if (selectedCategory) params.append('category', selectedCategory);
-        params.append('page', currentPage.toString());
-        params.append('limit', '12');
-
+        const params = new URLSearchParams(searchParams); // ✅ read from URL
         const response = await axios.get(`http://localhost:5000/api/products?${params}`);
-        
         setProducts(response.data.products);
         setPagination(response.data.pagination);
       } catch (error) {
@@ -69,18 +63,22 @@ const Products = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
-  }, [searchQuery, selectedCategory, currentPage]);
+  }, [searchParams]); // ✅ run only when URL params change
+  
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setCurrentPage(1);
+  
     const newParams = new URLSearchParams();
     if (searchQuery) newParams.set('search', searchQuery);
     if (selectedCategory) newParams.set('category', selectedCategory);
-    setSearchParams(newParams);
+    newParams.set('page', '1');
+    setSearchParams(newParams); // ✅ triggers effect
   };
+  
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -118,13 +116,14 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">All Products</h1>
-          <p className="text-gray-600">
-            {pagination && `${pagination.totalProducts} products found`}
-          </p>
-        </div>
+  {/* Header */}
+  <div className="mb-8 text-center "> {/* ✅ center on mobile, left on md+ */}
+    <h1 className="text-4xl font-bold text-gray-800 mb-2">
+      All Products
+    </h1>
+
+  </div>
+
 
         {/* Search and Filters */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -162,7 +161,7 @@ const Products = () => {
             {/* Search Button */}
             <button
               type="submit"
-              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="bg-purple-600 cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
             >
               Search
             </button>
@@ -172,7 +171,7 @@ const Products = () => {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="border border-gray-300 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="border cursor-pointer border-gray-300 text-gray-600 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Clear
               </button>
