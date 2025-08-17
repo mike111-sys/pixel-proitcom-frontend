@@ -161,15 +161,16 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Image */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <img
-              src={product.image_url || '/placeholder-product.jpg'}
-              alt={product.name}
-              className="w-full h-96 object-cover rounded-lg"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/placeholder-product.jpg';
-              }}
-            />
+          <img
+  src={product.image_url || '/placeholder-product.jpg'}
+  alt={product.name}
+  className="w-full h-96 object-contain rounded-lg bg-white" // 👈 changed
+  onError={(e) => {
+    const target = e.target as HTMLImageElement;
+    target.src = '/placeholder-product.jpg';
+  }}
+/>
+
           </div>
 
           {/* Product Info */}
