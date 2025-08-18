@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -12,13 +13,33 @@ import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Contact from './pages/Contact';
 
+const Loader = () => (
+  <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+    <div className="flex flex-col items-center">
+      <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
+
 const Layout = () => {
   const location = useLocation();
-  const hideLayout =
-    location.pathname.startsWith('/admin'); // Hide Navbar & Footer for admin routes
+  const [loading, setLoading] = useState(false);
+
+  // Show loader when route changes
+  useEffect(() => {
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500); // loader duration (ms), adjust as needed
+
+    return () => clearTimeout(timeout);
+  }, [location]);
+
+  const hideLayout = location.pathname.startsWith('/admin');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
+      {loading && <Loader />}
       {!hideLayout && <Navbar />}
       <main>
         <Routes>
