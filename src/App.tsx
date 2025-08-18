@@ -52,21 +52,23 @@ const Layout = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
-  // Show loader when route changes
   useEffect(() => {
     setLoading(true);
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 500); // loader duration (ms), adjust as needed
-
+    }, 500);
     return () => clearTimeout(timeout);
   }, [location]);
 
   const hideLayout = location.pathname.startsWith('/admin');
 
+  if (loading) {
+    // Show ONLY loader (no Navbar/Footer)
+    return <Loader />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      {loading && <Loader />}
       {!hideLayout && <Navbar />}
       <main>
         <Routes>
@@ -80,7 +82,6 @@ const Layout = () => {
         </Routes>
       </main>
       {!hideLayout && <Footer />}
-      {/* Show floating call button only if not in admin */}
       {!hideLayout && <CallNowButton />}
     </div>
   );
