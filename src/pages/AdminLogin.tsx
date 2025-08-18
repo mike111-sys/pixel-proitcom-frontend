@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -39,16 +39,16 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 bg-white rounded-lg flex items-center justify-center">
-            <span className="text-purple-600 font-bold text-xl">PP</span>
-          </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+          <div>
+        <Link to="/" className='text-white hover:text-blue-200'>Go back Home</Link></div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             Pixel Pro Admin
           </h2>
-          <p className="mt-2 text-center text-sm text-purple-100">
+          <p className="mt-2 text-center text-sm text-black">
             Sign in to your admin account
           </p>
         </div>
+        
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="bg-white rounded-lg shadow-xl p-8">
@@ -128,9 +128,6 @@ const AdminLogin = () => {
             </div>
 
             <div className="mt-4 text-center">
-              <p className="text-xs text-gray-500">
-                Default credentials: admin / admin123
-              </p>
             </div>
           </div>
         </form>
