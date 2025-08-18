@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { FaPhone } from 'react-icons/fa';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -20,6 +22,31 @@ const Loader = () => (
     </div>
   </div>
 );
+
+// Floating Call Button (mobile only)
+const CallNowButton = () => {
+  return (
+    <a
+      href="tel:0741238738"
+      className="fixed bottom-4 left-4 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg md:hidden z-40"
+    >
+      <FaPhone className="text-lg animate-pulse" />
+      <motion.span
+        key="callnow"
+        initial={{ opacity: 0, width: 0 }}
+        animate={{ opacity: [0, 1, 1, 0], width: ['0ch', '7.5ch', '7.5ch', '0ch'] }}
+        transition={{
+          duration: 2.5,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+        className="overflow-hidden whitespace-nowrap"
+      >
+        Call Now
+      </motion.span>
+    </a>
+  );
+};
 
 const Layout = () => {
   const location = useLocation();
@@ -53,6 +80,8 @@ const Layout = () => {
         </Routes>
       </main>
       {!hideLayout && <Footer />}
+      {/* Show floating call button only if not in admin */}
+      {!hideLayout && <CallNowButton />}
     </div>
   );
 };
