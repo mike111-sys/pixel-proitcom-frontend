@@ -59,36 +59,37 @@ const CategoryManagement = () => {
   );
 };
 
-const CategoryList = ({ categories, onDelete, }: { 
+const CategoryList = ({ categories, onDelete,  }: { 
   categories: Category[]; 
   onDelete: (id: number) => void;
   onRefresh: () => void;
 }) => {
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Category Management</h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-0">Category Management</h2>
         <Link
           to="/admin/categories/add"
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center"
+          className="bg-purple-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center sm:justify-start w-full sm:w-auto"
         >
           <FaPlus className="mr-2" />
           Add Category
         </Link>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      {/* Table for larger screens */}
+      <div className="hidden sm:block bg-white shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Description
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -96,25 +97,25 @@ const CategoryList = ({ categories, onDelete, }: {
             <tbody className="bg-white divide-y divide-gray-200">
               {categories.map((category) => (
                 <tr key={category.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       {(() => {
                         const IconComponent = (ReactIcons as any)[category.icon_name];
                         return IconComponent ? (
-                          <IconComponent className="w-6 h-6 text-purple-600 mr-3" />
+                          <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 mr-3" />
                         ) : (
-                          <ReactIcons.FaBox className="w-6 h-6 text-purple-600 mr-3" />
+                          <ReactIcons.FaBox className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 mr-3" />
                         );
                       })()}
                       <div className="text-sm font-medium text-gray-900">{category.name}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">
                     <div className="text-sm text-gray-900 max-w-xs truncate">
                       {category.description}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <Link
                         to={`/admin/categories/edit/${category.id}`}
@@ -138,8 +139,46 @@ const CategoryList = ({ categories, onDelete, }: {
           </table>
         </div>
       </div>
+
+      {/* Card layout for smaller screens */}
+      <div className="sm:hidden space-y-4">
+        {categories.map((category) => (
+          <div key={category.id} className="bg-white shadow-md rounded-lg p-4">
+            <div className="flex items-center mb-3">
+              {(() => {
+                const IconComponent = (ReactIcons as any)[category.icon_name];
+                return IconComponent ? (
+                  <IconComponent className="w-5 h-5 text-purple-600 mr-3" />
+                ) : (
+                  <ReactIcons.FaBox className="w-5 h-5 text-purple-600 mr-3" />
+                );
+              })()}
+              <div>
+                <h3 className="text-sm font-medium text-gray-900">{category.name}</h3>
+                <p className="text-xs text-gray-600 truncate">{category.description}</p>
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              <Link
+                to={`/admin/categories/edit/${category.id}`}
+                className="text-indigo-600 hover:text-indigo-900"
+                title="Edit"
+              >
+                <FaEdit />
+              </Link>
+              <button
+                onClick={() => onDelete(category.id)}
+                className="text-red-600 cursor-pointer hover:text-red-900"
+                title="Delete"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default CategoryManagement; 
+export default CategoryManagement;

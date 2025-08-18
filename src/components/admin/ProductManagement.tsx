@@ -34,7 +34,6 @@ const ProductManagement = () => {
       setLoading(false);
     }
   };
-  
 
   const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
@@ -75,16 +74,16 @@ const ProductList = ({ products, onDelete, }: {
     const hasHalfStar = rating % 1 !== 0;
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} className="text-yellow-400 text-sm" />);
+      stars.push(<FaStar key={`full-${i}`} className="text-yellow-400 text-xs sm:text-sm" />);
     }
 
     if (hasHalfStar) {
-      stars.push(<FaStar key="half" className="text-yellow-400 text-sm" />);
+      stars.push(<FaStar key="half" className="text-yellow-400 text-xs sm:text-sm" />);
     }
 
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaStar key={`empty-${i}`} className="text-gray-300 text-sm" />);
+      stars.push(<FaStar key={`empty-${i}`} className="text-gray-300 text-xs sm:text-sm" />);
     }
 
     return stars;
@@ -92,41 +91,39 @@ const ProductList = ({ products, onDelete, }: {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Product Management</h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-0">Product Management</h2>
         <Link
           to="/admin/products/add"
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center"
+          className="bg-purple-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center sm:justify-start w-full sm:w-auto"
         >
           <FaPlus className="mr-2" />
           Add Product
         </Link>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      {/* Table for larger screens */}
+      <div className="hidden sm:block bg-white shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Rating
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -134,27 +131,24 @@ const ProductList = ({ products, onDelete, }: {
             <tbody className="bg-white divide-y divide-gray-200">
               {products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0">
+                      <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
                         <img
-                          className="h-10 w-10 rounded-lg object-cover"
+                          className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
                           src={product.image_url || '/placeholder-product.jpg'}
                           alt={product.name}
                         />
                       </div>
-                      <div className="ml-4">
+                      <div className="ml-3 sm:ml-4">
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {product.category_name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {product.category_name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex items-center mr-2">
                         {renderStars(product.rating)}
@@ -164,24 +158,24 @@ const ProductList = ({ products, onDelete, }: {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {product.stock_quantity}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex space-x-1">
                       {product.is_featured && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           Featured
                         </span>
                       )}
                       {product.is_new && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           New
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <Link
                         to={`/product/${product.id}`}
@@ -212,8 +206,75 @@ const ProductList = ({ products, onDelete, }: {
           </table>
         </div>
       </div>
+
+      {/* Card layout for smaller screens */}
+      <div className="sm:hidden space-y-4">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white shadow-md rounded-lg p-4">
+            <div className="flex items-center mb-3">
+              <img
+                className="h-12 w-12 rounded-lg object-cover mr-3"
+                src={product.image_url || '/placeholder-product.jpg'}
+                alt={product.name}
+              />
+              <div>
+                <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
+                <p className="text-xs text-gray-600">{product.category_name}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <div>
+                <p className="text-xs font-medium text-gray-600">Rating</p>
+                <div className="flex items-center">
+                  <div className="flex items-center mr-2">{renderStars(product.rating)}</div>
+                  <span className="text-xs text-gray-600">({product.total_ratings})</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-600">Stock</p>
+                <p className="text-xs text-gray-900">{product.stock_quantity}</p>
+              </div>
+            </div>
+            <div className="flex space-x-1 mb-3">
+              {product.is_featured && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  Featured
+                </span>
+              )}
+              {product.is_new && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  New
+                </span>
+              )}
+            </div>
+            <div className="flex space-x-3">
+              <Link
+                to={`/product/${product.id}`}
+                className="text-blue-600 hover:text-blue-900"
+                title="View"
+              >
+                <FaEye />
+              </Link>
+              <Link
+                to={`/admin/products/edit/${product.id}`}
+                className="text-indigo-600 hover:text-indigo-900"
+                title="Edit"
+              >
+                <FaEdit />
+              </Link>
+              <button
+                onClick={() => onDelete(product.id)}
+                className="text-red-600 cursor-pointer hover:text-red-900"
+                title="Delete"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ProductManagement; 
+export default ProductManagement;
