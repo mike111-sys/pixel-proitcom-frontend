@@ -27,7 +27,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setResult("Sending...");
 
   const formDataToSend = new FormData();
-  formDataToSend.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY"); // 🔑 put your key here
+  formDataToSend.append("access_key", "cab23759-cf73-477c-bdcc-139e11e4e7ec"); // 🔑 put your key here
   formDataToSend.append("name", formData.name);
   formDataToSend.append("email", formData.email);
   formDataToSend.append("phone", formData.phone);
