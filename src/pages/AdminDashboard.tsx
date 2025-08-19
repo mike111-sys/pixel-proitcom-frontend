@@ -153,12 +153,16 @@ const DashboardOverview = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
+
+      const API_URL = import.meta.env.VITE_API_URL;
+
+
       try {
         const [productsRes, categoriesRes, featuredRes, newRes] = await Promise.all([
-          fetch('http://localhost:5000/api/products?limit=1'),
-          fetch('http://localhost:5000/api/categories'),
-          fetch('http://localhost:5000/api/products/featured'),
-          fetch('http://localhost:5000/api/products/new'),
+          fetch(`${API_URL}/api/products?limit=1`),
+          fetch(`${API_URL}/api/categories`),
+          fetch(`${API_URL}/api/products/featured`),
+          fetch(`${API_URL}/api/products/new`),
         ]);
 
         const [productsData, categoriesData, featuredData, newData] = await Promise.all([

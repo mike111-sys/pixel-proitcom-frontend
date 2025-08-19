@@ -21,10 +21,14 @@ const Home = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+
+      const API_URL = import.meta.env.VITE_API_URL;
+
+
       try {
         const [featuredRes, newRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/products/featured'),
-          axios.get('http://localhost:5000/api/products/new')
+          axios.get(`${API_URL}/api/products/featured`),
+          axios.get(`${API_URL}/api/products/new`)
         ]);
 
         setFeaturedProducts(featuredRes.data);

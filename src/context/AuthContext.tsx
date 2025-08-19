@@ -50,9 +50,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Check if user is authenticated on mount
   useEffect(() => {
     const checkAuth = async () => {
+
+      const API_URL = import.meta.env.VITE_API_URL;
+
       if (token) {
         try {
-          const response = await axios.get('http://localhost:5000/api/auth/me');
+          const response = await axios.get(`${API_URL}/api/auth/me`);
           setUser(response.data);
         } catch (error) {
           console.error('Auth check failed:', error);
@@ -66,8 +69,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [token]);
 
   const login = async (username: string, password: string): Promise<boolean> => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         username,
         password
       });

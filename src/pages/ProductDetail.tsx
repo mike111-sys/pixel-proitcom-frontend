@@ -41,8 +41,12 @@ const ProductDetail = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
+
+      const API_URL = import.meta.env.VITE_API_URL;
+
+
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`${API_URL}/api/products/${id}`);
         
         setProduct(response.data.product);
         setSimilarProducts(response.data.similarProducts);
@@ -89,13 +93,16 @@ const ProductDetail = () => {
   const handleRatingSubmit = async () => {
     if (userRating === 0) return;
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
     try {
-      await axios.post(`http://localhost:5000/api/products/${id}/rate`, {
+      await axios.post(`${API_URL}/api/products/${id}/rate`, {
         rating: userRating
       });
       
       // Refresh product data to show updated rating
-      const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+      const response = await axios.get(`${API_URL}/api/products/${id}`);
       setProduct(response.data.product);
       setUserRating(0);
     } catch (error) {
