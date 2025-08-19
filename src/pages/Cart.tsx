@@ -43,7 +43,7 @@ const Cart = () => {
       ).join('\n');
 
       const formData = {
-        access_key: '', // You'll fill this in
+        access_key: 'fbc808f0-e376-424c-bb16-9e14add75a5e', // You'll fill this in
         name: orderForm.name,
         email: orderForm.email,
         phone: orderForm.phone,
@@ -64,7 +64,6 @@ const Cart = () => {
 
       if (result.success) {
         setSubmitStatus('success');
-        clearCart();
         setOrderForm({
           name: '',
           email: '',
@@ -72,7 +71,13 @@ const Cart = () => {
           address: '',
           message: ''
         });
-      } else {
+      
+        // Delay clearing cart so success message shows
+        setTimeout(() => {
+          clearCart();
+        }, 3000);
+      }
+       else {
         setSubmitStatus('error');
       }
     } catch (error) {
@@ -83,25 +88,26 @@ const Cart = () => {
     }
   };
 
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center py-12">
-            <div className="text-gray-400 text-6xl mb-4">🛒</div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Your cart is empty</h1>
-            <p className="text-gray-600 mb-8">Add some products to your cart to get started!</p>
-            <a
-              href="/products"
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              Continue Shopping
-            </a>
+    if (items.length === 0 && submitStatus !== 'success') {
+      return (
+        <div className="min-h-screen bg-gray-50 py-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center py-12">
+              <div className="text-gray-400 text-6xl mb-4">🛒</div>
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">Your cart is empty</h1>
+              <p className="text-gray-600 mb-8">Add some products to your cart to get started!</p>
+              <a
+                href="/products"
+                className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Continue Shopping
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
+    
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -161,19 +167,7 @@ const Cart = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Order Information</h2>
             
-            {submitStatus === 'success' && (
-              <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                <p className="font-semibold">Order submitted successfully!</p>
-                <p className="text-sm">We'll contact you soon to confirm your order.</p>
-              </div>
-            )}
-
-            {submitStatus === 'error' && (
-              <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-                <p className="font-semibold">Error submitting order</p>
-                <p className="text-sm">Please try again or contact us directly.</p>
-              </div>
-            )}
+         
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -261,6 +255,21 @@ const Cart = () => {
                 </button>
               </div>
             </form>
+
+            {submitStatus === 'success' && (
+              <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                <p className="font-semibold">Order submitted successfully!</p>
+                <p className="text-sm">We'll contact you soon to confirm your order.</p>
+              </div>
+            )}
+
+            {submitStatus === 'error' && (
+              <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                <p className="font-semibold">Error submitting order</p>
+                <p className="text-sm">Please try again or contact us directly.</p>
+              </div>
+            )}
+
 
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <h3 className="font-semibold text-gray-800 mb-2">Need Help?</h3>
