@@ -146,9 +146,11 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
     }
   }, [id]);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const fetchCategory = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/categories/${id}`);
+      const response = await axios.get(`${API_URL}/api/categories/${id}`);
       const categoryData = response.data;
       setCategory({
         name: categoryData.name,
@@ -172,9 +174,9 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
       };
 
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/categories/${id}`, categoryData);
+        await axios.put(`${API_URL}/api/categories/${id}`, categoryData);
       } else {
-        await axios.post('http://localhost:5000/api/categories', categoryData);
+        await axios.post(`${API_URL}/api/categories`, categoryData);
       }
 
       onSuccess();

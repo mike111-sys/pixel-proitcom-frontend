@@ -27,7 +27,7 @@ const Loader = () => (
 const CallNowButton = () => {
   return (
     <a
-      href="tel:0741238738"
+      href="tel:0713731333"
       className="fixed bottom-4 left-4 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg md:hidden z-40"
     >
       <FaPhone className="text-lg animate-pulse" />

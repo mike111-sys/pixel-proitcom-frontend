@@ -126,11 +126,11 @@ useEffect(() => {
     </div>
     <div className="flex justify-center md:justify-start items-center space-x-3">
       <FaPhone className="text-yellow-500" />
-      <a href="tel:+254741238738" className="hover:text-yellow-500 hover:underline transition-colors">+254 741 238 738</a>
+      <a href="tel:+254713731333" className="hover:text-yellow-500 hover:underline transition-colors">+254 713 731 333</a>
     </div>
     <div className="flex justify-center md:justify-start items-center space-x-3">
       <FaEnvelope className="text-yellow-500" />
-      <a href="mailto:info@pixelpro.co.ke" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelpro.co.ke</a>
+      <a href="mailto:info@pixelpro.com" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelpro.com</a>
     </div>
   </div>
 </motion.div>

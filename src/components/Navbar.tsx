@@ -85,7 +85,7 @@ const Navbar = () => {
   };
 
   const handleCall = () => {
-    window.location.href = 'tel:0741238738';
+    window.location.href = 'tel:0713731333';
   };
 
   const getIconComponent = (iconName: string) => {

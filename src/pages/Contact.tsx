@@ -27,7 +27,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setResult("Sending...");
 
   const formDataToSend = new FormData();
-  formDataToSend.append("access_key", "cab23759-cf73-477c-bdcc-139e11e4e7ec"); // 🔑 put your key here
+  formDataToSend.append("access_key", "fbc808f0-e376-424c-bb16-9e14add75a5e"); // 🔑 put your key here
   formDataToSend.append("name", formData.name);
   formDataToSend.append("email", formData.email);
   formDataToSend.append("phone", formData.phone);
@@ -204,8 +204,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Phone</h3>
-                      <a href="tel:+254741238738" className="text-gray-600 hover:text-yellow-500 transition-colors">
-                        +254 741 238 738
+                      <a href="tel:+254713731333" className="text-gray-600 hover:text-yellow-500 transition-colors">
+                        +254 713 731 333
                       </a>
                     </div>
                   </div>
@@ -216,8 +216,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
-                      <a href="mailto:info@pixelpro.co.ke" className="text-gray-600 hover:text-yellow-500 transition-colors">
-                        info@pixelpro.co.ke
+                      <a href="mailto:info@pixelpro.com" className="text-gray-600 hover:text-yellow-500 transition-colors">
+                        info@pixelpro.com
                       </a>
                     </div>
                   </div>

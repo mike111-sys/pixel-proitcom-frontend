@@ -40,7 +40,7 @@ const Home = () => {
   }, []);
 
   const handleCall = () => {
-    window.location.href = 'tel:0741238738';
+    window.location.href = 'tel:0713731333';
   };
 
   if (loading) {
@@ -124,7 +124,7 @@ const Home = () => {
             className="bg-white cursor-pointer text-gray-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-flex items-center"
           >
             <FaPhone className="mr-2" />
-            Call 0741238738
+            Call 0713731333
           </button>
         </div>
       </section>

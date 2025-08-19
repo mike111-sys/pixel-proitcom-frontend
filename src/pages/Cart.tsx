@@ -277,11 +277,11 @@ const Cart = () => {
                 Call us directly for immediate assistance:
               </p>
               <a
-                href="tel:0741238738"
+                href="tel:0713731333"
                 className="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold"
               >
                 <FaPhone className="mr-2" />
-                0741238738
+                0713731333
               </a>
             </div>
           </div>

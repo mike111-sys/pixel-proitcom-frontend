@@ -104,7 +104,7 @@ const ProductDetail = () => {
   };
 
   const handleCall = () => {
-    window.location.href = 'tel:0741238738';
+    window.location.href = 'tel:0713731333';
   };
 
   const handleAddToCart = () => {
@@ -211,7 +211,7 @@ const ProductDetail = () => {
                   className="w-full cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
                 >
                   <FaPhone className="mr-2" />
-                  Call to Confirm: 0741238738
+                  Call to Confirm: 0713731333
                 </button>
               )}
             </div>
