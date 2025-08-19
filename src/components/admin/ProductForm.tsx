@@ -52,6 +52,9 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
   const isEditing = !!id;
 
   useEffect(() => {
@@ -71,7 +74,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/categories');
+      const response = await axios.get(`${API_URL}/api/categories`);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -80,7 +83,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
 
   const fetchSubcategories = async (categoryId: number) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/subcategories/category/${categoryId}`);
+      const response = await axios.get(`${API_URL}/api/subcategories/category/${categoryId}`);
       setSubcategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -89,7 +92,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+      const response = await axios.get(`${API_URL}/api/products/${id}`);
       const productData = response.data.product;
       setProduct({
         name: productData.name,
@@ -168,9 +171,9 @@ formData.append('is_new', product.is_new ? '1' : '0');
       }
 
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/products/${id}`, formData);
+        await axios.put(`${API_URL}/api/products/${id}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/products', formData);
+        await axios.post(`${API_URL}/api/products`, formData);
       }
 
       onSuccess();

@@ -66,6 +66,9 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -84,7 +87,7 @@ const ChangePassword = ({ onSuccess }: ChangePasswordProps) => {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/auth/change-password',
+        `${API_URL}/api/auth/change-password`,
         {
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword

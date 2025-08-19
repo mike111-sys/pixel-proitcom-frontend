@@ -19,6 +19,8 @@ interface Product {
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     fetchProducts();
@@ -26,7 +28,7 @@ const ProductManagement = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/products?limit=100');
+      const response = await axios.get(`${API_URL}/api/products?limit=100`);
       setProducts(response.data.products);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -38,7 +40,7 @@ const ProductManagement = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await axios.delete(`${API_URL}/api/products/${id}`);
         fetchProducts();
       } catch (error) {
         console.error('Error deleting product:', error);
