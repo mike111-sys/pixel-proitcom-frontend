@@ -10,6 +10,7 @@ interface Category {
   name: string;
   description: string;
   icon_name: string;
+  display_order: number;   // 👈 add this
 }
 
 const CategoryManagement = () => {
@@ -96,6 +97,10 @@ const CategoryList = ({ categories, onDelete,  }: {
                 <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+  Order
+</th>
+
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -135,8 +140,14 @@ const CategoryList = ({ categories, onDelete,  }: {
                       >
                         <FaTrash />
                       </button>
+                      
                     </div>
+                    
                   </td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+  {category.display_order}
+</td>
+
                 </tr>
               ))}
             </tbody>
@@ -160,6 +171,8 @@ const CategoryList = ({ categories, onDelete,  }: {
               <div>
                 <h3 className="text-sm font-medium text-gray-900">{category.name}</h3>
                 <p className="text-xs text-gray-600 truncate">{category.description}</p>
+                <p className="text-xs text-gray-500">Order: {category.display_order}</p>
+
               </div>
             </div>
             <div className="flex space-x-3">

@@ -9,6 +9,7 @@ interface Category {
   name: string;
   description: string;
   icon_name: string;
+  display_order: number;   // 👈 new
 }
 
 interface CategoryFormProps {
@@ -124,7 +125,15 @@ const availableIcons = [
   { name: 'FaGhost', label: 'Ghost' },
 
   { name: 'FaDragon', label: 'Dragon' },
-  { name: 'FaVine', label: 'Vine' }
+  { name: 'FaVine', label: 'Vine' },
+  { name: 'FaBroadcastTower', label: 'Broadcast tower' },
+  
+  { name: 'FaSatellite', label: 'Satellite' },
+  
+  { name: 'FaApple', label: 'Apple' },
+  
+  { name: 'FaStopwatch', label: 'Stop Watch' },
+
 ];
 
 const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
@@ -135,7 +144,8 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
   const [category, setCategory] = useState<Partial<Category>>({
     name: '',
     description: '',
-    icon_name: 'FaBox'
+    icon_name: 'FaBox',
+    display_order: 0   // 👈 default
   });
 
   const isEditing = !!id;
@@ -155,7 +165,8 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
       setCategory({
         name: categoryData.name,
         description: categoryData.description,
-        icon_name: categoryData.icon_name || 'FaBox'
+        icon_name: categoryData.icon_name || 'FaBox',
+        display_order: categoryData.display_order || 0
       });
     } catch (error) {
       console.error('Error fetching category:', error);
@@ -170,7 +181,8 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
       const categoryData = {
         name: category.name || '',
         description: category.description || '',
-        icon_name: category.icon_name || 'FaBox'
+        icon_name: category.icon_name || 'FaBox',
+        display_order: category.display_order || 0   // 👈 include
       };
 
       if (isEditing) {
@@ -282,6 +294,22 @@ const CategoryForm = ({ onSuccess }: CategoryFormProps) => {
               )}
             </div>
           </div>
+
+          <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Display Order
+  </label>
+  <input
+    type="number"
+    value={category.display_order ?? 0}
+    onChange={(e) => setCategory(prev => ({ ...prev, display_order: Number(e.target.value) }))}
+    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+  />
+  <p className="text-xs text-gray-500 mt-1">
+    Lower numbers appear first. Example: 1 = Top, 2 = Second, etc.
+  </p>
+</div>
+
 
           <div className="flex justify-end">
             <button
