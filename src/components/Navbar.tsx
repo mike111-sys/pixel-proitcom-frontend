@@ -457,7 +457,7 @@ const Navbar = () => {
   <motion.div whileHover={{ y: -2 }}>
     <Link
       to="/"
-      className="flex items-center hover:text-purple-600 gap-2 px-4 py-3 text-gray-700 font-medium transition-colors hover:bg-purple-50 text-base"
+      className="flex items-center hover:text-purple-600 gap-2 px-3 py-3 text-gray-700 font-medium transition-colors hover:bg-purple-50 text-base"
     >
       <ReactIcons.FaHome className="w-5 h-5 text-green-500" />
       Home
@@ -472,7 +472,7 @@ const Navbar = () => {
       whileHover={{ y: -2 }}
     >
       <button
-        className="flex  items-center cursor-pointer hover:text-purple-600 text-nowrap gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
+        className="flex  items-center cursor-pointer hover:text-purple-600 text-nowrap gap-2 px-3 py-3 text-gray-700 font-medium transition-colors text-base"
         onClick={() => setOpenCategory(openCategory === category.id ? null : category.id)}
       >
         {getIconComponent(category.icon_name)}
@@ -497,11 +497,11 @@ const Navbar = () => {
       whileHover={{ y: -2 }}
     >
       <button
-        className="flex cursor-pointer hover:text-purple-600 text-nowrap items-center gap-2 px-4 py-3 text-gray-700 font-medium transition-colors text-base"
+        className="flex cursor-pointer hover:text-purple-600 text-nowrap items-center gap-2 px-3 py-3 text-gray-700 font-medium transition-colors text-base"
         onClick={() => setOpenCategory(openCategory === -1 ? null : -1)}
       >
         <ReactIcons.FaEllipsisH className="w-5 h-5 text-yellow-500" />
-        <span>Other Accessories</span>
+        <span>Other Products</span>
         <FaChevronDown
           className={`text-sm transition-transform ${openCategory === -1 ? 'rotate-180' : ''}`}
         />
@@ -517,7 +517,7 @@ const Navbar = () => {
   <motion.div whileHover={{ y: -2 }}>
     <Link
       to="/contact"
-      className="flex items-center gap-2 px-4 py-3 text-nowrap text-gray-700 hover:text-purple-600 font-medium transition-colors hover:bg-purple-50 text-base"
+      className="flex items-center gap-2 px-3 py-3 text-nowrap text-gray-700 hover:text-purple-600 font-medium transition-colors hover:bg-purple-50 text-base"
     >
       <LuContact className="w-5 h-5 text-green-500" />
       Contact Us
