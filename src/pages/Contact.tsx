@@ -216,8 +216,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
-                      <a href="mailto:info@pixelpro.com" className="text-gray-600 hover:text-yellow-500 transition-colors">
-                        info@pixelpro.com
+                      <a href="mailto:info@pixelproit.com" className="text-gray-600 hover:text-yellow-500 transition-colors">
+                        info@pixelproit.com
                       </a>
                     </div>
                   </div>

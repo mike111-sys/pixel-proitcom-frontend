@@ -130,7 +130,7 @@ useEffect(() => {
     </div>
     <div className="flex justify-center md:justify-start items-center space-x-3">
       <FaEnvelope className="text-yellow-500" />
-      <a href="mailto:info@pixelpro.com" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelpro.com</a>
+      <a href="mailto:info@pixelproit.com" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelproit.com</a>
     </div>
   </div>
 </motion.div>
