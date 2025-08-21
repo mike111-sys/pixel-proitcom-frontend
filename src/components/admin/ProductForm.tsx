@@ -249,25 +249,57 @@ formData.append('is_new', product.is_new ? '1' : '0');
               </select>
             </div>
 
-            {subcategories.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Subcategory
-                </label>
-                <select
-                  value={product.subcategory_id}
-                  onChange={(e) => setProduct(prev => ({ ...prev, subcategory_id: parseInt(e.target.value) }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                >
-                  <option value={0}>Select a subcategory (optional)</option>
-                  {subcategories.map((subcategory) => (
-                    <option key={subcategory.id} value={subcategory.id}>
-                      {subcategory.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+           {/* Subcategory Selection */}
+{subcategories.length > 0 ? (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Subcategory *
+    </label>
+    <div className="flex space-x-2">
+      <select
+        required
+        value={product.subcategory_id || ''}
+        onChange={(e) =>
+          setProduct((prev) => ({
+            ...prev,
+            subcategory_id: parseInt(e.target.value),
+          }))
+        }
+        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+      >
+        <option value="">Select a subcategory</option>
+        {subcategories.map((subcategory) => (
+          <option key={subcategory.id} value={subcategory.id}>
+            {subcategory.name}
+          </option>
+        ))}
+      </select>
+
+      {/* Add Subcategory Button */}
+      <button
+        type="button"
+        onClick={() => navigate('/admin/categories/subcategories/add')}
+        className="flex items-center bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+      >
+        <FaPlus className="mr-1" /> Add
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex items-center space-x-2">
+    <p className="text-sm text-red-600">
+      You must have at least one sub-category.
+    </p>
+    <button
+      type="button"
+      onClick={() => navigate('/admin/categories/subcategories/add')}
+      className="flex items-center text-purple-600 hover:text-purple-700"
+    >
+      <FaPlus className="mr-1" /> Add Subcategory
+    </button>
+  </div>
+)}
+
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
