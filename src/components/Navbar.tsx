@@ -122,24 +122,25 @@ const Navbar = () => {
         className="absolute top-full left-0 mt-1 bg-white shadow-2xl rounded-xl py-4 min-w-80 z-30 border border-gray-100"
       >
         <div className="px-5 py-3 border-b border-gray-200">
-          <h3 className="text-base font-semibold text-gray-800 flex items-center space-x-3">
+          <Link
+                              to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(category.name)}`}
+          className="text-base font-semibold text-gray-800 hover:text-purple-600 underline flex items-center space-x-3">
             {getIconComponent(category.icon_name)}
             <span>{category.name}</span>
-          </h3>
+          </Link>
         </div>
-        <div className="max-h-96 overflow-y-auto">
+        <div className="max-h-72 overflow-y-auto">
           {categorySubcategories.map((subcategory) => {
             const subcategoryProducts = getProductsBySubcategory(subcategory.id);
             return (
               <div key={subcategory.id} className="border-b border-gray-50 last:border-b-0">
                 <div className="px-5 py-3 bg-gray-50">
-                  <Link
-                    to={`/products?category=${encodeURIComponent(category.name)}&subcategory=${encodeURIComponent(subcategory.name)}`}
-                    className="flex items-center space-x-3 text-base font-medium text-gray-700 hover:text-purple-600 transition-colors duration-200"
+                  <p
+                    className="flex items-center space-x-3 text-base font-medium text-gray-700  transition-colors duration-200"
                   >
                     {getIconComponent(subcategory.icon_name)}
                     <span>{subcategory.name}</span>
-                  </Link>
+                  </p>
                 </div>
                 {subcategoryProducts.length > 0 && (
                   <div className="pl-8">
@@ -193,7 +194,7 @@ const Navbar = () => {
       className="absolute top-full left-0 mt-2 bg-white shadow-2xl rounded-xl py-4 min-w-96 z-30 border border-gray-100"
     >
       <div className="px-5 py-3 border-b border-gray-200">
-        <h3 className="text-base font-semibold text-gray-800 flex items-center space-x-3">
+        <h3 className="text-base font-semibold text-gray-800 underline flex items-center space-x-3">
           <ReactIcons.FaEllipsisH className="w-5 h-5 text-yellow-500" />
           <span>Other Accessories</span>
         </h3>
