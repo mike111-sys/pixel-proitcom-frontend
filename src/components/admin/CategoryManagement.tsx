@@ -209,7 +209,7 @@ const CategoryList = ({
           e.stopPropagation(); // Prevent triggering the expand/collapse
           onDeleteCategory(category.id);
         }}
-        className="text-red-600 hover:text-red-800"
+        className="text-red-600 cursor-pointer hover:text-red-800"
         title="Delete Category"
       >
         <FaTrash className="w-4 h-4" />
