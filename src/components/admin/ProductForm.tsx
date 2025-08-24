@@ -39,6 +39,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingSubcategories, setLoadingSubcategories] = useState(false); // Add this
   const [product, setProduct] = useState<Partial<Product>>({
     name: '',
     description: '',
@@ -69,6 +70,7 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       fetchSubcategories(product.category_id);
     } else {
       setSubcategories([]);
+      setLoadingSubcategories(false); // Ensure loading is false when no category selected
     }
   }, [product.category_id]);
 
@@ -83,10 +85,14 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
 
   const fetchSubcategories = async (categoryId: number) => {
     try {
+      setLoadingSubcategories(true); // Start loading
       const response = await axios.get(`${API_URL}/api/subcategories/category/${categoryId}`);
       setSubcategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
+      setSubcategories([]); // Clear subcategories on error
+    } finally {
+      setLoadingSubcategories(false); // End loading
     }
   };
 
@@ -185,6 +191,14 @@ formData.append('is_new', product.is_new ? '1' : '0');
     }
   };
 
+
+  // Simple spinner component
+const Spinner = () => (
+  <div className="flex justify-center items-center">
+    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
+  </div>
+);
+
   return (
     <div>
       <div className="flex items-center mb-6">
@@ -249,54 +263,55 @@ formData.append('is_new', product.is_new ? '1' : '0');
               </select>
             </div>
 
-           {/* Subcategory Selection */}
-{subcategories.length > 0 ? (
+          {/* Subcategory Selection */}
+{product.category_id ? (
   <div>
     <label className="block text-sm font-medium text-gray-700 mb-2">
       Subcategory *
     </label>
     <div className="flex space-x-2">
-      <select
-        required
-        value={product.subcategory_id || ''}
-        onChange={(e) =>
-          setProduct((prev) => ({
-            ...prev,
-            subcategory_id: parseInt(e.target.value),
-          }))
-        }
-        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-      >
-        <option value="">Select a subcategory</option>
-        {subcategories.map((subcategory) => (
-          <option key={subcategory.id} value={subcategory.id}>
-            {subcategory.name}
-          </option>
-        ))}
-      </select>
+      {loadingSubcategories ? (
+        <div className="flex-1 flex items-center justify-center p-2 border border-gray-300 rounded-lg">
+          <Spinner />
+        </div>
+      ) : (
+        <>
+          <select
+            required
+            value={product.subcategory_id || ''}
+            onChange={(e) =>
+              setProduct((prev) => ({
+                ...prev,
+                subcategory_id: parseInt(e.target.value),
+              }))
+            }
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="">Select a subcategory</option>
+            {subcategories.map((subcategory) => (
+              <option key={subcategory.id} value={subcategory.id}>
+                {subcategory.name}
+              </option>
+            ))}
+          </select>
 
-      {/* Add Subcategory Button */}
-      <button
-        type="button"
-        onClick={() => navigate('/admin/categories/subcategories/add')}
-        className="flex items-center bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-      >
-        <FaPlus className="mr-1" /> Add
-      </button>
+          {/* Add Subcategory Button */}
+          <button
+            type="button"
+            onClick={() => navigate('/admin/categories/subcategories/add')}
+            className="flex items-center bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            <FaPlus className="mr-1" /> Add
+          </button>
+        </>
+      )}
     </div>
   </div>
 ) : (
   <div className="flex items-center space-x-2">
     <p className="text-sm text-red-600">
-      You must have at least one sub-category.
+      Select a category first to see subcategories
     </p>
-    <button
-      type="button"
-      onClick={() => navigate('/admin/categories/subcategories/add')}
-      className="flex items-center text-purple-600 hover:text-purple-700"
-    >
-      <FaPlus className="mr-1" /> Add Subcategory
-    </button>
   </div>
 )}
 

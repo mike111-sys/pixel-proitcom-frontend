@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
@@ -39,6 +39,11 @@ const ProductDetail = () => {
   const [userRating, setUserRating] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
+
+  // Add state and ref for image loading
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
   useEffect(() => {
     const fetchProduct = async () => {
 
@@ -61,6 +66,27 @@ const ProductDetail = () => {
       fetchProduct();
     }
   }, [id]);
+
+
+  // Check if image is already loaded
+  useEffect(() => {
+    const img = imgRef.current;
+    
+    if (img && img.complete) {
+      setImageLoaded(true);
+    }
+  }, [product]);
+
+  
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.src = '/placeholder-product.jpg';
+    setImageLoaded(true); // Still show the placeholder
+  };
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -168,15 +194,22 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Image */}
           <div className="bg-white rounded-lg shadow-md p-6">
-          <img
-  src={product.image_url || '/placeholder-product.jpg'}
-  alt={product.name}
-  className="w-full h-96 object-contain rounded-lg bg-white" // 👈 changed
-  onError={(e) => {
-    const target = e.target as HTMLImageElement;
-    target.src = '/placeholder-product.jpg';
-  }}
-/>
+            <div className="w-full h-96 bg-white overflow-hidden flex items-center justify-center relative">
+              {!imageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <FaStar className="text-yellow-500 text-7xl animate-spin" />
+                </div>
+              )}
+              <img
+                ref={imgRef}
+                src={product.image_url || '/placeholder-product.jpg'}
+                alt={product.name}
+                className={`w-full h-full object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+              />
+            </div>
+          
 
           </div>
 

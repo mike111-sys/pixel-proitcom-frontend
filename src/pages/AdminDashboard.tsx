@@ -150,14 +150,14 @@ const DashboardOverview = () => {
     featuredProducts: 0,
     newProducts: 0,
   });
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchStats = async () => {
-
       const API_URL = import.meta.env.VITE_API_URL;
 
-
       try {
+        setLoading(true); // Set loading to true when starting fetch
         const [productsRes, categoriesRes, featuredRes, newRes] = await Promise.all([
           fetch(`${API_URL}/api/products?limit=1`),
           fetch(`${API_URL}/api/categories`),
@@ -180,65 +180,96 @@ const DashboardOverview = () => {
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false); // Set loading to false when done
       }
     };
 
     fetchStats();
   }, []);
 
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h2>
+  // Simple loader component
+  const StatLoader = () => (
+    <div className="flex justify-center items-center h-10">
+      <div className="w-4 h-4 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+  
+  
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-              <FaBox className="h-6 w-6" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Products</p>
+return (
+  <div>
+    <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Overview</h2>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      {/* Total Products */}
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="flex items-center">
+          <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+            <FaBox className="h-6 w-6" />
+          </div>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Total Products</p>
+            {loading ? (
+              <StatLoader />
+            ) : (
               <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.totalProducts}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100 text-green-600">
-              <FaTags className="h-6 w-6" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Categories</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.totalCategories}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
-              <FaBox className="h-6 w-6" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Featured Products</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.featuredProducts}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-purple-100 text-purple-600">
-              <FaBox className="h-6 w-6" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">New Products</p>
-              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.newProducts}</p>
-            </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Categories */}
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="flex items-center">
+          <div className="p-3 rounded-full bg-green-100 text-green-600">
+            <FaTags className="h-6 w-6" />
+          </div>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Categories</p>
+            {loading ? (
+              <StatLoader />
+            ) : (
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.totalCategories}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Featured Products */}
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="flex items-center">
+          <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
+            <FaBox className="h-6 w-6" />
+          </div>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Featured Products</p>
+            {loading ? (
+              <StatLoader />
+            ) : (
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.featuredProducts}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* New Products */}
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="flex items-center">
+          <div className="p-3 rounded-full bg-purple-100 text-purple-600">
+            <FaBox className="h-6 w-6" />
+          </div>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">New Products</p>
+            {loading ? (
+              <StatLoader />
+            ) : (
+              <p className="text-xl sm:text-2xl font-semibold text-gray-900">{stats.newProducts}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">

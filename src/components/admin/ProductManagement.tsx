@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaStar } from 'react-icons/fa';
@@ -16,10 +16,21 @@ interface Product {
   is_new: boolean;
 }
 
+
+interface ImageWithLoaderProps {
+  src: string;
+  alt: string;
+  className: string;
+}
+
+
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
+
+
+  
 
 
   useEffect(() => {
@@ -91,6 +102,46 @@ const ProductList = ({ products, onDelete, }: {
     return stars;
   };
 
+  const ImageWithLoader = ({ src, alt, className }: ImageWithLoaderProps) => {
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const imgRef = useRef<HTMLImageElement>(null);
+  
+    useEffect(() => {
+      const img = imgRef.current;
+      if (img && img.complete) {
+        setImageLoaded(true);
+      }
+    }, []);
+  
+    const handleImageLoad = () => {
+      setImageLoaded(true);
+    };
+  
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const target = e.target as HTMLImageElement;
+      target.src = '/placeholder-product.jpg';
+      setImageLoaded(true);
+    };
+  
+    return (
+      <div className="relative">
+        {!imageLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <FaStar className="text-yellow-500 text-sm animate-spin" />
+          </div>
+        )}
+        <img
+          ref={imgRef}
+          src={src || '/placeholder-product.jpg'}
+          alt={alt}
+          className={`${className} ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
+      </div>
+    );
+  };
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
@@ -133,20 +184,21 @@ const ProductList = ({ products, onDelete, }: {
             <tbody className="bg-white divide-y divide-gray-200">
               {products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-                        <img
-                          className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
-                          src={product.image_url || '/placeholder-product.jpg'}
-                          alt={product.name}
-                        />
-                      </div>
-                      <div className="ml-3 sm:ml-4">
-                        <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                      </div>
-                    </div>
-                  </td>
+                
+<td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+  <div className="flex items-center">
+    <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
+      <ImageWithLoader
+        src={product.image_url}
+        alt={product.name}
+        className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
+      />
+    </div>
+    <div className="ml-3 sm:ml-4">
+      <div className="text-sm font-medium text-gray-900">{product.name}</div>
+    </div>
+  </div>
+</td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {product.category_name}
                   </td>
@@ -213,17 +265,20 @@ const ProductList = ({ products, onDelete, }: {
       <div className="sm:hidden space-y-4">
         {products.map((product) => (
           <div key={product.id} className="bg-white shadow-md rounded-lg p-4">
-            <div className="flex items-center mb-3">
-              <img
-                className="h-12 w-12 rounded-lg object-cover mr-3"
-                src={product.image_url || '/placeholder-product.jpg'}
-                alt={product.name}
-              />
-              <div>
-                <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
-                <p className="text-xs text-gray-600">{product.category_name}</p>
-              </div>
-            </div>
+           
+<div className="flex items-center mb-3">
+  <div className="h-12 w-12 rounded-lg overflow-hidden mr-3">
+    <ImageWithLoader
+      src={product.image_url}
+      alt={product.name}
+      className="h-12 w-12 object-cover"
+    />
+  </div>
+  <div>
+    <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
+    <p className="text-xs text-gray-600">{product.category_name}</p>
+  </div>
+</div>
             <div className="grid grid-cols-2 gap-2 mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600">Rating</p>

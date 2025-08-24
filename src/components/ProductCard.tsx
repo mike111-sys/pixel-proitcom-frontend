@@ -79,7 +79,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="w-full h-48 bg-white overflow-hidden flex items-center justify-center">
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <FaStar className="text-purple-500 text-2xl animate-spin" />
+                <FaStar className="text-yellow-500 text-4xl animate-spin" />
               </div>
             )}
             <img
@@ -92,7 +92,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               onError={handleImageError}
             />
           </div>
-          <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
+          <div className="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">
             {product.subcategory_name || product.category_name}
           </div>
         </div>

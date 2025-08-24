@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -36,104 +37,189 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-yellow-100 to-yellow-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div 
+        className="max-w-md w-full space-y-8"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div>
-          <div>
-        <Link to="/" className='text-white hover:text-blue-200'>Go back Home</Link></div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
-            Pixel Pro Admin
-          </h2>
-          <p className="mt-2 text-center text-sm text-black">
-            Sign in to your admin account
-          </p>
+          <motion.div 
+            className="mb-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Link 
+              to="/" 
+              className="inline-flex items-center text-black font-semibold hover:text-yellow-800 transition-colors duration-200 bg-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg"
+            >
+              ← Go back Home
+            </Link>
+          </motion.div>
+          <motion.div 
+            className="text-center bg-black rounded-t-xl px-8 py-6"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <motion.h2 
+              className="text-3xl font-extrabold text-yellow-400"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              Pixel Pro Admin
+            </motion.h2>
+            <motion.p 
+              className="mt-2 text-sm text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              Sign in to your admin account
+            </motion.p>
+          </motion.div>
         </div>
         
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="bg-white rounded-lg shadow-xl p-8">
-            {error && (
-              <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                {error}
-              </div>
-            )}
+        <motion.form 
+          className="space-y-0" 
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <motion.div 
+            className="bg-white rounded-b-xl shadow-2xl border-4 border-black"
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2 }}
+          >
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  className="mx-8 mt-6 bg-yellow-100 border-2 border-black text-black px-4 py-3 rounded-lg font-semibold"
+                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
             
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                  Username or Email
+            <div className="p-8 space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                <label htmlFor="username" className="block text-sm font-bold text-black mb-2">
+                  Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaUser className="h-5 w-5 text-gray-400" />
                   </div>
-                  <input
+                  <motion.input
                     id="username"
                     name="username"
                     type="text"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="appearance-none relative block w-full pl-10 pr-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                    placeholder="Enter your username or email"
+                    className="appearance-none relative block w-full pl-10 pr-3 py-3 border-2 border-black placeholder-gray-600 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white font-medium transition-all duration-200"
+                    placeholder="Enter your username"
+                    whileFocus={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
                   />
                 </div>
-              </div>
+              </motion.div>
               
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <label htmlFor="password" className="block text-sm font-bold text-black mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaLock className="h-5 w-5 text-gray-400" />
                   </div>
-                  <input
+                  <motion.input
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none relative block w-full pl-10 pr-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                    className="appearance-none relative block w-full pl-10 pr-12 py-3 border-2 border-black placeholder-gray-600 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 bg-white font-medium transition-all duration-200"
                     placeholder="Enter your password"
+                    whileFocus={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
                   />
-                  <button
+                  <motion.button
                     type="button"
                     className="absolute cursor-pointer inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.1 }}
                   >
                     {showPassword ? (
-                      <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      <FaEyeSlash className="h-5 w-5 text-black hover:text-yellow-600 transition-colors" />
                     ) : (
-                      <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      <FaEye className="h-5 w-5 text-black hover:text-yellow-600 transition-colors" />
                     )}
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
-            </div>
+              </motion.div>
 
-            <div className="mt-6">
-              <button
-                type="submit"
-                disabled={loading}
-                className="group cursor-pointer relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              <motion.div 
+                className="pt-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
               >
-                {loading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                ) : (
-                  'Sign in'
-                )}
-              </button>
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  className="group cursor-pointer relative w-full flex justify-center py-3 px-4 border-2 border-black text-lg font-bold rounded-lg text-black bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-yellow-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <AnimatePresence mode="wait">
+                    {loading ? (
+                      <motion.div 
+                        key="loading"
+                        className="animate-spin rounded-full h-6 w-6 border-b-2 border-black"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    ) : (
+                      <motion.span
+                        key="signin"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        Sign in
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </motion.div>
             </div>
-
-            <div className="mt-4 text-center">
-            </div>
-          </div>
-        </form>
-      </div>
+          </motion.div>
+        </motion.form>
+      </motion.div>
     </div>
   );
 };
 
-export default AdminLogin; 
+export default AdminLogin;
