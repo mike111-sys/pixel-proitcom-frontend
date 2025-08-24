@@ -231,7 +231,7 @@ const Navbar = () => {
                             to={`/product/${product.id}`}
                             className="block px-4 py-2 text-sm text-gray-500 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                           >
-                            {product.name}
+                          {product.name}
                           </Link>
                         ))}
                       </div>
