@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome, FaBox, FaArrowUp } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome, FaBox, FaArrowUp, FaTiktok, FaWhatsapp } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Logo from "../assets/logo.webp";
@@ -66,14 +66,44 @@ useEffect(() => {
 </div>
 <h3 className="text-3xl font-bold">Pixel Pro</h3>
   <p className="text-gray-600 max-w-sm">
-    Your one-stop shop for premium tech accessories and gadgets. Quality products at affordable prices.
+  Your one-stop shop for premium tech accessories and gadgets. Quality products at affordable prices.
   </p>
   <div className="flex justify-center md:justify-start space-x-4">
+    
+  <a
+    href="https://facebook.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Facebook"
+  >
     <FaFacebook className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
-    <FaTwitter className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
+    </a>
+    <a
+    href="https://www.tiktok.com/@pixelpro.technolo?_t=ZM-8zYWNFEoYIa&_r=1"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Twitter"
+  >
+    <FaTiktok className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
+    </a>
+
+    <a
+    href="https://www.instagram.com/pixelpro_technology?igsh=dWc0cHM5YzFlZHFs&utm_source=qr"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+  >
     <FaInstagram className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
-    <FaLinkedin className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
-    <FaYoutube className="text-xl text-gray-500 hover:text-yellow-500 transition-colors cursor-pointer" />
+    </a>
+    
+    <a
+    href="https://wa.me/254713731333"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="YouTube"
+  >
+    <FaWhatsapp className="text-xl text-gray-500 hover:text-green-500 transition-colors cursor-pointer" />
+    </a>
   </div>
 </motion.div>
 
