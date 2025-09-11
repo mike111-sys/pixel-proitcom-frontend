@@ -375,6 +375,7 @@ const Spinner = () => (
                   src={imagePreview}
                   alt="Preview"
                   className="w-full h-48 object-contain rounded-lg border border-gray-300"
+                  loading='lazy'
                 />
               </div>
             )}

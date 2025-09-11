@@ -137,6 +137,7 @@ const ProductList = ({ products, onDelete, }: {
           className={`${className} ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onLoad={handleImageLoad}
           onError={handleImageError}
+          loading='lazy'
         />
       </div>
     );

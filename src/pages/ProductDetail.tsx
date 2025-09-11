@@ -207,6 +207,7 @@ const ProductDetail = () => {
                 className={`w-full h-full object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={handleImageLoad}
                 onError={handleImageError}
+                loading='lazy'
               />
             </div>
           
