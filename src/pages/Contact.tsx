@@ -226,6 +226,22 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </div>
               </div>
 
+                {/* Extra Navigation Buttons */}
+<div className="flex flex-col sm:flex-row gap-4">
+  <a
+    href="/reviews"
+    className="w-full sm:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors text-center"
+  >
+    Read Customer Reviews
+  </a>
+  <a
+    href="/blog"
+    className="w-full sm:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors text-center"
+  >
+    Visit our Blog page
+  </a>
+</div>
+
               {/* Map */}
               <div className="rounded-lg overflow-hidden shadow-md">
                 <h3 className="text-xl font-bold mb-4 border-b-2 border-yellow-400 pb-2 inline-block">Find Us on Map</h3>
@@ -242,6 +258,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                   ></iframe>
                 </div>
               </div>
+            
+
             </motion.div>
           </div>
         </div>

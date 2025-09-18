@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FaBox, FaTags, FaSignOutAlt, FaLock, FaBars } from 'react-icons/fa';
+import { FaBox, FaTags, FaSignOutAlt, FaLock, FaBars, FaBook } from 'react-icons/fa';
 import ProductManagement from '../components/admin/ProductManagement';
 import CategoryManagement from '../components/admin/CategoryManagement';
 import ChangePassword from '../components/admin/ChangePassword';
+import { GiTalk } from 'react-icons/gi';
+import BlogManagement from '../components/admin/BlogManagement';
+import TestimonialsManagement from '../components/admin/TestimonialsManagement';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -124,6 +127,30 @@ const AdminDashboard = () => {
                 <FaTags className="mr-3" />
                 Categories
               </Link>
+              <Link
+                to="/admin/blog"
+                className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  location.pathname.startsWith('/admin/blog')
+                    ? 'bg-purple-100 text-purple-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <FaBook className="mr-3" />
+                Blogs
+              </Link>
+              <Link
+                to="/admin/reviews"
+                className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  location.pathname.startsWith('/admin/reviews')
+                    ? 'bg-purple-100 text-purple-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <GiTalk className="mr-3" />
+                Reviews
+              </Link>
             </div>
           </nav>
         </aside>
@@ -134,6 +161,10 @@ const AdminDashboard = () => {
             <Route path="/" element={<DashboardOverview />} />
             <Route path="/products/*" element={<ProductManagement />} />
             <Route path="/categories/*" element={<CategoryManagement />} />
+            <Route path="/reviews/*" element={<TestimonialsManagement />} />
+
+            <Route path="/blog/*" element={<BlogManagement />} />
+
             <Route path="/change-password" element={<ChangePassword />} />
           </Routes>
         </main>

@@ -14,6 +14,8 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+import Testimonials from './pages/Testimonials';
 
 const Loader = () => (
   <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
@@ -79,6 +81,9 @@ const Layout = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/*" element={<AdminDashboard />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/reviews" element={<Testimonials />} />
         </Routes>
       </main>
       {!hideLayout && <Footer />}

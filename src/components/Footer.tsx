@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Logo from "../assets/logo.webp";
 import Logo_blur from "../assets/logo-blur.webp";
+import { FaBook } from 'react-icons/fa6';
+import { BiConversation } from 'react-icons/bi';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -130,7 +132,14 @@ useEffect(() => {
     <FaPhone className="text-yellow-500" />
     <a href="/contact" className="hover:text-yellow-500 hover:underline transition-colors">Contact Us</a>
   </li>
-
+  <li className="flex justify-center md:justify-start items-center space-x-3">
+    <FaBook className="text-yellow-500" />
+    <a href="/blog" className="hover:text-yellow-500 hover:underline transition-colors">Blogs</a>
+  </li>
+  <li className="flex justify-center md:justify-start items-center space-x-3">
+    <BiConversation className="text-yellow-500" />
+    <a href="/reviews" className="hover:text-yellow-500 hover:underline transition-colors">Customer Reviews</a>
+  </li>
   
 </ul>
           </motion.div>
