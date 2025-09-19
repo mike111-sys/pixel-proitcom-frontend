@@ -573,82 +573,152 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Categories and Subcategories */}
+        {/* Categories and Subcategories (Mobile) */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.3 }}
+  className="space-y-4 pt-4 border-t border-gray-200"
+>
+  {/* Main Categories */}
+  {mainCategories.map((category, index) => (
+    <motion.div
+      key={category.id}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.35 + index * 0.05 }}
+      className="bg-white rounded-lg shadow-sm overflow-hidden"
+    >
+      <button
+        className="flex cursor-pointer items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
+        onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
+      >
+        <div className="flex items-center space-x-3">
+          {getIconComponent(category.icon_name)}
+          <span>{category.name}</span>
+        </div>
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="space-y-4 pt-4 border-t border-gray-200"
+          animate={{ rotate: openMobileCategory === category.id ? 90 : 0 }}
+          transition={{ duration: 0.2 }}
         >
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 + index * 0.05 }}
-              className="bg-white rounded-lg shadow-sm overflow-hidden"
-            >
-              <button
-                className="flex cursor-pointer items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
-                onClick={() => setOpenMobileCategory(openMobileCategory === category.id ? null : category.id)}
-              >
-                <div className="flex items-center space-x-3">
+          <FaChevronRight className="text-sm" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {openMobileCategory === category.id && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="pl-8 bg-gray-50 overflow-hidden"
+          >
+            {getSubcategoriesByCategory(category.id).map((subcategory) => {
+              const subcategoryProducts = getProductsBySubcategory(subcategory.id);
+              return (
+                <div key={subcategory.id} className="pl-4">
+                  <p className="flex font-bold items-center space-x-3 py-3 px-4 text-sm text-gray-600">
+                    {getIconComponent(subcategory.icon_name)}
+                    <span>{subcategory.name}</span>
+                  </p>
+
+                  {/* Products under this subcategory */}
+                  {subcategoryProducts.length > 0 && (
+                    <div className="pl-6">
+                      {subcategoryProducts.map((product) => (
+                        <Link
+                          key={product.id}
+                          to={`/product/${product.id}`}
+                          className="block py-1 text-xs text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded"
+                        >
+                          - {product.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  ))}
+
+  {/* Other Accessories (only once) */}
+  {otherCategories.length > 0 && (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+      className="bg-white rounded-lg shadow-sm overflow-hidden"
+    >
+      <button
+        className="flex items-center justify-between w-full py-4 px-5 text-gray-700 font-medium text-base"
+        onClick={() => setOpenMobileCategory(openMobileCategory === -1 ? null : -1)}
+      >
+        <div className="flex items-center space-x-3">
+          <ReactIcons.FaEllipsisH className="w-5 h-5 text-yellow-500" />
+          <span>Other Products</span>
+        </div>
+        <motion.div
+          animate={{ rotate: openMobileCategory === -1 ? 90 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <FaChevronRight className="text-sm" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {openMobileCategory === -1 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="pl-8 bg-gray-50 overflow-hidden"
+          >
+            {otherCategories.map((category) => (
+              <div key={category.id} className="pl-4">
+                <p className="flex font-bold items-center space-x-3 py-3 px-4 text-sm text-gray-600">
                   {getIconComponent(category.icon_name)}
                   <span>{category.name}</span>
-                </div>
-                <motion.div
-                  animate={{ rotate: openMobileCategory === category.id ? 90 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FaChevronRight className="text-sm" />
-                </motion.div>
-              </button>
-              <AnimatePresence>
-                {openMobileCategory === category.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="pl-8 bg-gray-50 overflow-hidden"
-                  >
-                         {getSubcategoriesByCategory(category.id).map((subcategory) => {
-  const subcategoryProducts = getProductsBySubcategory(subcategory.id);
+                </p>
 
-  return (
-    <div key={subcategory.id} className="pl-4">
-      {/* Subcategory Link */}
-      <p
-        className="flex font-bold items-center space-x-3 py-3 px-4 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-colors rounded-lg"
-      >
-        {getIconComponent(subcategory.icon_name)}
-        <span>{subcategory.name}</span>
-      </p>
-
-      {/* Products under this subcategory */}
-      {subcategoryProducts.length > 0 && (
-        <div className="pl-6">
-          {subcategoryProducts.map((product) => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              className="block py-2 text-xs text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded"
-            >
-             - {product.name}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-})}
-
-                        </motion.div>
+                {getSubcategoriesByCategory(category.id).map((subcategory) => {
+                  const subcategoryProducts = getProductsBySubcategory(subcategory.id);
+                  return (
+                    <div key={subcategory.id} className="pl-4">
+                      <p className="flex items-center space-x-3 py-2 px-4 text-xs text-gray-600">
+                        {getIconComponent(subcategory.icon_name)}
+                        <span>{subcategory.name}</span>
+                      </p>
+                      {subcategoryProducts.length > 0 && (
+                        <div className="pl-6">
+                          {subcategoryProducts.map((product) => (
+                            <Link
+                              key={product.id}
+                              to={`/product/${product.id}`}
+                              className="block py-1 text-xs text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded"
+                            >
+                              - {product.name}
+                            </Link>
+                          ))}
+                        </div>
                       )}
-                    </AnimatePresence>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  )}
+</motion.div>
+
             </div>
           </motion.div>
         )}

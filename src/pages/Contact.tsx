@@ -50,8 +50,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <>
       <div>
-        <title>Contact Us | Pixel Pro Technologies</title>
-        <meta name="description" content="Get in touch with Pixel Pro Technologies for inquiries, support, or partnerships. We're here to help with all your tech needs." />
+        <title>Contact Us | Pixel Pro Technology</title>
+        <meta name="description" content="Get in touch with Pixel Pro Technology for inquiries, support, or partnerships. We're here to help with all your tech needs." />
       </div>
 
       <div className="min-h-screen bg-white text-black">
