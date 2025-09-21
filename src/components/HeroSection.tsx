@@ -124,13 +124,13 @@ const HeroSection = () => {
         
         {/* Left side - Text content */}
         <div className="w-full md:w-1/2 h-full flex flex-col justify-center p-4 md:pr-8 relative">
-          {/* Pixel Pro Brand */}
+          {/* PixelPro Brand */}
           <div className="mb-1 md:mb-8">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-4">
-              <span className="text-black">Pixel</span>
-              <span className="text-black ml-1 md:ml-2">Pro</span>
+            <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
+              <span className="text-black">Pixelpro</span>
+              <span className="text-black ml-1 md:ml-2">Technology</span>
             </h2>
-            <div className="h-1 w-24 md:w-36 bg-gradient-to-r from-gray-700 to-gray-900 rounded-full"></div>
+            <div className="h-1 w-56 md:w-84 bg-gradient-to-r from-gray-700 to-gray-900 rounded-full"></div>
           </div>
   
           {/* Enhanced title with typewriter effect */}

@@ -66,7 +66,7 @@ useEffect(() => {
   </div>
   
 </div>
-<h3 className="text-3xl font-bold">Pixel Pro Technology</h3>
+<h3 className="text-3xl font-bold">Pixelpro Technology</h3>
   <p className="text-gray-600 max-w-sm">
   Your one-stop shop for premium tech accessories and gadgets. Quality products at affordable prices.
   </p>
@@ -210,7 +210,7 @@ useEffect(() => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <p className="text-center md:text-left">
-                &copy; {currentYear} Pixel Pro Technology. All rights reserved.
+                &copy; {currentYear} Pixelpro Technology. All rights reserved.
               </p>
             </div>
             <div className="flex flex-col items-center md:flex-row md:space-x-6">

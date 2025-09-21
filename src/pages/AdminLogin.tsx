@@ -70,7 +70,7 @@ const AdminLogin = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              Pixel Pro Technology Admin
+              Pixelpro Technology Admin
             </motion.h2>
             <motion.p 
               className="mt-2 text-sm text-white"

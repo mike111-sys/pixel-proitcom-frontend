@@ -48,7 +48,7 @@ const AdminDashboard = () => {
                 <FaBars className="h-6 w-6" />
               </button>
           
-              <h1 className="text-xl hidden sm:block font-semibold text-gray-900">Pixel Pro Technology Admin</h1>
+              <h1 className="text-xl hidden sm:block font-semibold text-gray-900">Pixelpro Technology Admin</h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600 hidden sm:inline">Welcome, {user.fullName}</span>
@@ -325,7 +325,7 @@ return (
 
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="text-purple-600 text-sm">
-            <p>Welcome to Pixel Pro Technology Admin Dashboard!</p>
+            <p>Welcome to Pixelpro Technology Admin Dashboard!</p>
             <p className="mt-2">Use the sidebar to navigate between different sections.</p>
           </div>
         </div>
