@@ -3,6 +3,8 @@ import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaStar } from 'react-icons/fa';
 import ProductForm from './ProductForm';
+import { useAuth } from '../../context/AuthContext';
+
 
 interface Product {
   id: number;
@@ -28,6 +30,7 @@ const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
+
 
 
   
@@ -77,14 +80,17 @@ const ProductManagement = () => {
 };
 
 const ProductList = ({ products, onDelete, }: { 
+  
   products: Product[]; 
   onDelete: (id: number) => void;
   onRefresh: () => void;
 }) => {
+  const { user } = useAuth();
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
+    
 
     for (let i = 0; i < fullStars; i++) {
       stars.push(<FaStar key={`full-${i}`} className="text-yellow-400 text-xs sm:text-sm" />);
@@ -247,12 +253,22 @@ const ProductList = ({ products, onDelete, }: {
                         <FaEdit />
                       </Link>
                       <button
-                        onClick={() => onDelete(product.id)}
-                        className="text-red-600 cursor-pointer hover:text-red-900"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
+  onClick={() => user?.username === 'admin' && onDelete(product.id)}
+  disabled={user?.username !== 'admin'}
+  className={`${
+    user?.username === 'admin'
+      ? 'text-red-600 hover:text-red-900 cursor-pointer'
+      : 'text-gray-400 cursor-not-allowed'
+  }`}
+  title={
+    user?.username === 'admin'
+      ? 'Delete'
+      : 'Only admin can delete products'
+  }
+>
+  <FaTrash />
+</button>
+
                     </div>
                   </td>
                 </tr>
@@ -321,12 +337,21 @@ const ProductList = ({ products, onDelete, }: {
                 <FaEdit />
               </Link>
               <button
-                onClick={() => onDelete(product.id)}
-                className="text-red-600 cursor-pointer hover:text-red-900"
-                title="Delete"
-              >
-                <FaTrash />
-              </button>
+  onClick={() => user?.username === 'admin' && onDelete(product.id)}
+  disabled={user?.username !== 'admin'}
+  className={`${
+    user?.username === 'admin'
+      ? 'text-red-600 hover:text-red-900 cursor-pointer'
+      : 'text-gray-400 cursor-not-allowed'
+  }`}
+  title={
+    user?.username === 'admin'
+      ? 'Delete'
+      : 'Only admin can delete products'
+  }
+>
+  <FaTrash />
+</button>
             </div>
           </div>
         ))}

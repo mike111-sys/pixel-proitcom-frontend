@@ -120,7 +120,7 @@ Discover the latest insights, tips, and updates on electronic gadgets.
   {blog.cover_image ? (
     <img
       loading="lazy"
-      src={`${API}/Uploads/blog-images/${blog.cover_image}`}
+      src={`${API}/api/uploads/blog-images/${blog.cover_image}`}
       alt={blog.title}
       className={`w-full h-full object-contain rounded-md transition-opacity duration-300 ${
         loadedImages[blog.id] ? "opacity-100" : "opacity-0"

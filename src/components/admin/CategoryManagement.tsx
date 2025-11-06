@@ -5,6 +5,8 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import CategoryForm from './CategoryForm';
 import SubcategoryForm from './SubcategoryForm';
 import * as ReactIcons from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
+
 
 interface Category {
   id: number;
@@ -128,6 +130,7 @@ const CategoryList = ({
   onToggleCategory: (id: number) => void;
   onRefresh: () => void;
 }) => {
+  const { user } = useAuth();
   const getSubcategoriesByCategory = (categoryId: number) => {
     return subcategories.filter(sub => sub.category_id === categoryId);
   };
@@ -204,16 +207,19 @@ const CategoryList = ({
       >
         <FaEdit className="w-4 h-4" />
       </Link>
-      <button
-        onClick={(e) => {
-          e.stopPropagation(); // Prevent triggering the expand/collapse
-          onDeleteCategory(category.id);
-        }}
-        className="text-red-600 cursor-pointer hover:text-red-800"
-        title="Delete Category"
-      >
-        <FaTrash className="w-4 h-4" />
-      </button>
+      {user?.username === 'admin' && (
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      onDeleteCategory(category.id);
+    }}
+    className="text-red-600 cursor-pointer hover:text-red-800"
+    title="Delete Category"
+  >
+    <FaTrash className="w-4 h-4" />
+  </button>
+)}
+
     </div>
     
   </div>
@@ -258,13 +264,16 @@ const CategoryList = ({
                             >
                               <FaEdit />
                             </Link>
-                            <button
-                              onClick={() => onDeleteSubcategory(subcategory.id)}
-                              className="text-red-600 cursor-pointer hover:text-red-800 text-sm"
-                              title="Delete"
-                            >
-                              <FaTrash />
-                            </button>
+                            {user?.username === 'admin' && (
+  <button
+    onClick={() => onDeleteSubcategory(subcategory.id)}
+    className="text-red-600 cursor-pointer hover:text-red-800 text-sm"
+    title="Delete"
+  >
+    <FaTrash />
+  </button>
+)}
+
                           </div>
                         </div>
                       ))}
@@ -329,13 +338,16 @@ const CategoryList = ({
                       >
                         <FaEdit />
                       </Link>
-                      <button
-                        onClick={() => onDeleteSubcategory(subcategory.id)}
-                        className="text-red-600 cursor-pointer hover:text-red-900"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
+                      {user?.username === 'admin' && (
+  <button
+    onClick={() => onDeleteSubcategory(subcategory.id)}
+    className="text-red-600 cursor-pointer hover:text-red-900"
+    title="Delete"
+  >
+    <FaTrash />
+  </button>
+)}
+
                     </div>
                   </td>
                 </tr>

@@ -207,7 +207,7 @@ const BlogManagement = () => {
     
     images.forEach((imageName, index) => {
       const placeholder = `[IMAGE:${imageName}]`;
-      const imageElement = `<img loading='lazy' src="${API_URL}/uploads/blog-images/${imageName}" alt="Blog image ${index + 1}" class="w-full h-64 object-cover rounded-lg my-4" />`;
+      const imageElement = `<img loading='lazy' src="${API_URL}/api/uploads/blog-images/${imageName}" alt="Blog image ${index + 1}" class="w-full h-64 object-cover rounded-lg my-4" />`;
       renderedContent = renderedContent.replace(placeholder, imageElement);
     });
 
@@ -324,7 +324,7 @@ const BlogManagement = () => {
                   >
                     <img
                     loading='lazy'
-                      src={`${API_URL}/uploads/blog-images/${imageName}`}
+                      src={`${API_URL}/api/uploads/blog-images/${imageName}`}
                       alt={`Image ${index + 1}`}
                       className="w-16 h-16 object-cover rounded border-2 border-transparent group-hover:border-yellow-500 transition-colors"
                     />
@@ -377,7 +377,7 @@ const BlogManagement = () => {
                 {blog.cover_image && (
                   <img
                   loading='lazy'
-                    src={`${API_URL}/uploads/blog-images/${blog.cover_image}`}
+                    src={`${API_URL}/api/uploads/blog-images/${blog.cover_image}`}
                     alt={blog.title}
                     className="w-16 h-16 object-cover rounded"
                   />

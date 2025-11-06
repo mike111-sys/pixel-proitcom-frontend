@@ -166,7 +166,7 @@ useEffect(() => {
           <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-3 shadow-sm">
             <img 
             loading="lazy"
-            src="${API}/uploads/blog-images/${imgName}" 
+            src="${API}/api/uploads/blog-images/${imgName}" 
                  alt="Blog image ${index + 1}" 
                  class="w-full h-48 md:h-56 object-contain rounded-lg shadow-sm hover:scale-105 transition-transform duration-300" />
           </div>
@@ -200,7 +200,7 @@ useEffect(() => {
             <div class="bg-gradient-to-br from-yellow-50 to-yellow-50 rounded-xl p-4 max-w-2xl shadow-sm">
               <img
               loading="lazy"
-              src="${API}/uploads/blog-images/${imageName}" 
+              src="${API}/api/uploads/blog-images/${imageName}" 
                    alt="Blog image" 
                    class="w-full h-64 md:h-80 object-contain rounded-lg shadow-sm hover:scale-105 transition-transform duration-300" />
             </div>
@@ -294,9 +294,9 @@ useEffect(() => {
 
       <img
         loading="lazy"
-        src={`${API}/uploads/blog-images/${blog.cover_image}`}
+        src={`${API}/api/uploads/blog-images/${blog.cover_image}`}
         alt={blog.title}
-        className={`w-full h-64 md:h-96 object-contain rounded-xl shadow-sm transition-opacity duration-500 ${
+        className={`w-full h-64 md:h-96 object-cover rounded-xl shadow-sm transition-opacity duration-500 ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
         onLoad={() => setImageLoaded(true)}
