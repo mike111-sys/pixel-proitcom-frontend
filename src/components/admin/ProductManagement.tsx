@@ -30,6 +30,7 @@ const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
+  
 
   useEffect(() => {
     fetchProducts();
@@ -93,6 +94,11 @@ const ProductList = ({ products, onDelete, onRefresh }: {
 }) => {
   const { user } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;
+
+  // Sort products alphabetically by name
+  const sortedProducts = [...products].sort((a, b) => 
+    a.name.localeCompare(b.name)
+  );
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -239,7 +245,7 @@ const ProductList = ({ products, onDelete, onRefresh }: {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {products.map((product) => (
+            {sortedProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -350,7 +356,7 @@ const ProductList = ({ products, onDelete, onRefresh }: {
 
       {/* Card layout for smaller screens */}
       <div className="sm:hidden space-y-4">
-        {products.map((product) => (
+      {sortedProducts.map((product) => (
           <div key={product.id} className="bg-white shadow-md rounded-lg p-4">
             <div className="flex items-center mb-3">
               <div className="h-12 w-12 rounded-lg overflow-hidden mr-3">
