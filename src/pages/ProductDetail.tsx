@@ -241,6 +241,18 @@ const ProductDetail = () => {
               Category: <span className="font-semibold text-purple-600">{product.category_name}</span>
             </div>
 
+            <span className={`font-medium ${
+                product.stock_quantity > 10 
+                  ? 'text-green-600' 
+                  : product.stock_quantity > 0 
+                  ? 'text-yellow-600' 
+                  : 'text-red-600'
+              }`}>
+                {product.stock_quantity > 0 
+                  ? `${product.stock_quantity} units left` 
+                  : 'Out of stock'}
+              </span>
+
 {/* Price */}
 <div className="mb-6">
   <div className="text-3xl font-bold text-gray-900 mb-2">

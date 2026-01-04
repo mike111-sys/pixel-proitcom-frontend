@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 interface ProductCardProps {
@@ -52,36 +52,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const discountPercentage = calculateDiscountPercentage();
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const numRating = Number(rating) || 0;
-    const fullStars = Math.floor(numRating);
-    const hasHalfStar = numRating % 1 !== 0;
-
-    // Full stars
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <FaStar key={`full-${i}`} className="text-yellow-400 text-sm" />
-      );
-    }
-
-    // Half star
-    if (hasHalfStar) {
-      stars.push(
-        <FaStarHalfAlt key="half" className="text-yellow-400 text-sm" />
-      );
-    }
-
-    // Empty stars
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <FaStar key={`empty-${i}`} className="text-gray-300 text-sm" />
-      );
-    }
-
-    return stars;
-  };
 
   return (
     <motion.div
@@ -174,9 +144,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
                 <div 
                   className={`h-1.5 rounded-full ${
-                    product.stock_quantity > 30 
+                    product.stock_quantity > 10 
                       ? 'bg-green-500' 
-                      : product.stock_quantity > 10 
+                      : product.stock_quantity > 5 
                       ? 'bg-yellow-500' 
                       : 'bg-red-500'
                   }`}
