@@ -15,6 +15,7 @@ interface ProductCardProps {
     price: number;
     original_price?: number;
     is_on_sale?: boolean;
+    stock_quantity: number;
   };
 }
 
@@ -39,6 +40,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
     target.src = '/placeholder-product.jpg';
     setImageLoaded(true); // Still show the placeholder
   };
+
+  // Calculate discount percentage
+  const calculateDiscountPercentage = () => {
+    if (!product.original_price || !product.price || product.original_price <= product.price) {
+      return 0;
+    }
+    const discount = ((product.original_price - product.price) / product.original_price) * 100;
+    return Math.round(discount); // Round to nearest whole number
+  };
+
+  const discountPercentage = calculateDiscountPercentage();
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -95,9 +107,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
               onError={handleImageError}
             />
           </div>
+          
+          {/* Category badge - left side */}
           <div className="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">
             {product.subcategory_name || product.category_name}
           </div>
+          
+          {/* OFF badge - right side (only show if discount exists) */}
+          {discountPercentage > 0 && (
+            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg">
+              {discountPercentage}% OFF
+            </div>
+          )}
         </div>
         
         <div className="p-4">
@@ -105,39 +126,67 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.name}
           </h3>
           
-          <div className="flex items-center mb-2">
-            <div className="flex items-center mr-2">
-              {renderStars(product.rating)}
-            </div>
-            <span className="text-sm text-gray-600">
-              ({product.total_ratings})
-            </span>
-          </div>
+        
           
-{/* Price Display */}
-<div className="flex items-center justify-between mt-3">
-  {product.price ? (
-    <div className="flex items-center space-x-2">
-      {product.original_price ? ( // Only show sale badge if original_price exists
-        <>
-          <span className="text-lg font-bold text-gray-900">
-            Ksh {product.price.toFixed(2)}
-          </span>
-          <span className="text-sm text-gray-500 line-through">
-            Ksh {product.original_price.toFixed(2)}
-          </span>
-        </>
-      ) : (
-        // Regular price (still technically "on sale" but no badge)
-        <span className="text-lg font-bold text-gray-900">
-          Ksh {product.price.toFixed(2)}
-        </span>
-      )}
-    </div>
-  ) : (
-    <span className="text-sm text-gray-500">Price N/A</span>
-  )}
-</div>
+          {/* Price Display */}
+          <div className="flex items-center justify-between mt-3">
+            {product.price ? (
+              <div className="flex items-center space-x-2">
+                {product.original_price ? (
+                  <>
+                    <span className="text-lg font-bold text-gray-900">
+                      Ksh {product.price.toFixed(2)}
+                    </span>
+                    <span className="text-sm text-gray-500 line-through">
+                      Ksh {product.original_price.toFixed(2)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-lg font-bold text-gray-900">
+                    Ksh {product.price.toFixed(2)}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className="text-sm text-gray-500">Price N/A</span>
+            )}
+          </div>
+
+          {/* Stock Quantity */}
+          <div className="mt-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-600">Available:</span>
+              <span className={`font-medium ${
+                product.stock_quantity > 10 
+                  ? 'text-green-600' 
+                  : product.stock_quantity > 0 
+                  ? 'text-yellow-600' 
+                  : 'text-red-600'
+              }`}>
+                {product.stock_quantity > 0 
+                  ? `${product.stock_quantity} units left` 
+                  : 'Out of stock'}
+              </span>
+            </div>
+            
+            {/* Optional: Stock progress bar */}
+            {product.stock_quantity > 0 && (
+              <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
+                <div 
+                  className={`h-1.5 rounded-full ${
+                    product.stock_quantity > 30 
+                      ? 'bg-green-500' 
+                      : product.stock_quantity > 10 
+                      ? 'bg-yellow-500' 
+                      : 'bg-red-500'
+                  }`}
+                  style={{ 
+                    width: `${Math.min(100, (product.stock_quantity / 100) * 100)}%` 
+                  }}
+                ></div>
+              </div>
+            )}
+          </div>
         </div>
       </Link>
     </motion.div>
