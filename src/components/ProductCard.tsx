@@ -121,34 +121,23 @@ const ProductCard = ({ product }: ProductCardProps) => {
       {product.original_price ? ( // Only show sale badge if original_price exists
         <>
           <span className="text-lg font-bold text-gray-900">
-            ${product.price.toFixed(2)}
+            Ksh {product.price.toFixed(2)}
           </span>
           <span className="text-sm text-gray-500 line-through">
-            ${product.original_price.toFixed(2)}
-          </span>
-          <span className="text-xs font-semibold bg-red-100 text-red-800 px-2 py-1 rounded">
-            SALE
+            Ksh {product.original_price.toFixed(2)}
           </span>
         </>
       ) : (
         // Regular price (still technically "on sale" but no badge)
         <span className="text-lg font-bold text-gray-900">
-          ${product.price.toFixed(2)}
+          Ksh {product.price.toFixed(2)}
         </span>
       )}
     </div>
   ) : (
-    <span className="text-sm text-gray-500">Price not available</span>
+    <span className="text-sm text-gray-500">Price N/A</span>
   )}
 </div>
-
-
-
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">
-              {product.subcategory_name ? `${product.category_name} > ${product.subcategory_name}` : product.category_name}
-            </span>
-          </div>
         </div>
       </Link>
     </motion.div>

@@ -14,6 +14,9 @@ interface Product {
   total_ratings: number;
   category_name: string;
   stock_quantity: number;
+  price: number | null;
+  original_price: number | null;
+  is_on_sale: boolean;
   features: Array<{
     feature_name: string;
     feature_value: string;
@@ -23,7 +26,9 @@ interface Product {
 interface SimilarProduct {
   id: number;
   name: string;
-  price: number;
+  price: number | null;
+  original_price: number | null;
+  is_on_sale: boolean;
   image_url: string;
   rating: number;
   total_ratings: number;
@@ -232,6 +237,35 @@ const ProductDetail = () => {
             <div className="text-lg text-gray-600 mb-6">
               Category: <span className="font-semibold text-purple-600">{product.category_name}</span>
             </div>
+
+{/* Price */}
+<div className="mb-6">
+  <div className="text-3xl font-bold text-gray-900 mb-2">
+    {product.price ? (
+      <div className="flex items-center space-x-4">
+        <span>Ksh {product.price.toFixed(2)}</span>
+        {product.is_on_sale && product.original_price && product.original_price > product.price && (
+          <>
+            <span className="text-xl text-gray-500 line-through">
+              Ksh {product.original_price.toFixed(2)}
+            </span>
+            <span className="text-sm font-semibold bg-red-100 text-red-800 px-3 py-1 rounded-full">
+              SAVE Ksh {(product.original_price - product.price).toFixed(2)}
+            </span>
+          </>
+        )}
+      </div>
+    ) : (
+      <span className="text-gray-500">Price not available</span>
+    )}
+  </div>
+  
+  {product.is_on_sale && product.original_price && (
+    <div className="text-sm text-green-600 font-semibold">
+      ✓ On Sale - Limited Time Offer
+    </div>
+  )}
+</div>
 
             {/* Availability */}
             <div className="mb-6">
