@@ -319,9 +319,9 @@ const ProductDetail = () => {
         {product.features && product.features.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-16">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Product Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               {product.features.map((feature, index) => (
-                <div key={index} className="flex justify-between py-2 border-b border-gray-200">
+                <div key={index} className="flex justify-between py-2 gap-10 lg:gap-30 border-b border-gray-200">
                   <span className="font-semibold text-gray-700">{feature.feature_name}:</span>
                   <span className="text-gray-600">{feature.feature_value}</span>
                 </div>
