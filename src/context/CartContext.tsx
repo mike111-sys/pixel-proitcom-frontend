@@ -5,6 +5,9 @@ interface CartItem {
   name: string;
   image_url: string;
   quantity: number;
+  price: number | null;
+  original_price: number | null;
+  is_on_sale: boolean;
 }
 
 interface CartContextType {
@@ -15,6 +18,7 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getTotalSavings: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -47,14 +51,28 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product: any, quantity: number = 1) => {
+  const addToCart = (product: {
+    id: number;
+    name: string;
+    image_url: string;
+    price?: number | null;
+    original_price?: number | null;
+    is_on_sale?: boolean;
+  }, quantity: number = 1) => {
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       
       if (existingItem) {
         return prevItems.map(item =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { 
+                ...item, 
+                quantity: item.quantity + quantity,
+                // Update prices if they were missing before
+                price: item.price || product.price || null,
+                original_price: item.original_price || product.original_price || null,
+                is_on_sale: item.is_on_sale || product.is_on_sale || false
+              }
             : item
         );
       } else {
@@ -62,7 +80,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           id: product.id,
           name: product.name,
           image_url: product.image_url,
-          quantity
+          quantity,
+          price: product.price || null,
+          original_price: product.original_price || null,
+          is_on_sale: product.is_on_sale || false
         }];
       }
     });
@@ -94,7 +115,18 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   };
 
   const getTotalPrice = () => {
-    return 0; // No pricing in this version
+    return items.reduce((total, item) => {
+      return total + ((item.price || 0) * item.quantity);
+    }, 0);
+  };
+
+  const getTotalSavings = () => {
+    return items.reduce((savings, item) => {
+      if (item.is_on_sale && item.original_price && item.price) {
+        return savings + ((item.original_price - item.price) * item.quantity);
+      }
+      return savings;
+    }, 0);
   };
 
   const value = {
@@ -104,7 +136,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     updateQuantity,
     clearCart,
     getTotalItems,
-    getTotalPrice
+    getTotalPrice,
+    getTotalSavings
   };
 
   return (

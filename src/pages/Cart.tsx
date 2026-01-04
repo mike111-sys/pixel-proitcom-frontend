@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext';
 import { FaTrash, FaPhone, FaEnvelope, FaUser, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Cart = () => {
-  const { items, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { items, removeFromCart, updateQuantity, clearCart, getTotalPrice, getTotalSavings } = useCart();
   const [orderForm, setOrderForm] = useState({
     name: '',
     email: '',
@@ -13,6 +13,10 @@ const Cart = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const subtotal = getTotalPrice();
+  const savings = getTotalSavings();
+  const grandTotal = subtotal;
 
   // Generate order ID
   const generateOrderId = () => {
@@ -38,18 +42,37 @@ const Cart = () => {
       const orderId = generateOrderId();
       
       // Prepare order details
-      const orderDetails = items.map(item => 
-        `${item.name} (Qty: ${item.quantity})`
-      ).join('\n');
-
+      const orderDetails = items.map(item => {
+        const itemPrice = item.price || 0; // Default to 0 if null
+        const itemTotal = itemPrice * item.quantity;
+        const originalPrice = item.original_price || 0;
+        const originalTotal = originalPrice * item.quantity;
+        
+        return `${item.name} 
+        Quantity: ${item.quantity}
+        Unit Price: ${item.price ? `Ksh ${item.price.toFixed(2)}` : 'Not set'}
+        ${item.original_price && item.original_price > itemPrice ? `Original: Ksh ${item.original_price.toFixed(2)}` : ''}
+        Item Total: Ksh ${itemTotal.toFixed(2)}
+        ${item.original_price && item.original_price > itemPrice ? `Savings Made: Ksh ${(originalTotal - itemTotal).toFixed(2)}` : ''}`;
+      }).join('\n\n');
+      
+      // Add summary
+      const orderSummary = `
+      ORDER SUMMARY:
+      -------------
+      Subtotal: Ksh ${subtotal.toFixed(2)}
+      ${savings > 0 ? `Total Savings: Ksh ${savings.toFixed(2)}\n` : ''}
+      GRAND TOTAL: Ksh ${grandTotal.toFixed(2)}
+      `;
+      
       const formData = {
-        access_key: 'fbc808f0-e376-424c-bb16-9e14add75a5e', // You'll fill this in
+        access_key: 'fbc808f0-e376-424c-bb16-9e14add75a5e',
         name: orderForm.name,
         email: orderForm.email,
         phone: orderForm.phone,
         address: orderForm.address,
-        message: `Order ID: ${orderId}\n\nOrder Details:\n${orderDetails}\n\nAdditional Message: ${orderForm.message}`,
-        subject: `New Order - ${orderId}`
+        message: `Order ID: ${orderId}\n\nORDER DETAILS:\n${orderDetails}\n\n${orderSummary}\n\nAdditional Message: ${orderForm.message}`,
+        subject: `New Order - ${orderId} - Ksh ${grandTotal.toFixed(2)}`
       };
 
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -134,6 +157,33 @@ const Cart = () => {
                     <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                   </div>
                   
+                  <div className="text-sm text-gray-600">
+  {item.price ? (
+    <div className="space-y-1">
+      <div className="flex items-center space-x-2">
+        <span className="font-semibold text-gray-900">
+          Ksh {(item.price * item.quantity).toFixed(2)}
+        </span>
+        <span className="text-gray-500">
+          (Ksh {item.price.toFixed(2)} × {item.quantity})
+        </span>
+      </div>
+      {item.is_on_sale && item.original_price && item.original_price > item.price && (
+        <div className="flex items-center space-x-2">
+          <span className="text-xs text-gray-500 line-through">
+            Was: Ksh {(item.original_price * item.quantity).toFixed(2)}
+          </span>
+          <span className="text-xs text-green-600 font-semibold">
+            Save Ksh {((item.original_price - item.price) * item.quantity).toFixed(2)}
+          </span>
+        </div>
+      )}
+    </div>
+  ) : (
+    <span className="text-gray-400">Price not set</span>
+  )}
+</div>
+
                   <div className="flex items-center space-x-2">
                     <select
                       value={item.quantity}
@@ -156,13 +206,34 @@ const Cart = () => {
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold text-gray-800">Total Items:</span>
-                <span className="text-lg font-semibold text-purple-600">{items.reduce((total, item) => total + item.quantity, 0)}</span>
-              </div>
-            </div>
+            <div className="mt-6 pt-4 border-t border-gray-200 space-y-3">
+  <div className="flex justify-between items-center">
+    <span className="text-gray-600">Subtotal:</span>
+    <span className="font-semibold text-gray-900">Ksh {subtotal.toFixed(2)}</span>
+  </div>
+  
+  {savings > 0 && (
+    <div className="flex justify-between items-center">
+      <span className="text-green-600">Total Savings:</span>
+      <span className="font-semibold text-green-600">-Ksh {savings.toFixed(2)}</span>
+    </div>
+  )}
+  
+  <div className="flex justify-between items-center pt-2 border-t">
+    <span className="text-lg font-semibold text-gray-800">Total Items:</span>
+    <span className="text-lg font-semibold text-purple-600">
+      {items.reduce((total, item) => total + item.quantity, 0)}
+    </span>
+  </div>
+  
+  <div className="flex justify-between items-center pt-2 border-t">
+    <span className="text-xl font-bold text-gray-900">Total Amount:</span>
+    <span className="text-2xl font-bold text-purple-600">Ksh {grandTotal.toFixed(2)}</span>
+  </div>
+</div>
           </div>
+
+         
 
           {/* Order Form */}
           <div className="bg-white rounded-lg shadow-md p-6">

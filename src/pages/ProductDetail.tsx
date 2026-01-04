@@ -150,7 +150,10 @@ const ProductDetail = () => {
       addToCart({
         id: product.id,
         name: product.name,
-        image_url: product.image_url
+        image_url: product.image_url,
+        price: product.price,
+        original_price: product.original_price,
+        is_on_sale: product.is_on_sale
       }, quantity);
     }
   };
