@@ -12,6 +12,9 @@ interface ProductCardProps {
     total_ratings: number;
     category_name: string;
     subcategory_name?: string;
+    price: number;
+    original_price?: number;
+    is_on_sale?: boolean;
   };
 }
 
@@ -111,6 +114,36 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           </div>
           
+{/* Price Display */}
+<div className="flex items-center justify-between mt-3">
+  {product.price ? (
+    <div className="flex items-center space-x-2">
+      {product.original_price ? ( // Only show sale badge if original_price exists
+        <>
+          <span className="text-lg font-bold text-gray-900">
+            ${product.price.toFixed(2)}
+          </span>
+          <span className="text-sm text-gray-500 line-through">
+            ${product.original_price.toFixed(2)}
+          </span>
+          <span className="text-xs font-semibold bg-red-100 text-red-800 px-2 py-1 rounded">
+            SALE
+          </span>
+        </>
+      ) : (
+        // Regular price (still technically "on sale" but no badge)
+        <span className="text-lg font-bold text-gray-900">
+          ${product.price.toFixed(2)}
+        </span>
+      )}
+    </div>
+  ) : (
+    <span className="text-sm text-gray-500">Price not available</span>
+  )}
+</div>
+
+
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
               {product.subcategory_name ? `${product.category_name} > ${product.subcategory_name}` : product.category_name}

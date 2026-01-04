@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import axios from 'axios';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaStar } from 'react-icons/fa';
-import ProductForm from './ProductForm';
-import { useAuth } from '../../context/AuthContext';
-
+import { useState, useEffect, useRef } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import axios from "axios";
+import { FaPlus, FaEdit, FaTrash, FaEye, FaStar } from "react-icons/fa";
+import ProductForm from "./ProductForm";
+import { useAuth } from "../../context/AuthContext";
 
 interface Product {
   id: number;
@@ -16,8 +15,10 @@ interface Product {
   stock_quantity: number;
   is_featured: boolean;
   is_new: boolean;
+  price: number | null;
+  original_price: number | null;
+  is_on_sale: boolean;
 }
-
 
 interface ImageWithLoaderProps {
   src: string;
@@ -25,16 +26,10 @@ interface ImageWithLoaderProps {
   className: string;
 }
 
-
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
-
-
-
-  
-
 
   useEffect(() => {
     fetchProducts();
@@ -45,19 +40,19 @@ const ProductManagement = () => {
       const response = await axios.get(`${API_URL}/api/products?limit=100`);
       setProducts(response.data.products);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await axios.delete(`${API_URL}/api/products/${id}`);
         fetchProducts();
       } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error("Error deleting product:", error);
       }
     }
   };
@@ -72,37 +67,61 @@ const ProductManagement = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<ProductList products={products} onDelete={handleDelete} onRefresh={fetchProducts} />} />
+      <Route
+        path="/"
+        element={
+          <ProductList
+            products={products}
+            onDelete={handleDelete}
+            onRefresh={fetchProducts}
+          />
+        }
+      />
       <Route path="/add" element={<ProductForm onSuccess={fetchProducts} />} />
-      <Route path="/edit/:id" element={<ProductForm onSuccess={fetchProducts} />} />
+      <Route
+        path="/edit/:id"
+        element={<ProductForm onSuccess={fetchProducts} />}
+      />
     </Routes>
   );
 };
 
-const ProductList = ({ products, onDelete, }: { 
-  
+const ProductList = ({ products, onDelete, onRefresh }: { 
   products: Product[]; 
   onDelete: (id: number) => void;
   onRefresh: () => void;
 }) => {
   const { user } = useAuth();
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
-    
 
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} className="text-yellow-400 text-xs sm:text-sm" />);
+      stars.push(
+        <FaStar
+          key={`full-${i}`}
+          className="text-yellow-400 text-xs sm:text-sm"
+        />
+      );
     }
 
     if (hasHalfStar) {
-      stars.push(<FaStar key="half" className="text-yellow-400 text-xs sm:text-sm" />);
+      stars.push(
+        <FaStar key="half" className="text-yellow-400 text-xs sm:text-sm" />
+      );
     }
 
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaStar key={`empty-${i}`} className="text-gray-300 text-xs sm:text-sm" />);
+      stars.push(
+        <FaStar
+          key={`empty-${i}`}
+          className="text-gray-300 text-xs sm:text-sm"
+        />
+      );
     }
 
     return stars;
@@ -111,24 +130,24 @@ const ProductList = ({ products, onDelete, }: {
   const ImageWithLoader = ({ src, alt, className }: ImageWithLoaderProps) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const imgRef = useRef<HTMLImageElement>(null);
-  
+
     useEffect(() => {
       const img = imgRef.current;
       if (img && img.complete) {
         setImageLoaded(true);
       }
     }, []);
-  
+
     const handleImageLoad = () => {
       setImageLoaded(true);
     };
-  
+
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
       const target = e.target as HTMLImageElement;
-      target.src = '/placeholder-product.jpg';
+      target.src = "/placeholder-product.jpg";
       setImageLoaded(true);
     };
-  
+
     return (
       <div className="relative">
         {!imageLoaded && (
@@ -138,21 +157,49 @@ const ProductList = ({ products, onDelete, }: {
         )}
         <img
           ref={imgRef}
-          src={src || '/placeholder-product.jpg'}
+          src={src || "/placeholder-product.jpg"}
           alt={alt}
-          className={`${className} ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`${className} ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
           onLoad={handleImageLoad}
           onError={handleImageError}
-          loading='lazy'
+          loading="lazy"
         />
       </div>
     );
   };
 
+  const [editingPrice, setEditingPrice] = useState<{
+    id: number;
+    price: number | null;
+    original_price: number | null;
+    is_on_sale: boolean;
+  } | null>(null);
+
+
+  const savePrice = async () => {
+    if (!editingPrice) return;
+  
+    try {
+      await axios.put(`${API_URL}/api/products/${editingPrice.id}`, {
+        price: editingPrice.price,
+        original_price: editingPrice.original_price,
+        is_on_sale: true, // Always true
+      });
+      onRefresh();
+      setEditingPrice(null);
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-0">Product Management</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-0">
+          Product Management
+        </h2>
         <Link
           to="/admin/products/add"
           className="bg-purple-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center sm:justify-start w-full sm:w-auto"
@@ -181,6 +228,9 @@ const ProductList = ({ products, onDelete, }: {
                   Stock
                 </th>
                 <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Price
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -191,21 +241,22 @@ const ProductList = ({ products, onDelete, }: {
             <tbody className="bg-white divide-y divide-gray-200">
               {products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
-                
-<td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-  <div className="flex items-center">
-    <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-      <ImageWithLoader
-        src={product.image_url}
-        alt={product.name}
-        className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
-      />
-    </div>
-    <div className="ml-3 sm:ml-4">
-      <div className="text-sm font-medium text-gray-900">{product.name}</div>
-    </div>
-  </div>
-</td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
+                        <ImageWithLoader
+                          src={product.image_url}
+                          alt={product.name}
+                          className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover"
+                        />
+                      </div>
+                      <div className="ml-3 sm:ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {product.name}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {product.category_name}
                   </td>
@@ -221,6 +272,24 @@ const ProductList = ({ products, onDelete, }: {
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {product.stock_quantity}
+                  </td>
+                  <td
+                    className="px-4 sm:px-6 py-4 whitespace-nowrap"
+                  >
+                    <div className="text-sm font-medium text-gray-900">
+                      {product.price ? (
+                        <div className="flex flex-col">
+                          <span>Ksh {product.price.toFixed(2)}</span>
+                          {product.is_on_sale && product.original_price && (
+                            <span className="text-xs text-gray-500 line-through">
+                              Ksh {product.original_price.toFixed(2)}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">Not set</span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex space-x-1">
@@ -253,22 +322,23 @@ const ProductList = ({ products, onDelete, }: {
                         <FaEdit />
                       </Link>
                       <button
-  onClick={() => user?.username === 'admin' && onDelete(product.id)}
-  disabled={user?.username !== 'admin'}
-  className={`${
-    user?.username === 'admin'
-      ? 'text-red-600 hover:text-red-900 cursor-pointer'
-      : 'text-gray-400 cursor-not-allowed'
-  }`}
-  title={
-    user?.username === 'admin'
-      ? 'Delete'
-      : 'Only admin can delete products'
-  }
->
-  <FaTrash />
-</button>
-
+                        onClick={() =>
+                          user?.username === "admin" && onDelete(product.id)
+                        }
+                        disabled={user?.username !== "admin"}
+                        className={`${
+                          user?.username === "admin"
+                            ? "text-red-600 hover:text-red-900 cursor-pointer"
+                            : "text-gray-400 cursor-not-allowed"
+                        }`}
+                        title={
+                          user?.username === "admin"
+                            ? "Delete"
+                            : "Only admin can delete products"
+                        }
+                      >
+                        <FaTrash />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -282,31 +352,38 @@ const ProductList = ({ products, onDelete, }: {
       <div className="sm:hidden space-y-4">
         {products.map((product) => (
           <div key={product.id} className="bg-white shadow-md rounded-lg p-4">
-           
-<div className="flex items-center mb-3">
-  <div className="h-12 w-12 rounded-lg overflow-hidden mr-3">
-    <ImageWithLoader
-      src={product.image_url}
-      alt={product.name}
-      className="h-12 w-12 object-cover"
-    />
-  </div>
-  <div>
-    <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
-    <p className="text-xs text-gray-600">{product.category_name}</p>
-  </div>
-</div>
+            <div className="flex items-center mb-3">
+              <div className="h-12 w-12 rounded-lg overflow-hidden mr-3">
+                <ImageWithLoader
+                  src={product.image_url}
+                  alt={product.name}
+                  className="h-12 w-12 object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-900">
+                  {product.name}
+                </h3>
+                <p className="text-xs text-gray-600">{product.category_name}</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-2 mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600">Rating</p>
                 <div className="flex items-center">
-                  <div className="flex items-center mr-2">{renderStars(product.rating)}</div>
-                  <span className="text-xs text-gray-600">({product.total_ratings})</span>
+                  <div className="flex items-center mr-2">
+                    {renderStars(product.rating)}
+                  </div>
+                  <span className="text-xs text-gray-600">
+                    ({product.total_ratings})
+                  </span>
                 </div>
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-600">Stock</p>
-                <p className="text-xs text-gray-900">{product.stock_quantity}</p>
+                <p className="text-xs text-gray-900">
+                  {product.stock_quantity}
+                </p>
               </div>
             </div>
             <div className="flex space-x-1 mb-3">
@@ -337,25 +414,104 @@ const ProductList = ({ products, onDelete, }: {
                 <FaEdit />
               </Link>
               <button
-  onClick={() => user?.username === 'admin' && onDelete(product.id)}
-  disabled={user?.username !== 'admin'}
-  className={`${
-    user?.username === 'admin'
-      ? 'text-red-600 hover:text-red-900 cursor-pointer'
-      : 'text-gray-400 cursor-not-allowed'
-  }`}
-  title={
-    user?.username === 'admin'
-      ? 'Delete'
-      : 'Only admin can delete products'
-  }
->
-  <FaTrash />
-</button>
+                onClick={() =>
+                  user?.username === "admin" && onDelete(product.id)
+                }
+                disabled={user?.username !== "admin"}
+                className={`${
+                  user?.username === "admin"
+                    ? "text-red-600 hover:text-red-900 cursor-pointer"
+                    : "text-gray-400 cursor-not-allowed"
+                }`}
+                title={
+                  user?.username === "admin"
+                    ? "Delete"
+                    : "Only admin can delete products"
+                }
+              >
+                <FaTrash />
+              </button>
             </div>
           </div>
         ))}
       </div>
+      {/* Price Edit Modal */}
+      {editingPrice && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-bold mb-4">Edit Price</h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Price *
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={editingPrice.price || ""}
+                  onChange={(e) =>
+                    setEditingPrice((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            price: e.target.value
+                              ? parseFloat(e.target.value)
+                              : null,
+                          }
+                        : null
+                    )
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Original Price
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={editingPrice.original_price || ""}
+                  onChange={(e) =>
+                    setEditingPrice((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            original_price: e.target.value
+                              ? parseFloat(e.target.value)
+                              : null,
+                            is_on_sale: true, // Always true
+                          }
+                        : null
+                    )
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
+              </div>
+
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setEditingPrice(null)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={savePrice}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

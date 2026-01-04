@@ -23,6 +23,9 @@ interface Product {
   stock_quantity: number;
   is_featured: boolean;
   is_new: boolean;
+  price: number | null;
+  original_price: number | null;
+  is_on_sale: boolean;
   features: Array<{
     feature_name: string;
     feature_value: string;
@@ -48,6 +51,9 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
     stock_quantity: 0,
     is_featured: false,
     is_new: false,
+    price: null,
+    original_price: null,
+    is_on_sale: true,
     features: []
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -108,6 +114,9 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
         stock_quantity: productData.stock_quantity,
         is_featured: productData.is_featured,
         is_new: productData.is_new,
+        price: productData.price,
+        original_price: productData.original_price,
+        is_on_sale: productData.is_on_sale,
         features: productData.features || []
       });
       if (productData.image_url) {
@@ -164,7 +173,10 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       formData.append('category_id', product.category_id?.toString() || '0');
       formData.append('subcategory_id', product.subcategory_id?.toString() || '0');
       formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
-     formData.append('is_featured', product.is_featured ? '1' : '0');
+      formData.append('price', product.price?.toString() || '');
+formData.append('original_price', product.original_price?.toString() || '');
+formData.append('is_on_sale', '1'); // Always set to true
+formData.append('is_featured', product.is_featured ? '1' : '0');
 formData.append('is_new', product.is_new ? '1' : '0');
 
 
@@ -328,6 +340,51 @@ const Spinner = () => (
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Current Price in Ksh *
+    </label>
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      required
+      value={product.price || ''}
+      onChange={(e) => setProduct(prev => ({ 
+        ...prev, 
+        price: e.target.value ? parseFloat(e.target.value) : null,
+        // Automatically set is_on_sale to true when price is entered
+        is_on_sale: true
+      }))}
+      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+    />
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Original Price in Ksh (Optional)
+    </label>
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      value={product.original_price || ''}
+      onChange={(e) => setProduct(prev => ({ 
+        ...prev, 
+        original_price: e.target.value ? parseFloat(e.target.value) : null,
+        // Always on sale when original price exists
+        is_on_sale: true
+      }))}
+      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+    />
+    <p className="text-xs text-gray-500 mt-1">
+      If provided, shows as strikethrough price. Leave empty for regular pricing.
+    </p>
+  </div>
+</div>
+
 
             <div className="flex space-x-4">
               <label className="flex items-center">
