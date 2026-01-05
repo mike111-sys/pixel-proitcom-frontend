@@ -216,38 +216,37 @@ const ProductList = ({ products, onDelete, onRefresh }: {
       </div>
 
       {/* Table for larger screens */}
-      <div className="hidden sm:block bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+      <div className="hidden sm:block bg-white shadow-md rounded-lg">
+  <div className="overflow-x-auto max-w-full">
+
+  <table className="w-full table-fixed divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Product
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rating
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Stock
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+              <th className="w-[35%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Product
+</th>
+<th className="w-[15%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Category
+</th>
+<th className="w-[10%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Stock
+</th>
+<th className="w-[15%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Price
+</th>
+<th className="w-[15%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Status
+</th>
+<th className="w-[10%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+  Actions
+</th>
+
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
             {sortedProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+<td className="px-4 sm:px-6 py-4 whitespace-normal break-words">
                     <div className="flex items-center">
                       <div className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
                         <ImageWithLoader
@@ -257,32 +256,22 @@ const ProductList = ({ products, onDelete, onRefresh }: {
                         />
                       </div>
                       <div className="ml-3 sm:ml-4">
-                        <div className="text-sm font-medium text-gray-900">
+                      <div className="text-xs font-medium text-gray-900 break-words">
                           {product.name}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                     {product.category_name}
                   </td>
-                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex items-center mr-2">
-                        {renderStars(product.rating)}
-                      </div>
-                      <span className="text-sm text-gray-600">
-                        ({product.total_ratings})
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                     {product.stock_quantity}
                   </td>
                   <td
                     className="px-4 sm:px-6 py-4 whitespace-nowrap"
                   >
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-xs font-medium text-gray-900">
                       {product.price ? (
                         <div className="flex flex-col">
                           <span>Ksh {product.price.toFixed(2)}</span>
