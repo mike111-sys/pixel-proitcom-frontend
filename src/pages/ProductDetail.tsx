@@ -2,14 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
-import { FaStar, FaPhone, FaArrowLeft } from 'react-icons/fa';
+import { FaStar, FaPhone, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 
 interface Product {
   id: number;
   name: string;
   description: string;
-  image_url: string;
+  image_url: string; // Keep for backward compatibility
   rating: number;
   total_ratings: number;
   category_name: string;
@@ -21,7 +21,14 @@ interface Product {
     feature_name: string;
     feature_value: string;
   }>;
+  images?: Array<{ // Add this
+    id: number;
+    image_url: string;
+    is_primary: boolean;
+    display_order: number;
+  }>;
 }
+
 
 interface SimilarProduct {
   id: number;
@@ -42,7 +49,23 @@ const ProductDetail = () => {
   const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+const [currentImage, setCurrentImage] = useState('');
 
+
+// Add this useEffect to set initial current image
+useEffect(() => {
+  if (product) {
+    if (product.images && product.images.length > 0) {
+      // Find primary image or use first image
+      const primaryImage = product.images.find(img => img.is_primary);
+      setCurrentImage(primaryImage ? primaryImage.image_url : product.images[0].image_url);
+    } else if (product.image_url) {
+      setCurrentImage(product.image_url);
+      setCurrentImageIndex(0);
+    }
+  }
+}, [product]);
 
   // Add state and ref for image loading
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -81,6 +104,11 @@ const ProductDetail = () => {
     }
   }, [product]);
 
+const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const target = e.target as HTMLImageElement;
+  target.src = '/placeholder-product.jpg';
+};
+
   
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -101,10 +129,15 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
+      // Use current image or first available image
+      const cartImage = currentImage || 
+                       (product.images && product.images[0]?.image_url) || 
+                       product.image_url;
+      
       addToCart({
         id: product.id,
         name: product.name,
-        image_url: product.image_url,
+        image_url: cartImage,
         price: product.price,
         original_price: product.original_price,
         is_on_sale: product.is_on_sale
@@ -154,27 +187,87 @@ const ProductDetail = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Product Image */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="w-full h-96 bg-white overflow-hidden flex items-center justify-center relative">
-              {!imageLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <FaStar className="text-yellow-500 text-7xl animate-spin" />
-                </div>
-              )}
-              <img
-                ref={imgRef}
-                src={product.image_url || '/placeholder-product.jpg'}
-                alt={product.name}
-                className={`w-full h-full object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-                loading='lazy'
-              />
-            </div>
-          
-
-          </div>
+          {/* Product Images Gallery */}
+<div className="bg-white rounded-lg shadow-md p-6">
+  {/* Main Image */}
+  <div className="w-full h-96 bg-white overflow-hidden flex items-center justify-center relative mb-4">
+    {!imageLoaded && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <FaStar className="text-yellow-500 text-7xl animate-spin" />
+      </div>
+    )}
+    <img
+      ref={imgRef}
+      src={currentImage || product.image_url || '/placeholder-product.jpg'}
+      alt={product.name}
+      className={`w-full h-full object-contain ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+      onLoad={handleImageLoad}
+      onError={handleImageError}
+      loading='lazy'
+    />
+    
+    {/* Navigation arrows if multiple images */}
+    {product.images && product.images.length > 1 && (
+      <>
+        <button
+          onClick={() => {
+            if (product.images) {
+              const newIndex = currentImageIndex === 0 ? product.images.length - 1 : currentImageIndex - 1;
+              setCurrentImageIndex(newIndex);
+              setCurrentImage(product.images[newIndex].image_url);
+              setImageLoaded(false);
+            }
+          }}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+        >
+          <FaArrowLeft />
+        </button>
+        <button
+          onClick={() => {
+            if (product.images) {
+              const newIndex = currentImageIndex === product.images.length - 1 ? 0 : currentImageIndex + 1;
+              setCurrentImageIndex(newIndex);
+              setCurrentImage(product.images[newIndex].image_url);
+              setImageLoaded(false);
+            }
+          }}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+        >
+          <FaArrowRight />
+        </button>
+      </>
+    )}
+  </div>
+  
+  {/* Thumbnail Gallery */}
+  {product.images && product.images.length > 1 && (
+    <div className="flex space-x-2 overflow-x-auto py-2 px-1">
+      {product.images.map((img, index) => (
+        <button
+          key={img.id}
+          onClick={() => {
+            setCurrentImageIndex(index);
+            setCurrentImage(img.image_url);
+            setImageLoaded(false);
+          }}
+          className={`flex-shrink-0 w-20 h-20 border-2 rounded-lg overflow-hidden transition-all ${
+            currentImage === img.image_url 
+              ? 'border-purple-600 ring-2 ring-purple-300' 
+              : 'border-gray-300 hover:border-purple-400'
+          }`}
+        >
+          <img
+            src={img.image_url}
+            alt={`${product.name} ${index + 1}`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={handleThumbnailError}
+          />
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
           {/* Product Info */}
           <div className="bg-white rounded-lg shadow-md p-6">
