@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
-import { FaStar, FaStarHalfAlt, FaPhone, FaArrowLeft } from 'react-icons/fa';
+import { FaStar, FaPhone, FaArrowLeft } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 
 interface Product {
@@ -41,7 +41,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userRating, setUserRating] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
 
@@ -93,53 +92,8 @@ const ProductDetail = () => {
     setImageLoaded(true); // Still show the placeholder
   };
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const numRating = Number(rating) || 0;
-    const fullStars = Math.floor(numRating);
-    const hasHalfStar = numRating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <FaStar key={`full-${i}`} className="text-yellow-400 text-lg" />
-      );
-    }
-
-    if (hasHalfStar) {
-      stars.push(
-        <FaStarHalfAlt key="half" className="text-yellow-400 text-lg" />
-      );
-    }
-
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <FaStar key={`empty-${i}`} className="text-gray-300 text-lg" />
-      );
-    }
-
-    return stars;
-  };
-
-  const handleRatingSubmit = async () => {
-    if (userRating === 0) return;
-
-    const API_URL = import.meta.env.VITE_API_URL;
 
 
-    try {
-      await axios.post(`${API_URL}/api/products/${id}/rate`, {
-        rating: userRating
-      });
-      
-      // Refresh product data to show updated rating
-      const response = await axios.get(`${API_URL}/api/products/${id}`);
-      setProduct(response.data.product);
-      setUserRating(0);
-    } catch (error) {
-      console.error('Error submitting rating:', error);
-    }
-  };
 
   const handleCall = () => {
     window.location.href = 'tel:0713731333';
@@ -226,15 +180,7 @@ const ProductDetail = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h1>
             
-            {/* Rating */}
-            <div className="flex items-center mb-4">
-              <div className="flex items-center mr-2">
-                {renderStars(product.rating)}
-              </div>
-              <span className="text-gray-600">
-                {(Number(product.rating) || 0).toFixed(1)} ({Number(product.total_ratings) || 0} ratings)
-              </span>
-            </div>
+        
 
             {/* Category */}
             <div className="text-lg text-gray-600 mb-6">
@@ -306,8 +252,16 @@ const ProductDetail = () => {
               )}
             </div>
 
-            {/* Add to Cart */}
-            {(Number(product.stock_quantity) || 0) > 0 && (
+          
+
+            {/* Description */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
+              <p className="text-gray-600 leading-relaxed">{product.description}</p>
+            </div>
+
+             {/* Add to Cart */}
+             {(Number(product.stock_quantity) || 0) > 0 && (
               <div className="mb-6">
                 <div className="flex items-center space-x-4 mb-4">
                   <label className="text-gray-700 font-semibold">Quantity:</label>
@@ -329,38 +283,6 @@ const ProductDetail = () => {
                 </button>
               </div>
             )}
-
-            {/* Description */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
-              <p className="text-gray-600 leading-relaxed">{product.description}</p>
-            </div>
-
-            {/* Rate Product */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Rate this product</h3>
-              <div className="flex items-center space-x-2 mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    onClick={() => setUserRating(star)}
-                    className={`text-2xl ${
-                      star <= userRating ? 'text-yellow-400' : 'text-gray-300'
-                    } hover:text-yellow-400 transition-colors`}
-                  >
-                    <FaStar />
-                  </button>
-                ))}
-              </div>
-              {userRating > 0 && (
-                <button
-                  onClick={handleRatingSubmit}
-                  className="bg-yellow-500 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
-                >
-                  Submit Rating
-                </button>
-              )}
-            </div>
           </div>
         </div>
 
