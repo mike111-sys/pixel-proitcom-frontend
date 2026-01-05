@@ -144,24 +144,18 @@ const [primaryImageId, setPrimaryImageId] = useState<number | null>(null);
 
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      const newFiles = [...imageFiles, ...files];
-      setImageFiles(newFiles);
-      
-      // Create previews for new files
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagePreviews(prev => [...prev, reader.result as string]);
-        };
-        reader.readAsDataURL(file);
-      });
-      
-      // If this is the first image being added (no existing images), set it as primary
-      if (existingImages.length === 0 && imageFiles.length === 0 && files.length > 0) {
-        setNewPrimaryImageIndex(0);
-      }
-    }
+    if (!files.length) return;
+  
+    setImageFiles(prev => [...prev, ...files]);
+  
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews(prev => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+    
   };
   
   const removeImage = (index: number) => {
@@ -237,71 +231,79 @@ const validateForm = () => {
   return true;
 };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    return;
+  }
 
-    if (!validateForm()) {
-      return;
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append('name', product.name || '');
+    formData.append('description', product.description || '');
+    formData.append('category_id', product.category_id?.toString() || '0');
+    formData.append('subcategory_id', product.subcategory_id?.toString() || '0');
+    formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
+    formData.append('price', product.price?.toString() || '');
+    formData.append('original_price', product.original_price?.toString() || '');
+    formData.append('is_on_sale', '1');
+    formData.append('is_featured', product.is_featured ? '1' : '0');
+    formData.append('is_new', product.is_new ? '1' : '0');
+
+    // Append multiple images
+    imageFiles.forEach(file => {
+      formData.append('images', file);
+    });
+
+    // Append deleted images if any
+    if (deletedImages.length > 0) {
+      formData.append('deleted_images', JSON.stringify(deletedImages));
     }
 
-    setLoading(true);
-  
-    try {
-      const formData = new FormData();
-      formData.append('name', product.name || '');
-      formData.append('description', product.description || '');
-      formData.append('category_id', product.category_id?.toString() || '0');
-      formData.append('subcategory_id', product.subcategory_id?.toString() || '0');
-      formData.append('stock_quantity', product.stock_quantity?.toString() || '0');
-      formData.append('price', product.price?.toString() || '');
-      formData.append('original_price', product.original_price?.toString() || '');
-      formData.append('is_on_sale', '1');
-      formData.append('is_featured', product.is_featured ? '1' : '0');
-      formData.append('is_new', product.is_new ? '1' : '0');
-  
-      // Append multiple images
-      imageFiles.forEach(file => {
-        formData.append('images', file);
-      });
-  
-      // Append deleted images if any
-      if (deletedImages.length > 0) {
-        formData.append('deleted_images', JSON.stringify(deletedImages));
-      }
-  
-      // Append primary image info
-      if (primaryImageId) {
+    // For editing: Determine primary image
+    if (isEditing) {
+      if (primaryImageId !== null && primaryImageId > 0) {
+        // Existing image marked as primary (ID is positive)
         formData.append('primary_image_id', primaryImageId.toString());
-      } else if (imageFiles.length > 0) {
-        // For new images, specify which one is primary
-        formData.append('new_primary_image_index', newPrimaryImageIndex.toString());
+      } else if (primaryImageId !== null && primaryImageId < 0) {
+        // New image marked as primary (negative ID)
+        // Convert negative ID to index: -1 -> 0, -2 -> 1, etc.
+        const newIndex = Math.abs(primaryImageId) - 1;
+        formData.append('new_primary_image_index', newIndex.toString());
       }
-  
-      if (product.features) {
-        formData.append('features', JSON.stringify(product.features));
+    } else {
+      // For new products: first image is primary by default
+      if (imageFiles.length > 0) {
+        formData.append('new_primary_image_index', '0');
       }
-  
-      if (isEditing) {
-        await axios.put(`${API_URL}/api/products/${id}`, formData);
-      } else {
-        // For new products, ensure at least one image
-        if (imageFiles.length === 0) {
-          alert('Please upload at least one image for the product.');
-          setLoading(false);
-          return;
-        }
-        await axios.post(`${API_URL}/api/products`, formData);
-      }
-  
-      onSuccess();
-      navigate('/admin/products');
-    } catch (error) {
-      console.error('Error saving product:', error);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    if (product.features) {
+      formData.append('features', JSON.stringify(product.features));
+    }
+
+    if (isEditing) {
+      await axios.put(`${API_URL}/api/products/${id}`, formData);
+    } else {
+      if (imageFiles.length === 0) {
+        alert('Please upload at least one image for the product.');
+        setLoading(false);
+        return;
+      }
+      await axios.post(`${API_URL}/api/products`, formData);
+    }
+
+    onSuccess();
+    navigate('/admin/products');
+  } catch (error) {
+    console.error('Error saving product:', error);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   // Simple spinner component
@@ -580,42 +582,60 @@ const Spinner = () => (
       New Images ({imagePreviews.length}) - Click to set as primary
     </label>
     <div className="grid grid-cols-4 gap-2">
-      {imagePreviews.map((preview, index) => (
-        <div 
-          key={index} 
-          className={`relative cursor-pointer ${newPrimaryImageIndex === index ? 'ring-2 ring-purple-600' : ''}`}
-          onClick={() => setNewPrimaryImageIndex(index)}
-        >
-          <img
-            src={preview}
-            alt={`Preview ${index + 1}`}
-            className="w-full h-24 object-cover rounded-lg border border-gray-300"
-          />
-          {newPrimaryImageIndex === index ? (
-            <span className="absolute top-1 left-1 bg-purple-600 text-white text-xs px-2 py-1 rounded">
-              Primary
-            </span>
-          ) : (
-            <span className="absolute top-1 left-1 bg-gray-600 text-white text-xs px-2 py-1 rounded opacity-70">
-              Set Primary
-            </span>
-          )}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering the primary click
-              removeImage(index);
-            }}
-            className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
-          >
-            <FaTrash size={12} />
-          </button>
-        </div>
-      ))}
+    {imagePreviews.map((preview, index) => (
+  <div
+    key={index}
+    className={`relative cursor-pointer ${
+      (isEditing && primaryImageId === -(index + 1))
+        ? 'ring-2 ring-purple-600'
+        : ''
+    }`}
+    onClick={() => {
+      if (isEditing) {
+        // For editing: set new image as primary using negative IDs
+        setPrimaryImageId(-(index + 1));
+      } else {
+        // For new products: set primary normally
+        setNewPrimaryImageIndex(index);
+      }
+    }}
+  >
+    <img
+      src={preview}
+      alt={`Preview ${index + 1}`}
+      className="w-full h-24 object-contain rounded-lg border border-gray-300"
+    />
+
+    <span
+      className={`absolute top-1 left-1 text-xs px-2 py-1 rounded ${
+        (isEditing && primaryImageId === -(index + 1))
+          ? 'bg-purple-600 text-white'
+          : 'bg-gray-600 text-white opacity-70'
+      }`}
+    >
+      {(isEditing && primaryImageId === -(index + 1)) ? 'New Primary' : 'Set as Primary'}
+    </span>
+
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        removeImage(index);
+      }}
+      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+    >
+      <FaTrash size={12} />
+    </button>
+  </div>
+))}
     </div>
     <p className="text-xs text-gray-500 mt-1">
-      First image is automatically set as primary. Click to change.
-    </p>
+  {isEditing ? (
+    <>Click on any image (existing or new) to set it as primary. New images will only become primary after saving.</>
+  ) : (
+    <>First image is automatically set as primary. Click to change primary image.</>
+  )}
+</p>
   </div>
 )}
 </div>
