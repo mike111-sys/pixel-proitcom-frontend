@@ -218,7 +218,7 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
               setImageLoaded(false);
             }
           }}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+          className="absolute cursor-pointer left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
         >
           <FaArrowLeft />
         </button>
@@ -231,7 +231,7 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
               setImageLoaded(false);
             }
           }}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+          className="absolute cursor-pointer right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
         >
           <FaArrowRight />
         </button>
@@ -250,7 +250,7 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
             setCurrentImage(img.image_url);
             setImageLoaded(false);
           }}
-          className={`flex-shrink-0 w-20 h-20 border-2 rounded-lg overflow-hidden transition-all ${
+          className={`flex-shrink-0 cursor-pointer w-20 h-20 border-2 rounded-lg overflow-hidden transition-all ${
             currentImage === img.image_url 
               ? 'border-purple-600 ring-2 ring-purple-300' 
               : 'border-gray-300 hover:border-purple-400'
@@ -293,89 +293,103 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
               </span>
 
 {/* Price */}
-<div className="mb-6">
-  <div className="text-3xl font-bold text-gray-900 mb-2">
+<div className="mb-6 mt-3">
+  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
     {product.price ? (
-      <div className="flex items-center space-x-4">
-        <span>Ksh {product.price.toFixed(2)}</span>
+      <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+        {/* Current Price */}
+        <span className="text-lg sm:text-2xl">
+          Ksh {product.price.toFixed(2)}
+        </span>
+
+        {/* Original Price & Discount */}
         {product.is_on_sale && product.original_price && product.original_price > product.price && (
           <>
-            <span className="text-xl text-gray-500 line-through">
+            <span className="text-sm sm:text-xl text-gray-500 line-through">
               Ksh {product.original_price.toFixed(2)}
             </span>
-            <span className="text-sm font-semibold bg-red-100 text-red-800 px-3 py-1 rounded-full">
+            <span className="text-xs sm:text-sm font-semibold bg-red-100 text-red-800 px-2 py-1 rounded-full whitespace-nowrap">
               SAVE Ksh {(product.original_price - product.price).toFixed(2)}
             </span>
           </>
         )}
       </div>
     ) : (
-      <span className="text-gray-500">Price not available</span>
+      <span className="text-gray-500 text-base sm:text-lg">Price not available</span>
     )}
   </div>
-  
+
+  {/* Sale Badge */}
   {product.is_on_sale && product.original_price && (
-    <div className="text-sm text-green-600 font-semibold">
+    <div className="text-xs sm:text-sm md:text-base text-green-600 font-semibold">
       ✓ On Sale - Limited Time Offer
     </div>
   )}
 </div>
 
-            {/* Availability */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-lg font-semibold text-gray-800">Availability:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                  (Number(product.stock_quantity) || 0) > 0 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {(Number(product.stock_quantity) || 0) > 0 ? 'In Stock' : 'Out of Stock'}
-                </span>
-              </div>
-              
-              {(Number(product.stock_quantity) || 0) > 0 && (
-                <button
-                  onClick={handleCall}
-                  className="w-full cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
-                >
-                  <FaPhone className="mr-2" />
-                  Call to Confirm: 0713731333
-                </button>
-              )}
-            </div>
 
-          
+         {/* Availability */}
+<div className="mb-6">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2 sm:gap-0">
+    <span className="text-lg font-semibold text-gray-800">Availability:</span>
+    <span
+      className={`px-3 py-1 rounded-full text-sm font-semibold text-center sm:text-left ${
+        (Number(product.stock_quantity) || 0) > 0
+          ? 'bg-green-100 text-green-800'
+          : 'bg-red-100 text-red-800'
+      }`}
+    >
+      {(Number(product.stock_quantity) || 0) > 0 ? 'In Stock' : 'Out of Stock'}
+    </span>
+  </div>
 
-            {/* Description */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
-              <p className="text-gray-600 leading-relaxed">{product.description}</p>
-            </div>
+  {(Number(product.stock_quantity) || 0) > 0 && (
+    <button
+      onClick={handleCall}
+      className="w-full sm:w-auto cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+    >
+      <FaPhone className="mr-2" />
+      Call to Confirm: 0713731333
+    </button>
+  )}
+</div>
 
-             {/* Add to Cart */}
-             {(Number(product.stock_quantity) || 0) > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center space-x-4 mb-4">
-                  <label className="text-gray-700 font-semibold">Quantity:</label>
-                  <select
-                    value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    {Array.from({ length: Math.min(10, Number(product.stock_quantity) || 0) }, (_, i) => i + 1).map((num) => (
-                      <option key={num} value={num}>{num}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full cursor-pointer bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            )}
+{/* Description */}
+<div className="mb-6">
+  <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Description</h3>
+  <p className="text-gray-600 text-sm sm:text-base leading-relaxed break-words">
+    {product.description}
+  </p>
+</div>
+
+{/* Add to Cart */}
+{(Number(product.stock_quantity) || 0) > 0 && (
+  <div className="mb-6">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 gap-2 sm:gap-0">
+      <label className="text-gray-700 font-semibold">Quantity:</label>
+      <select
+        value={quantity}
+        onChange={(e) => setQuantity(parseInt(e.target.value))}
+        className="border border-gray-300 rounded-lg px-3 py-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-purple-500"
+      >
+        {Array.from({ length: Math.min(10, Number(product.stock_quantity) || 0) }, (_, i) => i + 1).map(
+          (num) => (
+            <option key={num} value={num}>
+              {num}
+            </option>
+          )
+        )}
+      </select>
+    </div>
+    <button
+      onClick={handleAddToCart}
+      className="w-full sm:w-auto cursor-pointer bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+    >
+      Add to Cart
+    </button>
+  </div>
+)}
+
           </div>
         </div>
 

@@ -522,7 +522,7 @@ const Spinner = () => (
       accept="image/*"
       multiple
       onChange={handleImagesChange}
-      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+      className="w-full cursor-pointer px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
     />
     <p className="text-xs text-gray-500 mt-1">
       You can select multiple images. First image will be set as primary.

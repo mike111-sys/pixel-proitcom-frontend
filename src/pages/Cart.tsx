@@ -237,7 +237,7 @@ const Cart = () => {
 
           {/* Order Form */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Order Information</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Order Information (Cash On Delivery)</h2>
             
          
 
