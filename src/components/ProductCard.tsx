@@ -105,10 +105,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <div className="flex items-center space-x-2">
                 {product.original_price ? (
                   <>
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-xl font-bold text-gray-900">
                       Ksh {product.price.toFixed(2)}
                     </span>
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className="text-base text-gray-500 line-through">
                       Ksh {product.original_price.toFixed(2)}
                     </span>
                   </>
@@ -142,9 +142,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
             
             {/* Optional: Stock progress bar */}
             {product.stock_quantity > 0 && (
-              <div className="mt-1 w-full bg-gray-200 rounded-full h-1.5">
+              <div className="mt-1 w-full bg-gray-200 rounded-full h-2.5">
                 <div 
-                  className={`h-1.5 rounded-full ${
+                  className={`h-2.5 rounded-full ${
                     product.stock_quantity > 10 
                       ? 'bg-green-500' 
                       : product.stock_quantity > 5 
