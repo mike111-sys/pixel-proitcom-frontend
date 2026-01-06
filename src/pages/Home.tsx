@@ -10,8 +10,11 @@ interface Product {
   name: string;
   image_url: string;
   rating: number;
+  price: number | null;
   total_ratings: number;
   category_name: string;
+  stock_quantity: number;
+  original_price?: number | null;
 }
 
 const Home = () => {
@@ -71,7 +74,12 @@ const Home = () => {
           {featuredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={{
+                  ...product,
+                  price: product.price ?? 0,
+                  stock_quantity: product.stock_quantity ?? 0,
+                  original_price: product.original_price ?? undefined,
+                }} />
               ))}
             </div>
           ) : (
@@ -105,7 +113,12 @@ const Home = () => {
           {newProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {newProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={{
+                  ...product,
+                  price: product.price ?? 0,
+                  stock_quantity: product.stock_quantity ?? 0,
+                  original_price: product.original_price ?? undefined,
+                }} />
               ))}
             </div>
           ) : (

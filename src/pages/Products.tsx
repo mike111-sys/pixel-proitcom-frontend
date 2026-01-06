@@ -11,7 +11,13 @@ interface Product {
   rating: number;
   total_ratings: number;
   category_name: string;
+  subcategory_name?: string;
+  price: number | null;
+  original_price?: number | null;
+  is_on_sale?: boolean;
+  stock_quantity: number | null;
 }
+
 
 interface Category {
   id: number;
@@ -186,7 +192,13 @@ const Products = () => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={{
+                  ...product,
+                  price: product.price ?? 0,
+                  stock_quantity: product.stock_quantity ?? 0,
+                  original_price: product.original_price ?? undefined,
+                  is_on_sale: product.is_on_sale ?? false,
+                }} />
               ))}
             </div>
 

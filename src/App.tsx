@@ -17,6 +17,24 @@ import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 import Testimonials from './pages/Testimonials';
 
+
+const useRegisterSW = () => {
+  useEffect(() => {
+    if ('serviceWorker' in navigator && import.meta.env.PROD) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('✅ PWA Service Worker registered:', registration);
+          })
+          .catch((error) => {
+            console.log('❌ PWA Service Worker registration failed:', error);
+          });
+      });
+    }
+  }, []);
+};
+
 const Loader = () => (
   <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
     <div className="flex flex-col items-center">
@@ -93,6 +111,10 @@ const Layout = () => {
 };
 
 const App = () => {
+
+  // 🔥 ADD THIS: Call the service worker hook
+  useRegisterSW();
+
   return (
     <ErrorBoundary>
       <AuthProvider>
