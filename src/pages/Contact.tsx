@@ -27,7 +27,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setResult("Sending...");
 
   const formDataToSend = new FormData();
-  formDataToSend.append("access_key", "fbc808f0-e376-424c-bb16-9e14add75a5e"); // 🔑 put your key here
+  formDataToSend.append("access_key", "d0936bf2-9b51-4b0b-aabf-47e8956c7d02"); // 🔑 put your key here
   formDataToSend.append("name", formData.name);
   formDataToSend.append("email", formData.email);
   formDataToSend.append("phone", formData.phone);
@@ -207,6 +207,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                       <a href="tel:+254713731333" className="text-gray-600 hover:text-yellow-500 transition-colors">
                         +254 713 731 333
                       </a>
+                      <a
+                href="tel:+254737713333"
+                className="inline-flex items-center text-gray-600   hover:text-yellow-500 "
+              >
+               / +254 737 713 333
+              </a>
                     </div>
                   </div>
 
@@ -216,8 +222,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">Email</h3>
-                      <a href="mailto:info@pixelproit.com" className="text-gray-600 hover:text-yellow-500 transition-colors">
-                        info@pixelproit.com
+                      <a href="mailto:info@pixelproit.co.ke" className="text-gray-600 hover:text-yellow-500 transition-colors">
+                        info@pixelproit.co.ke
                       </a>
                     </div>
                   </div>
@@ -226,8 +232,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </div>
               </div>
 
-                {/* Extra Navigation Buttons */}
-<div className="flex flex-col sm:flex-row gap-4">
+ {/* Extra Navigation Buttons */}
+ <div className="flex flex-col sm:flex-row gap-4">
   <a
     href="/reviews"
     className="w-full sm:w-auto px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors text-center"
@@ -258,8 +264,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                   ></iframe>
                 </div>
               </div>
-            
-
             </motion.div>
           </div>
         </div>

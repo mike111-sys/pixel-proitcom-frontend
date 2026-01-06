@@ -46,14 +46,14 @@ useEffect(() => {
     <img
       src={Logo_blur}
       loading='lazy'
-      alt="Pixel Pro blurred"
+      alt="Pixelpro blurred"
       className="absolute inset-0 h-full w-full object-contain"
       style={{ filter: 'blur(5px)' }}
     />
     {/* Actual logo - fades in when loaded */}
     <img
       src={Logo}
-      alt="Pixel Pro"
+      alt="Pixelpro"
       className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-1000 ${
         logoLoaded ? "opacity-100" : "opacity-0"
       }`}
@@ -68,7 +68,7 @@ useEffect(() => {
 </div>
 <h3 className="text-3xl font-bold">Pixelpro Technology</h3>
   <p className="text-gray-600 max-w-sm">
-  Your one-stop shop for premium tech accessories and gadgets. Quality products at affordable prices.
+  Shop the latest Motorola Walkie Talkies, Garmin GPS devices, Thuraya Satellite Phones, Apple products, and DJI drones in Nairobi, Kenya.
   </p>
   <div className="flex justify-center md:justify-start space-x-4">
     
@@ -165,11 +165,11 @@ useEffect(() => {
     </div>
     <div className="flex justify-center md:justify-start items-center space-x-3">
       <FaPhone className="text-yellow-500" />
-      <a href="tel:+254713731333" className="hover:text-yellow-500 hover:underline transition-colors">+254 713 731 333</a>
+      <a href="tel:+254713731333" className="hover:text-yellow-500 hover:underline transition-colors">+254 713 731 333</a>/<a href="tel:+254737713333" className="hover:text-yellow-500 hover:underline transition-colors">+254 737 713 333</a>
     </div>
     <div className="flex justify-center md:justify-start items-center space-x-3">
       <FaEnvelope className="text-yellow-500" />
-      <a href="mailto:info@pixelproit.com" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelproit.com</a>
+      <a href="mailto:info@pixelproit.co.ke" className="hover:text-yellow-500 hover:underline transition-colors">info@pixelproit.co.ke</a>
     </div>
   </div>
 </motion.div>
