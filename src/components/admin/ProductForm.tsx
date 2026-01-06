@@ -556,6 +556,7 @@ const Spinner = () => (
             src={img.image_url}
             alt={`Product ${img.id}`}
             className="w-full h-24 object-cover rounded-lg border border-gray-300"
+            loading='lazy'
           />
           {primaryImageId === img.id ? (
             <span className="absolute top-1 left-1 bg-purple-600 text-white text-xs px-2 py-1 rounded">
@@ -614,6 +615,7 @@ const Spinner = () => (
       src={preview}
       alt={`Preview ${index + 1}`}
       className="w-full h-24 object-contain rounded-lg border border-gray-300"
+      loading='lazy'
     />
 
     <span
