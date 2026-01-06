@@ -32,6 +32,14 @@ interface Product {
   }>;
 }
 
+interface ProductImage {
+  id: number;
+  image_url: string;
+  is_primary: boolean;
+  display_order: number;
+}
+
+
 interface ProductFormProps {
   onSuccess: () => void;
 }
@@ -130,9 +138,11 @@ const [primaryImageId, setPrimaryImageId] = useState<number | null>(null);
       });
   
       if (productData.images) {
-        setExistingImages(productData.images);
-        // Find and set the primary image ID
-        const primaryImg = productData.images.find(img => img.is_primary);
+        const images: ProductImage[] = productData.images;
+      
+        setExistingImages(images);
+      
+        const primaryImg = images.find((img: ProductImage) => img.is_primary);
         if (primaryImg) {
           setPrimaryImageId(primaryImg.id);
         }

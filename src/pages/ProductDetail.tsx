@@ -40,6 +40,7 @@ interface SimilarProduct {
   rating: number;
   total_ratings: number;
   category_name: string;
+  stock_quantity: number;
 }
 
 const ProductDetail = () => {
@@ -414,7 +415,11 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Similar Products</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {similarProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={{
+                  ...product,
+                  price: product.price ?? 0,             
+                  original_price: product.original_price ?? undefined, 
+                }} />
               ))}
             </div>
           </div>
