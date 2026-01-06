@@ -135,7 +135,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   : 'text-red-600'
               }`}>
                 {product.stock_quantity > 0 
-                  ? `${product.stock_quantity} units left` 
+                  ? `${product.stock_quantity} ${
+                    product.stock_quantity === 1 ? "unit" : "units"
+                  } left` 
                   : 'Out of stock'}
               </span>
             </div>
