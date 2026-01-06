@@ -92,9 +92,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-            {product.name}
-          </h3>
+        <h3 className="text-base font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[3rem]">
+  {product.name}
+</h3>
+
           
         
           
@@ -125,7 +126,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {/* Stock Quantity */}
           <div className="mt-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">Available:</span>
+              <span className="text-gray-600">Availability:</span>
               <span className={`font-medium ${
                 product.stock_quantity > 10 
                   ? 'text-green-600' 
