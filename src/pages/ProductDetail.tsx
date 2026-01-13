@@ -302,17 +302,17 @@ const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
       <div className="flex flex-wrap items-center gap-2 sm:gap-4">
         {/* Current Price */}
         <span className="text-lg sm:text-2xl">
-          Ksh {product.price.toFixed(2)}
+        Ksh {product.price.toLocaleString()}
         </span>
 
         {/* Original Price & Discount */}
         {product.is_on_sale && product.original_price && product.original_price > product.price && (
           <>
             <span className="text-sm sm:text-xl text-gray-500 line-through">
-              Ksh {product.original_price.toFixed(2)}
+            Ksh {product.original_price.toLocaleString()}
             </span>
             <span className="text-xs sm:text-sm font-semibold bg-red-100 text-red-800 px-2 py-1 rounded-full whitespace-nowrap">
-              SAVE Ksh {(product.original_price - product.price).toFixed(2)}
+            SAVE Ksh {(product.original_price - product.price).toLocaleString()}
             </span>
           </>
         )}
