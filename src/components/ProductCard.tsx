@@ -96,9 +96,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
   {product.name}
 </h3>
 
-          
-        
-          
           {/* Price Display */}
           <div className="flex items-center justify-between mt-3">
             {product.price ? (
@@ -106,15 +103,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 {product.original_price ? (
                   <>
                     <span className="text-xl font-bold text-gray-900">
-                      Ksh {product.price.toFixed(2)}
+                      Ksh {product.price.toLocaleString()}
                     </span>
                     <span className="text-base text-gray-500 line-through">
-                      Ksh {product.original_price.toFixed(2)}
+                      Ksh {product.original_price.toLocaleString()}
                     </span>
                   </>
                 ) : (
                   <span className="text-lg font-bold text-gray-900">
-                    Ksh {product.price.toFixed(2)}
+                    Ksh {product.price.toLocaleString()}
                   </span>
                 )}
               </div>
